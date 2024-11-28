@@ -1,6 +1,7 @@
 import { SplashScreen, Stack } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import { AQIProvider } from "../context/AQIContext";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -34,11 +35,13 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <Stack>
-      <Stack.Screen name="index"  options={{headerShown: false,}}/>
-      <Stack.Screen name="(tabs)"  options={{headerShown: false,}}/>
-      {/* <Stack.Screen name="scanning"  options={{headerShown: false,}}/> */}
-    </Stack>
+    <AQIProvider>
+      <Stack>
+        <Stack.Screen name="index"  options={{headerShown: false,}}/>
+        <Stack.Screen name="(tabs)"  options={{headerShown: false,}}/>
+        {/* <Stack.Screen name="scanning"  options={{headerShown: false,}}/> */}
+      </Stack>
+    </AQIProvider>
     
   );
 }

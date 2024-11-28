@@ -1,15 +1,29 @@
 import { View, Text, TouchableOpacity, SafeAreaView, StyleSheet } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { router, useNavigation } from 'expo-router'
 import { MotiView } from '@motify/components'
 import { Easing } from 'react-native-reanimated';
+import { useAQI } from '../../context/AQIContext';
 
 const Scanning = () => {
   const navigation = useNavigation();
+  const { setAqi, setPm2_5, setC0, setN02, setTimestamp } = useAQI();
+
+
+  const getCurrentTime = () => new Date().toLocaleTimeString();
+   
+
 
   useEffect(() => {
     const handleTimeOut = () => {
       setTimeout(() => {
+        setAqi(Math.floor(Math.random() * 500)); 
+        setPm2_5(Math.floor(Math.random() * 500)); 
+        setC0(Math.floor(Math.random() * 500)); 
+        setN02(Math.floor(Math.random() * 500)); 
+        
+        const currentTimestamp = getCurrentTime();
+        setTimestamp(currentTimestamp);
         router.push('home');
       }, 3000);
     }
@@ -20,7 +34,7 @@ const Scanning = () => {
     return () => {
       reset();
     }
-  }, [navigation])
+  }, [navigation, setAqi, setPm2_5, setC0, setN02, setTimestamp])
 
   return (
     <View className='flex-1 items-center justify-center bg-white'>

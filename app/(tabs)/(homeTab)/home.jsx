@@ -1,17 +1,21 @@
 import { View, Text, SafeAreaView, TouchableOpacity, FlatList, useWindowDimensions, ScrollView, } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import QualityLevel from '../../../components/QualityLevel'
 import RemixIcon from 'react-native-remix-icon'
 import { router } from 'expo-router'
 import { Image } from 'expo-image'
 import Svg, { Circle } from 'react-native-svg';
-// import { LinearGradient } from 'expo-linear-gradient'
+import { useAQI } from '../../../context/AQIContext'
 
 const Home = () => {
+  const [time, setTime] = useState('');
   const [quality, setQuality] = useState([])
   const [level, setLevel] = useState([])
   const [categoryPressed, setCategoryPressed] = useState(1);
+
+  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp} = useAQI();
+
 
   // const statuses = [
   //   {id: 1, label: 'C02', barLevel: level[0]?.co2Bar, ppmNum: level[0]?.co2PPM},
@@ -39,21 +43,33 @@ const Home = () => {
   const toggleCategory = (index) => {
     setCategoryPressed(index);
   }
+  
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentTime = new Date();
+      const hours = currentTime.getHours();
+      const minutes = currentTime.getMinutes();
+      const formattedTime = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+      setTime(formattedTime);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [])
 
   return (
     <SafeAreaView className="flex-1 p-4 bg-white" style={{gap: 12}}>
         {/* Weather */}
         <View className="h-24 rounded-[28px] bg-white items-center justify-end p-4 flex-row border-2 border-gray-100" style={{shadowColor: 'gray', elevation: 4 }}>  
           <View className='h-full w-[20%] items-center justify-center'>
-            <Image source={require('../../../assets/animated/cloudy-night.gif')} className='h-16 w-16'/>
+            <Image source={require('../../../assets/animated/rainy.gif')} className='h-16 w-16'/>
           </View>
           <View className='h-full flex-1 px-2'>
             <Text className='font-pSemiBold text-[16px] text-pastel-black '>Santiago, Malolos</Text>
             <Text className='font-pRegular text-[10px] text-gray-500'>Partly Cloudy Outside</Text>
-            <Text className='font-pSemiBold text-[10px] text-pastel-black '>16:08</Text>
+            <Text className='font-pSemiBold text-[10px] text-pastel-black '>{time}</Text>
           </View>
           <View className='h-full w-[20%] items-center justify-center'>
-            <Text className='font-pBold text-[36px]'>28*</Text>
+            <Text className='font-pBold text-[36px]'>28°</Text>
           </View>
         </View>
         {/* Quality Level */}
@@ -66,18 +82,18 @@ const Home = () => {
                   <Image source={require('../../../assets/icons/pm2.5.png')} className='h-10 w-10'/>
                 </View>
               </View>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>20%</Text>
+              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>{pm2_5}</Text>
             </View>
           </View>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
             <View className='flex-1 p-2' style={{gap: 20}}>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>C02</Text>
+              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>CO</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
                   <Image source={require('../../../assets/icons/smoke-white.png')} className='h-10 w-10'/>
                 </View>
               </View>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>20%</Text>
+              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>{co}</Text>
             </View>
           </View>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
@@ -88,7 +104,7 @@ const Home = () => {
                   <Image source={require('../../../assets/icons/nitrogen.png')} className='h-10 w-10'/>
                 </View>
               </View>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>20%</Text>
+              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>{no2}</Text>
             </View>
           </View>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
@@ -116,15 +132,16 @@ const Home = () => {
               <Circle cx="150" cy="150" r="90" stroke="gray" strokeWidth="2" fill="none" strokeDasharray="2,5" />
             </Svg>
             <View className='absolute items-center justify-center h-14'>
-              <Text className='font-pBold text-[42px] text-pastel-black'>240</Text>
+              <Text className='font-pBold text-[42px] text-pastel-black'>{aqi}</Text>
               <Text className='font-pRegular text-[10px]'>AQI score</Text>
+              <Text className='font-pRegular text-[10px] text-gray-400'>Timestamp: {timestamp}</Text>
             </View>
           </View>
           <View className='h-[10%] flex-row justify-between items-center'>
             <View className='flex-row flex-1 items-center' style={{gap: 6}}>
-              <Text className='font-pRegular text-[12px] text-pastel-black'>Risk Percentage:</Text>
-              <View className='h-2 w-2 bg-red-500 rounded-full'></View>
-              <Text className='font-pRegular text-[12px] text-pastel-black'>High</Text>
+              <Text className='font-pRegular text-[10px] text-pastel-black'>Risk Percentage:</Text>
+              <View className={`h-2 w-2 rounded-full`} style={{backgroundColor: aqiIC}}></View>
+              <Text className='font-pRegular text-[10px] text-pastel-black'>{aqiIL}</Text>
             </View>
             <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={() => router.push('statistics')} activeOpacity={0.5}>
               <Text className='font-pRegular text-[12px] text-pastel-black'>All Statistics</Text>
