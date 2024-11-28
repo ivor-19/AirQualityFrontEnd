@@ -8,12 +8,8 @@ import { useAQI } from '../../context/AQIContext';
 const Scanning = () => {
   const navigation = useNavigation();
   const { setAqi, setPm2_5, setC0, setN02, setTimestamp } = useAQI();
-
-
   const getCurrentTime = () => new Date().toLocaleTimeString();
    
-
-
   useEffect(() => {
     const handleTimeOut = () => {
       setTimeout(() => {
