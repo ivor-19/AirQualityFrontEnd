@@ -4,11 +4,21 @@ import { router, useNavigation } from 'expo-router'
 import { MotiView } from '@motify/components'
 import { Easing } from 'react-native-reanimated';
 import { useAQI } from '../../context/AQIContext';
+import axios from 'axios';
 
 const Scanning = () => {
   const navigation = useNavigation();
-  const { setAqi, setPm2_5, setC0, setN02, setTimestamp } = useAQI();
+  const { aqi, setAqi, pm2_5, setPm2_5, co, setC0, no2, setN02, timestamp, setTimestamp } = useAQI();
+  const [date, setDate] = useState('');
+  const getCurrentDate = () => {
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}-${day}-${year}`
+  }
   const getCurrentTime = () => new Date().toLocaleTimeString();
+  
    
   useEffect(() => {
     const handleTimeOut = () => {
@@ -17,9 +27,13 @@ const Scanning = () => {
         setPm2_5(Math.floor(Math.random() * 500)); 
         setC0(Math.floor(Math.random() * 500)); 
         setN02(Math.floor(Math.random() * 500)); 
+
+        const currentDate = getCurrentDate();
+        setDate(currentDate);
         
         const currentTimestamp = getCurrentTime();
         setTimestamp(currentTimestamp);
+      
         router.push('home');
       }, 3000);
     }
@@ -31,6 +45,26 @@ const Scanning = () => {
       reset();
     }
   }, [navigation, setAqi, setPm2_5, setC0, setN02, setTimestamp])
+
+
+  useEffect(() => {
+    if(date === '' || aqi === '0'){
+      console.log('Date must not be null. Air Quality is being scanned...');
+    }
+    else{
+      const submitData = async () => {
+        const newData = { date, timestamp, aqi, pm2_5, co, no2};
+          try {
+            const response = await axios.post('https://air-quality-back-end.vercel.app/api/history', newData);
+            console.log('new history data is added', response.data);
+            
+          } catch (error) {
+            console.log('Error submitting data: ', error)
+          }
+      }
+      submitData();
+    }
+  }, [date, timestamp, aqi, pm2_5, co, no2])
 
   return (
     <View className='flex-1 items-center justify-center bg-white'>

@@ -7,6 +7,8 @@ module.exports = {
         'pastel': {
           'green' : '#d2e7d6',
           'black' : '#1d1c1a',
+
+          //c8e1cc - alt pastel green
         }, 
         
       },

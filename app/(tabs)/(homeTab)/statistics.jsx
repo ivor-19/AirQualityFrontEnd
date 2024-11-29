@@ -56,7 +56,7 @@ const statistics = () => {
                             </View>
                             <View className='flex-1 h-full px-2'>
                                 <Text className='font-pBold text-pastel-black text-[16px]'>Particulate Matter 2.5</Text>
-                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: </Text>
+                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {aqiIL}</Text>
                             </View> 
                             <View className='w-[20%] h-full items-center justify-center'>
                                 <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
