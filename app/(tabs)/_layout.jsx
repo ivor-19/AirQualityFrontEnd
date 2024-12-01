@@ -5,12 +5,14 @@ import RemixIcon from 'react-native-remix-icon'
 
 const TabLayout = () => {
   return (
-   <Tabs screenOptions={{tabBarStyle: {height: 70, backgroundColor: '#1d1c1a', marginHorizontal: 8, bottom: 10, borderRadius: 28,}, 
-                        tabBarLabelStyle: {margin: 6},
-                        tabBarItemStyle: {padding: 12}, 
-                        tabBarActiveTintColor: '#fff',  
-                        tabBarInactiveTintColor: '#d1d5db70', 
-                        tabBarHideOnKeyboard: true,}}>
+   <Tabs screenOptions={{
+        tabBarStyle: {height: 70, backgroundColor: '#1d1c1a', marginHorizontal: 8, bottom: 10, borderRadius: 28,}, 
+        tabBarLabelStyle: {margin: 6},
+        tabBarItemStyle: {padding: 12}, 
+        tabBarActiveTintColor: '#fff',  
+        tabBarInactiveTintColor: '#d1d5db70', 
+        tabBarHideOnKeyboard: true,
+    }}>
     <Tabs.Screen 
         name='(homeTab)'
         options={{

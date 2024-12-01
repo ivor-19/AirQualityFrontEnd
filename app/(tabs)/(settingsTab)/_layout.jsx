@@ -5,7 +5,7 @@ import { Stack } from 'expo-router'
 const SettingsLayout = () => {
   return (
     <Stack>
-        <Stack.Screen name='settings' options={{title: 'Settings',headerTitleAlign: 'center' , headerShown: true,}}/>
+        <Stack.Screen name='settings' options={{title: 'Settings',headerTitleAlign: 'center' , headerShown: true, headerTitleStyle: {fontFamily: 'PoppinsBold', color: '#1d1c1a'}}}/>
     </Stack>
   )
 }

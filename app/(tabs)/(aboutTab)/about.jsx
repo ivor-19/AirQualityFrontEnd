@@ -10,7 +10,7 @@ const about = () => {
   const handleSubmit = async () => {
     const newStudent = { name, age };
     try {
-      const response = await axios.post('https://air-quality-back-end.vercel.app/api/students', newStudent);
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/students', newStudent);
       console.log('Student is added in the database', response.data);
       setName('');
       setAge('');

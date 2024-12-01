@@ -14,7 +14,7 @@ const Home = () => {
   const [level, setLevel] = useState([])
   const [categoryPressed, setCategoryPressed] = useState(1);
 
-  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp} = useAQI();
+  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp} = useAQI();``
 
 
   // const statuses = [

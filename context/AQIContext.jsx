@@ -13,6 +13,7 @@ export const AQIProvider = ({ children }) => {
   const [co, setC0] = useState(0);
   const [no2, setN02] = useState(0);
   const [timestamp, setTimestamp] = useState('');
+  const [date, setDate] = useState('');
 
   // IndicatorColor = IC
   // IndicatorLabel = IL
@@ -32,12 +33,12 @@ export const AQIProvider = ({ children }) => {
     aqiIL= 'Very Low';
   }
   else if(aqi <= 100) {
-    aqiIC= '#FFC300';
+    aqiIC= '#008000';
     aqiIL= 'Low';
   }
   else if(aqi <= 150) {
-    aqiIC= '#FF5733';
-    aqiIL= 'moderate';
+    aqiIC= '#FFC300';
+    aqiIL= 'Moderate';
   }
   else if(aqi <= 200) {
     aqiIC= '#C70039';
@@ -58,12 +59,12 @@ export const AQIProvider = ({ children }) => {
     coIL= 'Very Low';
   }
   else if(co <= 35) {
-    coIC= '#FFC300';
+    coIC= '#008000';
     coIL= 'Low';
   }
   else if(co <= 50) {
-    coIC= '#FF5733';
-    coIL= 'moderate';
+    coIC= '#FFC300';
+    coIL= 'Moderate';
   }
   else if(co <= 100) {
     coIC= '#C70039';
@@ -84,12 +85,12 @@ export const AQIProvider = ({ children }) => {
     no2IL= 'Very Low';
   }
   else if(no2 <= 100) {
-    no2IC= '#FFC300';
+    no2IC= '#008000';
     no2IL= 'Low';
   }
   else if(no2 <= 200) {
-    no2IC= '#FF5733';
-    no2IL= 'moderate';
+    no2IC= '#FFC300';
+    no2IL= 'Moderate';
   }
   else if(no2 <= 300) {
     no2IC= '#C70039';
@@ -106,7 +107,21 @@ export const AQIProvider = ({ children }) => {
 
 
   return (
-    <AQIContext.Provider value={{ aqi, setAqi, pm2_5, setPm2_5, co, setC0, no2, setN02, aqiIC, aqiIL, coIC, coIL, no2IC, no2IL, timestamp, setTimestamp}}>
+    <AQIContext.Provider value={{ 
+        date, setDate,
+        timestamp, setTimestamp,
+        aqi, setAqi, 
+        pm2_5, setPm2_5, 
+        co, setC0, 
+        no2, setN02, 
+        aqiIC, aqiIL, 
+        coIC, coIL, 
+        no2IC, no2IL, 
+        
+      }}>
+      
+      
+      
       {children}
     </AQIContext.Provider>
   );

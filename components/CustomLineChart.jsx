@@ -1,65 +1,79 @@
 import React from 'react';
-import { ScrollView, Text, View, useWindowDimensions } from 'react-native';
-import { LineChart } from 'react-native-chart-kit';
-
-
-const CustomLineChart = () => {
-  const {width} = useWindowDimensions();
-
-  const data = {
-    labels: ['00', '01', '02', '03', '04', 'Now'],
-    datasets: [
-      {
-        data: [30, 50, 40, 70, 120], // Example PM2.5 levels
-        strokeWidth: 2,
-        color: (opacity = 1) => `rgba(105, 149, 113, ${opacity})`, // 
-        fillShadow: false, // Remove the fill under the line
-      },
-      {
-        data: [10, 35, 25, 45, 90], // Example PM10 levels
-        strokeWidth: 2,
-        color: (opacity = 1) => `rgba(105, 149, 113, ${opacity})`, // 
-      },
-    ],
-  };
-
+import { Dimensions, ScrollView, Text, View } from 'react-native';
+import { PieChart } from 'react-native-chart-kit';  
+const CustomPieChart = () => {
+  const data = [
+    {
+      name: 'PM 2.5',
+      population: 312,
+      color: '#e8a09a', // Red color
+      legendFontColor: '#1d1c1a',
+      legendFontSize: 12,
+    },
+    {
+      name: 'CO',
+      population: 300,
+      color: '#9bbfe0', // Blue color
+      legendFontColor: '#1d1c1a',
+      legendFontSize: 12,
+    },
+    {
+      name: 'NO2',
+      population: 321,
+      color: '#c6d68f', // Green color
+      legendFontColor: '#1d1c1a',
+      legendFontSize: 12,
+    },
+    {
+      name: '???',
+      population: 100,
+      color: '#fbe29f', // Yellow color
+      legendFontColor: '#1d1c1a',
+      legendFontSize: 12,
+    },
+  ];
 
   const chartConfig = {
-    backgroundColor: '#000',
+    backgroundColor: '#ffffff',
     backgroundGradientFrom: '#ffffff',
     backgroundGradientTo: '#ffffff',
     decimalPlaces: 2,
     color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, 
+    labelColor: (opacity = 1) => `rgba(29, 28, 26, ${opacity})`,
     style: {
       borderRadius: 16,
     },
-    propsForDots: {
-      r: '2',
-      strokeWidth: '0',
-      stroke: '#ffffff',
-    },
     propsForLabels: {
-      fontFamily: 'Poppins-Regular', // Applying the custom font to the labels
-      fontSize: 10, // Set font size for labels
+      fontFamily: 'PoppinsSemiBold', 
+      fontSize: 12, 
+      color: 'gray',
     },
-    color:() => '#699571',
-
   };
 
   return (
     <ScrollView contentContainerStyle={{ paddingVertical: 10 }}>
-      <LineChart
-        data={data}
-        width={width} // Adjust width for mobile screens
-        height={160}
-        chartConfig={chartConfig}
-        bezier // Smooth curved line
-        style={{ marginVertical: 8,}}
-        withInnerLines={false}
+      <PieChart
+        data={data} 
+        width={Dimensions.get('window').width - 40} 
+        height={180} 
+        chartConfig={{
+          backgroundColor: "transparent", 
+          backgroundGradientFrom: "#ffffff", 
+          backgroundGradientTo: "#000000",
+          color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          propsForLabels: {
+            fontFamily: 'PoppinsRegular', 
+          },
+        }}
+        accessor="population" 
+        backgroundColor="transparent"
+        paddingLeft="15" 
+        center={[10, 10]} 
+        hasLegend={true} 
       />
     </ScrollView>
   );
 };
 
-export default CustomLineChart;
+export default CustomPieChart;

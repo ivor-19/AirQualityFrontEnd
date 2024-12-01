@@ -21,32 +21,32 @@ const settings = () => {
     <View className='flex-1'>
       <TouchableOpacity activeOpacity={0.6}>
         <View className='px-4 w-full bg-white h-16 border-b-[1px] border-gray-100 flex-row items-center justify-between'>
-          <Text className='font-pRegular'>User Guide and Tutorial</Text>
+          <Text className='font-pRegular text-pastel-black'>User Guide and Tutorial</Text>
           <RemixIcon name='ri-arrow-drop-right-line' size={30} />
         </View>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.6}>
         <View className='px-4 w-full bg-white h-16 border-b-[1px] border-gray-100 flex-row items-center justify-between'>
-          <Text className='font-pRegular'>About this app</Text>
-          <RemixIcon name='ri-arrow-drop-right-line' size={30} />
+          <Text className='font-pRegular text-pastel-black'>About this app</Text>
+          <RemixIcon name='ri-arrow-drop-right-line' size={30} color='#1d1c1a'/>
         </View>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.6}>
         <View className='px-4 w-full bg-white h-16 border-b-[1px] border-gray-100 flex-row items-center justify-between'>
-          <Text className='font-pRegular'>Legal & Policies</Text>
-          <RemixIcon name='ri-arrow-drop-right-line' size={30} />
+          <Text className='font-pRegular text-pastel-black'>Legal & Policies</Text>
+          <RemixIcon name='ri-arrow-drop-right-line' size={30} color='#1d1c1a'/>
         </View>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.6}>
         <View className='px-4 w-full bg-white h-16 border-b-[1px] border-gray-100 flex-row items-center justify-between'>
-          <Text className='font-pRegular'>Contact Us</Text>
-          <RemixIcon name='ri-arrow-drop-right-line' size={30} />
+          <Text className='font-pRegular text-pastel-black'>Contact Us</Text>
+          <RemixIcon name='ri-arrow-drop-right-line' size={30} color='#1d1c1a'/>
         </View>
       </TouchableOpacity>
       <TouchableOpacity activeOpacity={0.6} onPress={openWifiSettings}>
         <View className='px-4 w-full bg-white h-16 border-b-[1px] border-gray-100 flex-row items-center justify-between'>
-          <Text className='font-pRegular'>Connected</Text>
-          <RemixIcon name='ri-arrow-drop-right-line' size={30} />
+          <Text className='font-pRegular text-pastel-black'>Connected</Text>
+          <RemixIcon name='ri-arrow-drop-right-line' size={30} color='#1d1c1a'/>
         </View>
       </TouchableOpacity>
     </View>
