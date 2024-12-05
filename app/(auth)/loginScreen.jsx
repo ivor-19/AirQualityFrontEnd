@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import axios from 'axios';
@@ -10,12 +10,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const loginScreen = () => {
   const [username, setUsername] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [passwordInvalid, setPasswordInvalid] = useState(false);
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/users/login', { email, password });
       if (response.data.token) {
@@ -24,9 +27,15 @@ const loginScreen = () => {
         await AsyncStorage.setItem('userToken', token);  // Store token
   
         console.log('Login successful, token:', token);
-        router.push('onboarding');
+        setLoading(false);
+        setSuccess(true);
+        setTimeout(() => {
+          setSuccess(false);
+          router.push('onboarding');
+        }, 3000)
       }
     } catch (error) {
+      setLoading(false);
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.message || error.response.data.error;
         console.log(errorMessage)
@@ -43,6 +52,11 @@ const loginScreen = () => {
  
   return (
     <SafeAreaView className='flex-1 bg-white'>
+      {loading &&
+        <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+            <ActivityIndicator size="large" color="#4caf50" />
+        </View>
+      }
      <ScrollView>
       <Image source={require('../../assets/background/drop3.png')} className='absolute opacity-50' style={{top: scale(-30), left: scale(0), height: scale(400), width: scale(400)}} contentFit='contain'></Image>
       <Image source={require('../../assets/background/drop4.png')} className='absolute opacity-50' style={{top: scale(400), height: scale(600), width: scale(600)}} contentFit='contain'></Image>
@@ -86,6 +100,15 @@ const loginScreen = () => {
           </View>
         </View>
       </ScrollView>
+      {success &&
+        <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+            <View className='w-[80%] bg-white rounded-[10px] px-8 '>
+                <View className='my-5' style={{gap: 10}}>
+                <Text className='font-pRegular text-[12px]'>Login successful, welcome aboard!</Text>
+                </View>
+            </View>
+        </View>
+      }
     </SafeAreaView>
   )
 }

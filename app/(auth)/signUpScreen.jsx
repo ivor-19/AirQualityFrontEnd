@@ -129,13 +129,13 @@ const signUpScreen = () => {
         </ScrollView>
       </SafeAreaView>
       {success &&
-          <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-              <View className='w-[80%] bg-white rounded-[10px] px-8 '>
-                  <View className='my-5' style={{gap: 10}}>
-                  <Text className='font-pRegular text-[12px]'>Your account has been created successfully! Redirecting to Login page...</Text>
-                  </View>
-              </View>
-          </View>
+        <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+            <View className='w-[80%] bg-white rounded-[10px] px-8 '>
+                <View className='my-5' style={{gap: 10}}>
+                <Text className='font-pRegular text-[12px]'>Your account has been created successfully! Redirecting to Login page...</Text>
+                </View>
+            </View>
+        </View>
       }
     </KeyboardAvoidingView>
   )
