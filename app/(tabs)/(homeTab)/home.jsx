@@ -99,7 +99,7 @@ const Home = () => {
         {/* Graph */}
         <View className='flex-[0.9] bg-white rounded-custom py-4 px-8 border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>
           <View className='h-[10%] justify-center'>
-            <Text className='text-center font-pRegular text-[16px]'>Particulate Matter Statistics</Text>
+            <Text className='text-center font-pRegular text-[16px]'>Statistics</Text>
           </View>
           <View className='flex-1 items-center justify-center'>
             <Svg height="300" width="300">
@@ -111,7 +111,7 @@ const Home = () => {
             <View className='absolute items-center justify-center h-14'>
               <Text className='font-pBold text-[42px] text-pastel-black'>{aqi}</Text>
               <Text className='font-pRegular text-[10px]'>AQI score</Text>
-              <Text className='font-pRegular text-[10px] text-gray-400'>Timestamp: {timestamp}</Text>
+              {timestamp && <Text className='font-pRegular text-[10px] text-gray-400'>Timestamp: {timestamp}</Text>}
             </View>
           </View>
           <View className='h-[10%] flex-row justify-between items-center'>

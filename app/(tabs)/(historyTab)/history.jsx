@@ -5,6 +5,7 @@ import { router } from 'expo-router'
 import { Image } from 'expo-image'
 import axios from 'axios'
 import { ContributionGraph } from 'react-native-chart-kit'
+import { scale } from 'react-native-size-matters'
 
 const history = () => {
   const {width} = useWindowDimensions();
@@ -102,7 +103,7 @@ const history = () => {
                   values={graphDate}
                   endDate={new Date()}
                   numDays={105}
-                  width={'100%'}
+                  width={scale(300)}
                   height={200}
                   squareSize={14}
                   gutterSize={6}

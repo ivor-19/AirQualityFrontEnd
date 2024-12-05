@@ -11,6 +11,7 @@ const Scanning = () => {
   const [loading, setLoading] = useState(true);
   const { aqi, setAqi, pm2_5, setPm2_5, co, setC0, no2, setN02, timestamp, setTimestamp, date, setDate} = useAQI();
   const navigation = useNavigation();
+  const [animationKey, setAnimationKey] = useState(0);
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -51,6 +52,7 @@ const Scanning = () => {
       }, 3000);
     }
     const reset = navigation.addListener('focus', () => {
+      setAnimationKey(prevKey => prevKey + 1);
       handleTimeOut();
     })
 
@@ -79,7 +81,7 @@ const Scanning = () => {
             delay: index * 400, 
             repeatReverse: false, 
           }}
-          key={index}
+          key={`${animationKey}-${index}`}
           style={{
             width: 80, 
             height: 80, 

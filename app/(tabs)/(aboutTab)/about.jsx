@@ -2,40 +2,46 @@ import { View, Text, SafeAreaView, TextInput } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../../../components/CustomButton'
 import axios from 'axios';
+import CustomFormField from '../../../components/CustomFormField';
 
 const about = () => {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = async () => {
-    const newStudent = { name, age };
+    const newAccount = { username, email, password };
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/students', newStudent);
-      console.log('Student is added in the database', response.data);
-      setName('');
-      setAge('');
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/users/signup', newAccount);
+      console.log('Account Setup Complete', response.data);
+      setUsername('');
+      setEmail('');
+      setPassword('');
     } catch (error) {
-      console.error('Error adding student', error);
+      console.error('Error creating account', error);
     }
   }
   return (
     <SafeAreaView className='flex-1'>
-      <View className='flex-1 bg-white items-center justify-center' style={{ gap: 20 }}>
-        <TextInput
-          name='inputName'
-          className='w-[50%] bg-gray-200 rounded-xl'
-          value={name}
-          onChangeText={(text) => setName(text)}
+      <View className='h-full bg-white items-center w-full p-6' style={{ gap: 20 }}>  
+        <CustomFormField
+          title={'Username'}
+          value={username}
+          onChangeText={(text) => setUsername(text)}
         />
-        <TextInput
-          name='inputAge'
-          className='w-[50%] bg-gray-200 rounded-xl'
-          value={age}
-          onChangeText={(text) => setAge(text)}
+        <CustomFormField
+          title={'Email'}
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+        />
+        <CustomFormField
+          title={'Password'}
+          value={password}
+          onChangeText={(text) => setPassword(text)}
         />
         <CustomButton
-          title='Submits'
-          customButtomStyle={'w-[50%] bg-blue-200'}
+          title={'Sign Up'}
+          customButtomStyle={'w-full'}
           onPress={handleSubmit}
         />
       </View>
