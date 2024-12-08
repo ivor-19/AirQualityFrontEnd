@@ -25,6 +25,7 @@ const CustomFormField = ({title, placeholder, onChangeText, value, textAlign, co
                     value={value}
                     textAlign={textAlign}
                     secureTextEntry={(title === 'Password' || title === 'Confirm Password') && !showPassword}
+                    autoCapitalize='none'
                 >
 
                 </TextInput>

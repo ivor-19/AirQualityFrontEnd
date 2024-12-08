@@ -20,7 +20,15 @@ const Scanning = () => {
     const year = date.getFullYear();
     return `${year}-${month}-${day}`
   }
-  const getCurrentTime = () => new Date().toLocaleTimeString();
+  const getCurrentTime = () => {
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true, 
+    };
+    return new Date().toLocaleTimeString([], options); 
+  };
 
   useEffect(() => {
     const handleTimeOut = () => {

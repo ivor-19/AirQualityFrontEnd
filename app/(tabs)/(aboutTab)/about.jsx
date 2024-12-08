@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import CustomButton from '../../../components/CustomButton'
 import axios from 'axios';
 import CustomFormField from '../../../components/CustomFormField';
+import { Image } from 'expo-image';
+import { scale } from 'react-native-size-matters';
 
 const about = () => {
   const [username, setUsername] = useState('');
@@ -23,8 +25,8 @@ const about = () => {
   }
   return (
     <SafeAreaView className='flex-1'>
-      <View className='h-full bg-white items-center w-full p-6' style={{ gap: 20 }}>  
-        <CustomFormField
+      <View className='h-full bg-white items-center w-full p-6 justify-center' style={{ gap: 20 }}>  
+        {/* <CustomFormField
           title={'Username'}
           value={username}
           onChangeText={(text) => setUsername(text)}
@@ -43,7 +45,7 @@ const about = () => {
           title={'Sign Up'}
           customButtomStyle={'w-full'}
           onPress={handleSubmit}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   )

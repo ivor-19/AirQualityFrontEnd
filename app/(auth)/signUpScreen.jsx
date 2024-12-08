@@ -6,6 +6,7 @@ import CustomFormField from '../../components/CustomFormField';
 import { scale } from 'react-native-size-matters';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
+import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 
 const signUpScreen = () => {
   const [username, setUsername] = useState('');
@@ -19,9 +20,13 @@ const signUpScreen = () => {
   const [usernameTaken, setUsernameTaken] = useState(false);
   const [emailTaken, setEmailTaken] = useState(false);
 
+  const toggleGoLogin = () => {
+    router.push('loginScreen')
+  }
+
   const handleSubmit = async () => {
     if(password === confirmPassword) {
-      const newAccount = { username, email, password };
+      const newAccount = { username, email, password, asset_model: " ", first_access: "Yes" };
       setLoading(true);
       try {
         const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/users/signup', newAccount);
@@ -31,12 +36,25 @@ const signUpScreen = () => {
         setEmail('');
         setPassword('');
         setLoading(false);
-        setSuccess(true)
-        
-        setTimeout(() => {
-          setSuccess(false)
-          router.push('loginScreen')
-        }, 3000);
+        setConfirmPassword('');
+
+        Dialog.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Success',
+          textBody: 'Your account has been created successfully! Redirect to Login page',
+          button: 'Go',
+          onPressButton: () => {
+            Dialog.hide();
+            router.push('loginScreen')
+          },
+          autoClose: 5000,
+        })
+       
+       
+        // setTimeout(() => {
+        //   setSuccess(false)
+        //   router.push('loginScreen')
+        // }, 3000);
         
       } catch (error) {
         setLoading(false);
@@ -60,7 +78,7 @@ const signUpScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView className='flex-1' behavior='height'> 
+     <KeyboardAvoidingView className='flex-1' behavior='height'> 
       {loading &&
         <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
             <ActivityIndicator size="large" color="#4caf50" />
@@ -70,8 +88,9 @@ const signUpScreen = () => {
         <ScrollView>
         <Image source={require('../../assets/background/drop2.png')} className='absolute opacity-50' style={{top: scale(-20), left: scale(-90), height: scale(300), width: scale(300)}} contentFit='contain'></Image>
         <Image source={require('../../assets/background/drop1.png')} className='absolute opacity-50' style={{bottom: scale(-80), right: scale(-90), height: scale(300), width: scale(300)}} contentFit='contain'></Image>
-        <View className='h-full w-full p-8 mt-20' style={{ gap: scale(16) }}> 
-          <View className='mb-6'>
+        <View className='h-full w-full p-8 mt-10' style={{ gap: scale(16) }}> 
+          <View className='mb-6 items-center'>
+              <Image source={require('../../assets/icons/leaf.png')} className='h-10 w-10' contentFit='contain'></Image>
               <Text className='font-pBold text-pastel-black text-center' style={{fontSize: scale(26)}}>Create Your Account!</Text>
               <Text className='font-pRegular text-gray-500  text-center' style={{fontSize: scale(10)}}>
                   Sign up to detect air quality with Air Guard.
@@ -80,7 +99,7 @@ const signUpScreen = () => {
           <CustomFormField
             title={'Username'}
             value={username}
-            onChangeText={(text) => {setUsername(text); setUsernameTaken(false)}}
+            onChangeText={(text) => {setUsername(text.trim()); setUsernameTaken(false)}}
             containerStyle={usernameTaken === true ? 'border-2 border-red-300' : 'border-gray-300 focus:border-pastel-green-v2'}
             validationMessage={'Username is already taken'}
             isInvalid={usernameTaken}
@@ -89,7 +108,7 @@ const signUpScreen = () => {
           <CustomFormField
             title={'Email'}
             value={email}
-            onChangeText={(text) => {setEmail(text); setEmailTaken(false)}}
+            onChangeText={(text) => {setEmail(text.trim()); setEmailTaken(false)}}
             containerStyle={emailTaken === true ? 'border-2 border-red-300' : 'border-gray-300 focus:border-pastel-green-v2'}
             validationMessage={'Email is already taken'}
             isInvalid={emailTaken}
@@ -128,7 +147,7 @@ const signUpScreen = () => {
         </View>
         </ScrollView>
       </SafeAreaView>
-      {success &&
+      {/* {success &&
         <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
             <View className='w-[80%] bg-white rounded-[10px] px-8 '>
                 <View className='my-5' style={{gap: 10}}>
@@ -136,7 +155,7 @@ const signUpScreen = () => {
                 </View>
             </View>
         </View>
-      }
+      } */}
     </KeyboardAvoidingView>
   )
 }

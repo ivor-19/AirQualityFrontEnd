@@ -1,8 +1,13 @@
 import { View, Text, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import OnboardingItems from './OnboardingItems'
+import ConnectAsset from './ConnectAsset';
+import * as SecureStore from 'expo-secure-store'; // Import SecureStore
+import { router } from 'expo-router';
 
 const Onboarding = () => {
+    const [showConnect, setShowConnect] = useState(false);
+
     const slides = [
         {id: 1, title: 'Breathe Easy, Live Healthier', description: 'Track and improve the air quality around you with real-time data, insights, and personalized recommendations.', image: require('../assets/images/slide1.png')},
         {id: 2, title: 'Stay Informed, Stay Safe', description: 'Get accurate, up-to-the-minute readings of air pollution levels wherever you are.', image: require('../assets/images/slide2.png')},
@@ -12,26 +17,33 @@ const Onboarding = () => {
 
     const renderSlides = ({item, index}) => {
       const isLastSlide = index === slides.length - 1;
+      
         return(
           <OnboardingItems
             title={item.title}
             description={item.description}
             image={item.image}
             showButton={isLastSlide}
+            setShowConnect={setShowConnect}
           />
         )
     }
 
 
   return (
-    <FlatList
-      data={slides}
-      renderItem={renderSlides}
-      keyExtractor={(item) => item.id.toString()}
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      pagingEnabled
-    />
+    <>
+      <FlatList
+        data={slides}
+        renderItem={renderSlides}
+        keyExtractor={(item) => item.id.toString()}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        pagingEnabled
+      />
+      {showConnect ? (
+       <ConnectAsset />
+      ) : null}
+    </>
   )
 }
 

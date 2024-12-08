@@ -1,10 +1,14 @@
 import { View, Text, TouchableOpacity, useWindowDimensions, Image } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import CustomButton from './CustomButton';
 import { router } from 'expo-router';
 
-const OnboardingItems = ({customStyle, title, image, customImageStyle, description, showButton}) => {
+const OnboardingItems = ({customStyle, title, image, customImageStyle, description, showButton, setShowConnect}) => {
   const {width} = useWindowDimensions();
+
+  const toggleConnect = () => {
+    setShowConnect(true);
+  }
   return (
     <View className={`flex-1 bg-white items-center justify-center ${customStyle}`}>
         <Image source={image} style={{width}} className={`flex-[0.5] ${customImageStyle}`}></Image>
@@ -17,7 +21,7 @@ const OnboardingItems = ({customStyle, title, image, customImageStyle, descripti
             title={'Get started'}
             customButtomStyle={'bg-pastel-green w-[50%]'}
             customTitleStyle={'text-pastel-black'}
-            onPress={() => router.push('home')}
+            onPress={toggleConnect}
           />
         )}
 

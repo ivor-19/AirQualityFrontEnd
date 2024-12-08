@@ -3,10 +3,35 @@ import React, { useState, useEffect } from 'react';
 import { router, Tabs } from 'expo-router';
 import RemixIcon from 'react-native-remix-icon';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import NetInfo from '@react-native-community/netinfo'; // Import NetInfo
+import { Image } from 'expo-image';
+import { scale } from 'react-native-size-matters';
 
 const TabLayout = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation(); // Initialize navigation
+  const [noConnection, setNoConnection] = useState(false);
+  const [isConnectedToWifi, setIsConnectedToWifi] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnectedToWifi(state.isConnected && state.type === 'wifi');
+    });
+    
+    if (isConnectedToWifi) {
+      setNoConnection(false);
+      console.log('connected')
+    }
+
+    if (!isConnectedToWifi) {
+      setNoConnection(true);
+      console.log('no connected')
+    }
+
+    return () => {
+      unsubscribe();
+    };
+  }, [isConnectedToWifi]);
 
   const [dontShow, setDontShow] = useState(false);
   const toggleDontShow = () => {
@@ -39,7 +64,15 @@ const TabLayout = () => {
 
   return (
     <>
-      <Tabs screenOptions={{
+      {noConnection ? (
+        <View className='h-full bg-white items-center w-full p-6 justify-center z-50' style={{ gap: 20 }}>  
+          <Image source={require('../../assets/images/ghost.png')} style={{height: scale(100), width: scale(100)}}></Image>
+          <Text className='font-pBold' style={{fontSize: scale(18)}}>Oops!</Text>
+          <Text className='font-pRegular text-center' style={{fontSize: scale(10)}}>No internet connection was found. Check your internet connection.</Text>
+        </View>
+      ) : null}
+      <>
+        <Tabs screenOptions={{
           tabBarStyle: {height: 70, backgroundColor: '#1d1c1a', marginHorizontal: 8, bottom: 10, borderRadius: 28,},
           tabBarLabelStyle: {margin: 6},
           tabBarItemStyle: {padding: 12}, 
@@ -95,10 +128,9 @@ const TabLayout = () => {
             tabBarIcon: ({ color, focused }) => <RemixIcon size={24} name={focused ? 'ri-information-fill' : 'ri-information-line'} color={color} />,
           }}
         />
-      </Tabs>
-
-      {/* Modal that will show when sample tab is clicked */}
-      {modalVisible === true ? (
+        </Tabs>
+        {/* Modal that will show when sample tab is clicked */}
+        {modalVisible === true ? (
         <View className='h-full w-full items-center justify-center z-50 absolute' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
           <View className='w-[80%] bg-white rounded-[10px] px-8 '>
             <View className='my-5' style={{gap: 10}}>
@@ -120,8 +152,8 @@ const TabLayout = () => {
             </View>
           </View>
         </View>
-      ) : null}
-     
+        ) : null}
+      </>
     </>
   );
 };

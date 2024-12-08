@@ -8,47 +8,20 @@ import { Image } from 'expo-image'
 import Svg, { Circle } from 'react-native-svg';
 import { useAQI } from '../../../context/AQIContext'
 import Weather from '../../../components/Weather'
+import NetInfo from '@react-native-community/netinfo'; // Import NetInfo
+import * as SecureStore from 'expo-secure-store'; // Import SecureStore
+import { useAuth } from '../../../context/AuthContext'
 
 const Home = () => {
-  const [quality, setQuality] = useState([])
-  const [level, setLevel] = useState([])
-  const [categoryPressed, setCategoryPressed] = useState(1);
-
-  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp} = useAQI();``
-
-
-  // const statuses = [
-  //   {id: 1, label: 'C02', barLevel: level[0]?.co2Bar, ppmNum: level[0]?.co2PPM},
-  //   {id: 2, label: 'C04', barLevel: level[1]?.co3Bar, ppmNum: level[1]?.co3PPM},
-  //   {id: 3, label: 'C07', barLevel: level[2]?.co7Bar, ppmNum: level[2]?.co7PPM},
-  // ]
-  const statuses = [
-       {id: 1, label: 'C02',},
-       {id: 2, label: 'C04',},
-       {id: 3, label: 'C07',},
-       {id: 4, label: 'C02',},
-       {id: 5, label: 'C04',},
-       {id: 6, label: 'C07',},
-  ]
-
-  const renderStatuses = ({ item }) =>{
-    return(
-       <QualityLevel
-          label={item.label}
-       />
-    )
- }
- const { width: windowWidth } = useWindowDimensions();
-
-  const toggleCategory = (index) => {
-    setCategoryPressed(index);
-  }
-
+  const { user } = useAuth();
+  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp} = useAQI();  
 
   return (
-    <SafeAreaView className="flex-1 p-4 bg-white" style={{gap: 12}}>
+    <SafeAreaView className="flex-1 bg-white">
+      <View className='p-4 h-full w-full' style={{gap: 12}}>
         {/* Weather */}
         <Weather />
+        
         {/* Quality Level */}
         <View className='w-full flex flex-row space-x-2 h-28'>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
@@ -100,6 +73,11 @@ const Home = () => {
         <View className='flex-[0.9] bg-white rounded-custom py-4 px-8 border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>
           <View className='h-[10%] justify-center'>
             <Text className='text-center font-pRegular text-[16px]'>Statistics</Text>
+            {user ? (
+              <Text>user: {user.username}</Text>
+            ) : (
+              <Text>Loading user data...</Text>
+            )}
           </View>
           <View className='flex-1 items-center justify-center'>
             <Svg height="300" width="300">
@@ -126,9 +104,7 @@ const Home = () => {
             </TouchableOpacity>
           </View>
         </View>
-
-       
-    
+        </View>
     </SafeAreaView>
   )
 }
