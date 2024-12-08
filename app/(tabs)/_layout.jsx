@@ -25,7 +25,7 @@ const TabLayout = () => {
 
     if (!isConnectedToWifi) {
       setNoConnection(true);
-      console.log('no connected')
+      console.log('no connection')
     }
 
     return () => {

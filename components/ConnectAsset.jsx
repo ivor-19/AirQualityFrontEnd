@@ -9,7 +9,7 @@ import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { useAuth } from '../context/AuthContext';
 
 const ConnectAsset = () => {
-  const { user } = useAuth();
+  const { user, renderUserData } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [showModelAsset, setShowModelAsset] = useState(false);
@@ -41,6 +41,12 @@ const ConnectAsset = () => {
       const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/assets/getAsset', {assetName})
       if(response.data){
         console.log('Asset is found');
+
+        await axios.put(`https://air-quality-back-end-v2.vercel.app/api/users/editUser/${user._id}`, {asset_model: assetName, first_access: "No"})
+        
+        const updatedUser = { ...user, asset_model: assetName, first_access: "No" };
+        renderUserData(updatedUser); 
+        
         isConnected(true);
         setLoading(false);
         isAssetNotFound(false);

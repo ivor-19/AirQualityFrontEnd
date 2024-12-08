@@ -1,110 +1,36 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
+import { getAqiIndicator, getCoIndicator, getNo2Indicator } from '../utils/aqiUtils';
 
-// Create Context
 const AQIContext = createContext();
-
-// Custom hook to access AQI context
 export const useAQI = () => useContext(AQIContext);
 
-// Provider to wrap around the app and provide the AQI state
 export const AQIProvider = ({ children }) => {
-  const [aqi, setAqi] = useState(0); // Initial AQI value
+  const [aqi, setAqi] = useState(0); 
   const [pm2_5, setPm2_5] = useState(0);
   const [co, setC0] = useState(0);
   const [no2, setN02] = useState(0);
   const [timestamp, setTimestamp] = useState('');
   const [date, setDate] = useState('');
+  const [scanned_by, setScannedBy] = useState('');
+  const [scanned_using_model, setScannedUsingModel] = useState('');
 
   // IndicatorColor = IC
   // IndicatorLabel = IL
 
-  let aqiIC = '';
-  let aqiIL = '';
-  
-  let coIC = '';
-  let coIL = '';
+  const { color: aqiIC, label: aqiIL, condition: aqiCon ,details: aqiDet } = getAqiIndicator(aqi);
+  const { color: coIC, label: coIL } = getCoIndicator(co);
+  const { color: no2IC, label: no2IL } = getNo2Indicator(no2);
 
-  let no2IC = '';
-  let no2IL = '';
-
-  // AQI
-  if(aqi <= 50){
-    aqiIC= '#DAF7A6';
-    aqiIL= 'Very Low';
-  }
-  else if(aqi <= 100) {
-    aqiIC= '#008000';
-    aqiIL= 'Low';
-  }
-  else if(aqi <= 150) {
-    aqiIC= '#FFC300';
-    aqiIL= 'Moderate';
-  }
-  else if(aqi <= 200) {
-    aqiIC= '#C70039';
-    aqiIL= 'High';
-  }
-  else if(aqi <= 300) {
-    aqiIC= '#900C3F';
-    aqiIL= 'Very High';
-  }
-  else{
-    aqiIC= '#581845';
-    aqiIL= 'Extremely High';
-  }
-
-  // CO
-  if(co <= 9){
-    coIC= '#DAF7A6';
-    coIL= 'Very Low';
-  }
-  else if(co <= 35) {
-    coIC= '#008000';
-    coIL= 'Low';
-  }
-  else if(co <= 50) {
-    coIC= '#FFC300';
-    coIL= 'Moderate';
-  }
-  else if(co <= 100) {
-    coIC= '#C70039';
-    coIL= 'High';
-  }
-  else if(co <= 200) {
-    coIC= '#900C3F';
-    coIL= 'Very High';
-  }
-  else{
-    coIC= '#581845';
-    coIL= 'Extremely High';
-  }
-
-  // NO2
-  if(no2 <= 53){
-    no2IC= '#DAF7A6';
-    no2IL= 'Very Low';
-  }
-  else if(no2 <= 100) {
-    no2IC= '#008000';
-    no2IL= 'Low';
-  }
-  else if(no2 <= 200) {
-    no2IC= '#FFC300';
-    no2IL= 'Moderate';
-  }
-  else if(no2 <= 300) {
-    no2IC= '#C70039';
-    no2IL= 'High';
-  }
-  else if(no2 <= 400) {
-    no2IC= '#900C3F';
-    no2IL= 'Very High';
-  }
-  else{
-    no2IC= '#581845';
-    no2IL= 'Extremely High';
-  }
-
+  const resetAQI = () => {
+    setAqi(0);
+    setPm2_5(0);
+    setC0(0);
+    setN02(0);
+    setTimestamp('');
+    setDate('');
+    setScannedBy('');
+    console.log('resetted')
+  };
 
   return (
     <AQIContext.Provider value={{ 
@@ -114,14 +40,14 @@ export const AQIProvider = ({ children }) => {
         pm2_5, setPm2_5, 
         co, setC0, 
         no2, setN02, 
-        aqiIC, aqiIL, 
+        scanned_by, setScannedBy,
+        scanned_using_model, setScannedUsingModel,
+        aqiIC, aqiIL, aqiCon, aqiDet,
         coIC, coIL, 
         no2IC, no2IL, 
+        resetAQI,
         
       }}>
-      
-      
-      
       {children}
     </AQIContext.Provider>
   );

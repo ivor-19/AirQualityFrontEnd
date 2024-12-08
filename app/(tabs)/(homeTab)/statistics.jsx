@@ -7,7 +7,7 @@ import CustomLineChart from '../../../components/CustomLineChart'
 import { useAQI } from '../../../context/AQIContext'
 
 const statistics = () => {
-    const { aqi, pm2_5, co, no2, aqiIC, aqiIL, coIC, coIL, no2IC, no2IL, timestamp } = useAQI();
+    const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, aqiDet, coIC, coIL, no2IC, no2IL, timestamp } = useAQI();
 
     return (
         <SafeAreaView className='flex-1 bg-white'>
@@ -33,16 +33,13 @@ const statistics = () => {
                             </View>
                             <View className='flex-row' style={{gap: 4}}>
                                 <Text className='font-pRegular text-[10px]'>Condition: </Text>
-                                <Text className='font-pSemiBold text-[10px]'>--</Text>
+                                <Text className='font-pSemiBold text-[10px]'>{aqiCon}</Text>
                             </View>
-                            <ScrollView>
-                                <View className='h-20 mt-2'>
-                                    <Text className='font-pRegular text-[10px]'>
-                                        Conditions are <Text className='font-pSemiBold'>extremely dangerous</Text> and can lead to 
-                                        <Text className='font-pSemiBold'> serious health issues</Text> for everyone.
-                                    </Text>
-                                </View>
-                            </ScrollView>
+                            <View className='h-20 mt-2'>
+                                <Text className='font-pRegular text-[10px]'>
+                                    {aqiDet}
+                                </Text>
+                            </View>
                         </View>
                     </View>
                     <View className='h-52 bg-white rounded-custom border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>

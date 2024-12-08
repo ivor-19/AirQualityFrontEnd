@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import axios from 'axios';
 import CustomFormField from '../../components/CustomFormField';
@@ -11,7 +11,6 @@ import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { useAuth } from '../../context/AuthContext';
 
 const loginScreen = () => {
-  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
@@ -21,7 +20,7 @@ const loginScreen = () => {
   const [emailValidation, setEmailValidaion] = useState('');
   const [passwordValidation, setPasswodValidaion] = useState('');
   
-  const { login } = useAuth();
+  const { user, login } = useAuth();
 
   const handleLogin = async () => {
     setLoading(true);
@@ -34,6 +33,7 @@ const loginScreen = () => {
   
         // Serialize the data before storing it
         await SecureStore.setItemAsync('userToken', token);
+        await SecureStore.setItemAsync('_id', user._id);
         await SecureStore.setItemAsync('username', user.username);
         await SecureStore.setItemAsync('email', user.email);
         await SecureStore.setItemAsync('asset_model', user.asset_model);

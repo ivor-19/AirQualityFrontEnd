@@ -6,8 +6,11 @@ import { Image } from 'expo-image'
 import axios from 'axios'
 import { ContributionGraph } from 'react-native-chart-kit'
 import { scale } from 'react-native-size-matters'
+import { useAuth } from '../../../context/AuthContext'
 
 const history = () => {
+  const { user, renderUserData } = useAuth();
+
   const {width} = useWindowDimensions();
   const [loading, setLoading] = useState(true);
   const [dataHistory, setDataHistory] = useState([]);
@@ -38,7 +41,9 @@ const history = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://air-quality-back-end-v2.vercel.app/api/history');
-        setDataHistory(response.data.reverse());
+
+        const filteredDataBasedOnUser = response.data.filter(item => item.scanned_by === user.username)
+        setDataHistory(filteredDataBasedOnUser.reverse());
 
         //Extract the dates for filter
         const allDates = response.data.map(item => item.date);
@@ -199,6 +204,9 @@ const history = () => {
                               </Text>
                             </View>
                         </View> 
+                        <View className='h-full py-2'>
+                          <Text className='font-pRegular text-[8px]'>{data.scanned_using_model}</Text>
+                        </View>
                       </View>
                       {pressed === data._id ? (
                         <View className='bg-white rounded-custom h-24 p-4 w-full flex-row'>

@@ -1,20 +1,16 @@
-import { View, Text, SafeAreaView, TouchableOpacity, FlatList, useWindowDimensions, ScrollView, } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import axios from 'axios'
-import QualityLevel from '../../../components/QualityLevel'
 import RemixIcon from 'react-native-remix-icon'
 import { router } from 'expo-router'
 import { Image } from 'expo-image'
 import Svg, { Circle } from 'react-native-svg';
 import { useAQI } from '../../../context/AQIContext'
 import Weather from '../../../components/Weather'
-import NetInfo from '@react-native-community/netinfo'; // Import NetInfo
-import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { useAuth } from '../../../context/AuthContext'
 
 const Home = () => {
-  const { user } = useAuth();
-  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp} = useAQI();  
+  const { user, renderUserData } = useAuth();
+  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp, scanned_by} = useAQI();  
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -73,11 +69,6 @@ const Home = () => {
         <View className='flex-[0.9] bg-white rounded-custom py-4 px-8 border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>
           <View className='h-[10%] justify-center'>
             <Text className='text-center font-pRegular text-[16px]'>Statistics</Text>
-            {user ? (
-              <Text>user: {user.username}</Text>
-            ) : (
-              <Text>Loading user data...</Text>
-            )}
           </View>
           <View className='flex-1 items-center justify-center'>
             <Svg height="300" width="300">
