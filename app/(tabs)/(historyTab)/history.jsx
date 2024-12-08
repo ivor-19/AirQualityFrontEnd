@@ -40,7 +40,7 @@ const history = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://air-quality-back-end-v2.vercel.app/api/history');
+        const response = await axios.get('https://air-quality-back-end-v2.vercel.app/history');
 
         const filteredDataBasedOnUser = response.data.filter(item => item.scanned_by === user.username)
         setDataHistory(filteredDataBasedOnUser.reverse());

@@ -25,7 +25,7 @@ const loginScreen = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/users/login', { email, password });
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/users/login', { email, password });
       if (response.data.token) {
         const { token, user } = response.data;
         login(token, user);

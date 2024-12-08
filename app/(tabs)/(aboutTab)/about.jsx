@@ -14,7 +14,7 @@ const about = () => {
   const handleSubmit = async () => {
     const newAccount = { username, email, password };
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/users/signup', newAccount);
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/users/signup', newAccount);
       console.log('Account Setup Complete', response.data);
       setUsername('');
       setEmail('');

@@ -29,7 +29,7 @@ const signUpScreen = () => {
       const newAccount = { username, email, password, asset_model: " ", first_access: "Yes" };
       setLoading(true);
       try {
-        const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/users/signup', newAccount);
+        const response = await axios.post('https://air-quality-back-end-v2.vercel.app/users/signup', newAccount);
         console.log('Account Setup Complete', response.data);
         
         setUsername('');
@@ -38,23 +38,18 @@ const signUpScreen = () => {
         setLoading(false);
         setConfirmPassword('');
 
-        Dialog.show({
-          type: ALERT_TYPE.SUCCESS,
-          title: 'Success',
-          textBody: 'Your account has been created successfully! Redirect to Login page',
-          button: 'Go',
-          onPressButton: () => {
-            Dialog.hide();
-            router.push('loginScreen')
-          },
-          autoClose: 5000,
-        })
-       
-       
-        // setTimeout(() => {
-        //   setSuccess(false)
-        //   router.push('loginScreen')
-        // }, 3000);
+        setTimeout(() => {
+          Dialog.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: 'Success',
+            textBody: 'Your account has been created successfully! Redirect to Login page',
+            button: 'Go',
+            onPressButton: () => {
+              Dialog.hide();
+              router.push('loginScreen');
+            },
+          });
+        }, 500); 
         
       } catch (error) {
         setLoading(false);

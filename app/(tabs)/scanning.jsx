@@ -46,8 +46,10 @@ const Scanning = () => {
       setTimeout(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get('https://air-quality-back-end-v2.vercel.app/api/latestaq');
+            const response = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`);
             const data = response.data[0];
+
+            console.log("API Response Data:", response.data);
             const currentDate = getCurrentDate();
             const currentTimestamp = getCurrentTime();
 
@@ -73,7 +75,7 @@ const Scanning = () => {
 
             console.log('Saving data with model:', user.asset_model); // Debug log to confirm model
 
-            await axios.post('https://air-quality-back-end-v2.vercel.app/api/history', newHistoryData);
+            await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData);
             console.log('History data is saved:', newHistoryData);
 
             router.push('home');

@@ -93,7 +93,7 @@ const statistics = () => {
                         </View>
                         <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
-                                <Text className='text-pastel-black font-pBold text-[30px]'>24</Text>
+                                <Text className='text-pastel-black font-pBold text-[30px]'>?</Text>
                                 <Text className='text-pastel-black font-pRegular text-[10px]'>???</Text>
                             </View>
                             <View className='flex-1 h-full px-2'>

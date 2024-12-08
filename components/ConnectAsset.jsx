@@ -38,15 +38,15 @@ const ConnectAsset = () => {
   const toggleConnect = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/assets/getAsset', {assetName})
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAsset', {assetName})
       if(response.data){
         console.log('Asset is found');
 
-        await axios.put(`https://air-quality-back-end-v2.vercel.app/api/users/editUser/${user._id}`, {asset_model: assetName, first_access: "No"})
+        await axios.put(`https://air-quality-back-end-v2.vercel.app/users/editUser/${user._id}`, {asset_model: assetName, first_access: "No"})
         
         const updatedUser = { ...user, asset_model: assetName, first_access: "No" };
         renderUserData(updatedUser); 
-        
+
         isConnected(true);
         setLoading(false);
         isAssetNotFound(false);

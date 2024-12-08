@@ -61,10 +61,10 @@ const settings = () => {
   const toggleConnect = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/api/assets/getAsset', {assetName})
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAsset', {assetName})
       if(response.data){
 
-        await axios.put(`https://air-quality-back-end-v2.vercel.app/api/users/editUser/${user._id}`, {asset_model: assetName})
+        await axios.put(`https://air-quality-back-end-v2.vercel.app/users/editUser/${user._id}`, {asset_model: assetName})
 
         console.log('Asset is found');
         isConnected(true);
