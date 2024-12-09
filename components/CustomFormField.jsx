@@ -30,7 +30,7 @@ const CustomFormField = ({title, placeholder, onChangeText, value, textAlign, co
 
                 </TextInput>
                 {(title === 'Password' || title === 'Confirm Password') &&
-                    <TouchableOpacity activeOpacity={0.6} onPress={toggleShowPassword}>
+                    <TouchableOpacity activeOpacity={0.6} onPress={toggleShowPassword} className='w-[10%] items-center justify-center h-full z-10'>
                         <RemixIcon name={showPassword ? 'ri-eye-fill' : 'ri-eye-off-fill'} color='gray' size={18}></RemixIcon>
                     </TouchableOpacity>
                 }

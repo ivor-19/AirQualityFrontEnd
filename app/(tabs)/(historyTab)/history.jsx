@@ -7,6 +7,7 @@ import axios from 'axios'
 import { ContributionGraph } from 'react-native-chart-kit'
 import { scale } from 'react-native-size-matters'
 import { useAuth } from '../../../context/AuthContext'
+import CustomHeader from '../../../components/CustomHeader'
 
 const history = () => {
   const { user, renderUserData } = useAuth();
@@ -85,9 +86,7 @@ const history = () => {
   
   return (
     <SafeAreaView className='flex-1 bg-white'>
-      <View className='h-16 justify-center relative border-b-[1px] border-gray-100 px-4 '>
-        <Text className='text-left font-pBold text-[20px] text-pastel-black'>Data History</Text>
-      </View>
+      <CustomHeader title={'Data History'}/>
       {loading ? (
         <View className='h-full items-center my-20'>
           <Image source={require('../../../assets/animated/loading.gif')} className='h-[30%] w-[30%]'/>

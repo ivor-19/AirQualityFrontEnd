@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, ScrollView, Alert, Modal } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import axios from 'axios';
@@ -15,6 +15,7 @@ const signUpScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   const [usernameTaken, setUsernameTaken] = useState(false);
@@ -38,18 +39,11 @@ const signUpScreen = () => {
         setLoading(false);
         setConfirmPassword('');
 
+        setShowModal(true);
         setTimeout(() => {
-          Dialog.show({
-            type: ALERT_TYPE.SUCCESS,
-            title: 'Success',
-            textBody: 'Your account has been created successfully! Redirect to Login page',
-            button: 'Go',
-            onPressButton: () => {
-              Dialog.hide();
-              router.push('loginScreen');
-            },
-          });
-        }, 500); 
+         setShowModal(false);
+         router.push('loginScreen')
+        }, 5000); 
         
       } catch (error) {
         setLoading(false);
@@ -74,6 +68,16 @@ const signUpScreen = () => {
 
   return (
      <KeyboardAvoidingView className='flex-1' behavior='height'> 
+      {showModal && (
+        <Modal visible={showModal} animationType="fade">
+          <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+            <View className='w-[80%] bg-white rounded-[10px] p-4 ' style={{gap: scale(12)}}>
+              <Text className='font-pRegular'>Login Success</Text>
+              <CustomButton title={'Go to login'} onPress={() => {setShowModal(false); router.push('loginScreen')}}/>
+            </View>
+          </View>
+        </Modal>
+      )}
       {loading &&
         <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
             <ActivityIndicator size="large" color="#4caf50" />

@@ -72,14 +72,21 @@ const TabLayout = () => {
         </View>
       ) : null}
       <>
-        <Tabs screenOptions={{
-          tabBarStyle: {height: 70, backgroundColor: '#1d1c1a', marginHorizontal: 8, bottom: 10, borderRadius: 28,},
+        <Tabs screenOptions={({ route }) => ({
+          tabBarStyle: {
+            height: 70, 
+            backgroundColor: '#1d1c1a', 
+            marginHorizontal: 8, 
+            bottom: 10, 
+            borderRadius: 28,
+            display: route.name === '(controlTab)' ? 'none' : 'flex' // Hide tab bar on 'profile' screen
+          },
           tabBarLabelStyle: {margin: 6},
           tabBarItemStyle: {padding: 12}, 
           tabBarActiveTintColor: '#fff',  
           tabBarInactiveTintColor: '#d1d5db70', 
           tabBarHideOnKeyboard: true,
-      }}>
+        })}>
         {/* Tab Screens */}
         <Tabs.Screen
           name='(homeTab)'
@@ -129,6 +136,7 @@ const TabLayout = () => {
           }}
         />
         </Tabs>
+        
         {/* Modal that will show when sample tab is clicked */}
         {modalVisible === true ? (
         <View className='h-full w-full items-center justify-center z-50 absolute' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>

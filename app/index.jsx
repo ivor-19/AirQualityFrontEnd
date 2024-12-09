@@ -40,14 +40,14 @@ const Index = () => {
         ) : (
           <SafeAreaView className="h-screen bg-white">
             <View className='h-full w-full p-4 items-center'>
-              <View className='flex-row items-center justify-center' style={{gap: 8}}> 
+              <View className='flex-row items-center justify-center' style={{gap: scale(8)}}> 
                 <Image source={require('../assets/icons/leaf.png')} className='h-8 w-8' contentFit='contain'></Image>
                 <Text className='font-pBold text-center' style={{fontSize: scale(20)}}>AIR GUARD</Text>
               </View>
-              <View className='my-6'>
+              {/* <View className='' style={{marginVertical: scale(6)}}> 
                 <Image source={require('../assets/images/bird.png')} style={{height: scale(300), width: scale(300)}} contentFit='contain'></Image>
-              </View>
-              <View className='flex-[0.8] w-[90%]'>
+              </View> */}
+              <View className='flex-1 w-[90%] justify-center'>
                 <Text className='font-pBold text-center' style={{fontSize: scale(22)}}>
                     Detect and Protect with 
                 <Text className='font-pBold text-pastel-green-v2'> Air Guard</Text></Text>
