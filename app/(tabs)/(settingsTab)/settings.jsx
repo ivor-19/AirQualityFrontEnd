@@ -109,7 +109,7 @@ const settings = () => {
     >
       <View className='flex-1'>
         <CustomHeader title={'Settings'}/>
-        <TouchableOpacity activeOpacity={0.6} onPress={() => router.push('profile')}>
+        <TouchableOpacity activeOpacity={0.6} onPress={() => router.push('profile')} className='z-[-1]'>
           <View className='px-4 w-full bg-white border-b-[1px] border-gray-100 flex-row items-center justify-between' style={{gap: scale(10), height: scale(54)}}>
               <View className='bg-gray-100 rounded-full h-10 w-10 items-center justify-center overflow-hidden'>
                 <Image source={require('../../../assets/images/oops_empty.png')} contentFit='fill' className='w-14 h-14'></Image>
@@ -125,7 +125,7 @@ const settings = () => {
             <TouchableOpacity activeOpacity={0.6} onPress={toggleShow}>
               <View className='px-4 w-full bg-white flex-row items-center' style={{height: scale(54)}}>
                 <RemixIcon name={showModelAsset ? 'ri-arrow-drop-down-line' : 'ri-arrow-drop-right-line'} size={30} />
-                <Text className='font-pRegular text-pastel-black'>Model asset name</Text>
+                <Text className='font-pRegular text-pastel-black'>Set model asset name</Text>
               </View>
             </TouchableOpacity>
             {showModelAsset ? (

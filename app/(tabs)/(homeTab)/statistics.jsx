@@ -5,18 +5,14 @@ import { router } from 'expo-router'
 import { Image } from 'expo-image'
 import CustomLineChart from '../../../components/CustomLineChart'
 import { useAQI } from '../../../context/AQIContext'
+import CustomHeader from '../../../components/CustomHeader'
 
 const statistics = () => {
     const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, aqiDet, coIC, coIL, no2IC, no2IL, timestamp } = useAQI();
 
     return (
         <SafeAreaView className='flex-1 bg-white'>
-            <View className='h-16 justify-center relative border-b-[1px] border-gray-100'>
-                <TouchableOpacity className='absolute z-10' onPress={() => router.push('home')} activeOpacity={0.6}>
-                    <RemixIcon name='ri-arrow-drop-left-line' size={46} color='#1d1c1a'/>
-                </TouchableOpacity>
-                <Text className='text-center font-pBold text-[20px] text-pastel-black'>Statistics</Text>
-            </View>
+            <CustomHeader title={'Statistics'} showBack={true} onPressBack={() => router.push('home')}/>
             <ScrollView contentContainerStyle={{}}>
                 <View className='h-full w-full p-4' style={{gap: 12}}>
                     <View className='h-32 flex flex-row space-x-2'>
