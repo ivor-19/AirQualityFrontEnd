@@ -4,6 +4,7 @@ import OnboardingItems from './OnboardingItems'
 import ConnectAsset from './ConnectAsset';
 import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { router } from 'expo-router';
+import Modal from "react-native-modal";
 
 const Onboarding = () => {
     const [showConnect, setShowConnect] = useState(false);
@@ -41,7 +42,9 @@ const Onboarding = () => {
         pagingEnabled
       />
       {showConnect ? (
-       <ConnectAsset />
+        <Modal isVisible={showConnect} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
+          <ConnectAsset />
+        </Modal>
       ) : null}
     </>
   )

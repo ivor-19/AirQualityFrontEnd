@@ -13,6 +13,7 @@ import SettingsControl from '../../../components/SettingsControl';
 import CustomHeader from '../../../components/CustomHeader';
 import { Image } from 'expo-image';
 import { darkThemeColors, lightThemeColors } from '../../../utils/alertColorUtils';
+import Modal from "react-native-modal";
 
 const settings = () => {
   const { user, logout, renderUserData } = useAuth();
@@ -107,25 +108,33 @@ const settings = () => {
       theme='light'
       colors={[lightThemeColors, darkThemeColors]}
     >
-      <View className='flex-1'>
-        <CustomHeader title={'Settings'}/>
-        <TouchableOpacity activeOpacity={0.6} onPress={() => router.push('profile')} className='z-[-1]'>
-          <View className='px-4 w-full bg-white border-b-[1px] border-gray-100 flex-row items-center justify-between' style={{gap: scale(10), height: scale(54)}}>
-              <View className='bg-gray-100 rounded-full h-10 w-10 items-center justify-center overflow-hidden'>
-                <Image source={require('../../../assets/images/oops_empty.png')} contentFit='fill' className='w-14 h-14'></Image>
+      <View className='flex-1 bg-white'>
+        <CustomHeader title={'Settings'} showBack={true} onPressBack={() => router.push('home')}/>
+        <View>
+          <View className='px-4 w-full bg-white border-b-[1px] border-gray-100 flex-row items-center justify-between' style={{gap: scale(24), height: scale(120)}}>
+            <Image source={require('../../../assets/images/sukuna.jpg')} contentFit='contain' className='rounded-full' style={{height: scale(100), width: scale(100)}}></Image>
+              <View className='h-full w-full py-4'>
+                <View className='flex-1 justify-center'>
+                  <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
+                  <Text className='font-pRegular text-gray-400 text-[10px]'>{user.email}</Text>
+                </View>
+                <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] w-[40%] item' activeOpacity={0.7} onPress={() => router.push('profile')}>
+                  <Text className='font-pRegular text-white text-[10px] text-center'>Go to Profile</Text>
+                </TouchableOpacity>
               </View>
-              <View className='flex-1'>
-                <Text className='font-pRegular text-pastel-black'>{user.username}</Text>
-                <Text className='font-pRegular text-gray-300 text-[10px]'>{user.email}</Text>
-              </View>
-              <RemixIcon name='ri-arrow-drop-right-line' size={30} />
           </View>
-        </TouchableOpacity>
+        </View>
         <View className='border-b-[1px] border-gray-100'>
             <TouchableOpacity activeOpacity={0.6} onPress={toggleShow}>
-              <View className='px-4 w-full bg-white flex-row items-center' style={{height: scale(54)}}>
-                <RemixIcon name={showModelAsset ? 'ri-arrow-drop-down-line' : 'ri-arrow-drop-right-line'} size={30} />
-                <Text className='font-pRegular text-pastel-black'>Set model asset name</Text>
+              <View className='px-4 w-full bg-white flex-row items-center justify-between' style={{height: scale(54)}}>
+                <View className='flex-row items-center justify-center' style={{gap: scale(12)}}>
+                  <RemixIcon name='ri-robot-2-line'></RemixIcon>
+                  <Text className='font-pRegular text-pastel-black'>Model asset name</Text>
+                </View>
+                {/* <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px]' activeOpacity={0.7} onPress={toggleShow}>
+                  <Text className='font-pRegular text-white text-[10px]'>Edit</Text>
+                </TouchableOpacity> */}
+                <Text className='font-pRegular text-gray-400 text-[10px]'>{showModelAsset ? '' : 'edit'}</Text>
               </View>
             </TouchableOpacity>
             {showModelAsset ? (
@@ -163,27 +172,29 @@ const settings = () => {
               </View>
               ) : null}
         </View>
-        <SettingsControl title={'User Guide and Tutorial'}/>
-        <SettingsControl title={'About this app'}/>
-        <SettingsControl title={'Legal & Policies'}/>
-        <SettingsControl title={'Contact Us'}/>
-        <SettingsControl title={'Log Out'} onPress={() => setShowLogout(true)}/>
+        <SettingsControl title={'User Guide and Tutorial'} icon={'ri-guide-line'}/>
+        <SettingsControl title={'About this app'} icon={'ri-question-line'}/>
+        <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
+        <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
+        <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
         
         {showLogout ? (
-          <View className='absolute h-full w-full items-center justify-center z-50' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-            <View className='w-[80%] bg-white rounded-[10px] p-4' style={{gap: 10}}>
-              <Text className='font-pSemiBold text-[16px]'>Logout?</Text>
-              <Text className='font-pRegular text-[12px]'>Are you sure you want to logout?</Text>
-              <View className='flex-row justify-between mt-4'>
-                <TouchableOpacity onPress={() => setShowLogout(false)} className='bg-gray-100 w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
-                  <Text className='text-center font-pRegular text-black text-[12px] '>Cancel</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={toggleLogout} className='bg-pastel-black w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
-                  <Text className='text-center font-pRegular text-white text-[12px]'>Log Out</Text>
-                </TouchableOpacity>
+            <Modal isVisible={showLogout} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
+              <View className='absolute h-full w-full items-center justify-center z-50' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+                <View className='w-[80%] bg-white rounded-[10px] p-4' style={{gap: 10}}>
+                  <Text className='font-pSemiBold text-[16px]'>Logout?</Text>
+                  <Text className='font-pRegular text-[12px]'>Are you sure you want to logout?</Text>
+                  <View className='flex-row justify-between mt-4'>
+                    <TouchableOpacity onPress={() => setShowLogout(false)} className='bg-gray-100 w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
+                      <Text className='text-center font-pRegular text-black text-[12px] '>Cancel</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={toggleLogout} className='bg-pastel-black w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
+                      <Text className='text-center font-pRegular text-white text-[12px]'>Log Out</Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-            </View>
-          </View>
+            </Modal>
         ):null}
       </View>
     </AlertNotificationRoot>

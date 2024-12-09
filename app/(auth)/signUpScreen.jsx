@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, ScrollView, Alert, Modal } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, ScrollView, Alert } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
 import axios from 'axios';
@@ -7,6 +7,7 @@ import { scale } from 'react-native-size-matters';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
+import Modal from "react-native-modal";
 
 const signUpScreen = () => {
   const [username, setUsername] = useState('');
@@ -68,16 +69,6 @@ const signUpScreen = () => {
 
   return (
      <KeyboardAvoidingView className='flex-1' behavior='height'> 
-      {showModal && (
-        <Modal visible={showModal} animationType="fade">
-          <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-            <View className='w-[80%] bg-white rounded-[10px] p-4 ' style={{gap: scale(12)}}>
-              <Text className='font-pRegular'>Login Success</Text>
-              <CustomButton title={'Go to login'} onPress={() => {setShowModal(false); router.push('loginScreen')}}/>
-            </View>
-          </View>
-        </Modal>
-      )}
       {loading &&
         <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
             <ActivityIndicator size="large" color="#4caf50" />
@@ -90,7 +81,7 @@ const signUpScreen = () => {
         <View className='h-full w-full p-8 mt-10' style={{ gap: scale(16) }}> 
           <View className='mb-6 items-center'>
               <Image source={require('../../assets/icons/leaf.png')} className='h-10 w-10' contentFit='contain'></Image>
-              <Text className='font-pBold text-pastel-black text-center' style={{fontSize: scale(26)}}>Create Your Account!</Text>
+              <Text className='font-pBold text-pastel-black text-center' style={{fontSize: scale(20)}}>Create Your Account!</Text>
               <Text className='font-pRegular text-gray-500  text-center' style={{fontSize: scale(10)}}>
                   Sign up to detect air quality with Air Guard.
               </Text>
@@ -155,6 +146,16 @@ const signUpScreen = () => {
             </View>
         </View>
       } */}
+      {showModal && (
+        <Modal isVisible={showModal} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
+          <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+            <View className='w-[80%] bg-white rounded-[10px] p-4 ' style={{gap: scale(12)}}>
+              <Text className='font-pRegular text-[12px]'>Your account has been created successfully!</Text>
+              <CustomButton title={'Go to login'} onPress={() => {setShowModal(false); router.push('loginScreen')}}/>
+            </View>
+          </View>
+        </Modal>
+      )}
     </KeyboardAvoidingView>
   )
 }

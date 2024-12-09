@@ -102,7 +102,7 @@ const history = () => {
           {/* Graph */}
           {graphExpand ? (
             <View className='rounded-custom p-4 border-b-[1px] border-gray-100'>
-              <View className='bg-pastel-black rounded-custom border-2 border-gray-100 h-60 relative' style={{shadowColor: 'gray', elevation: 4}}>
+              <View className='bg-pastel-black rounded-custom border-2 border-gray-100 relative' style={{height: scale(200), shadowColor: 'gray', elevation: 4}}>
                 <ContributionGraph
                   values={graphDate}
                   endDate={new Date()}
@@ -128,11 +128,11 @@ const history = () => {
                 />
                 <View className='absolute bottom-4 w-full z-10 px-[30px] flex-row items-center justify-end' style={{gap: 6}}>
                   <Text className='font-pRegular text-gray-400 text-[10px]'>Less</Text>
-                  <View className='h-[12px] w-[12px] bg-[#d2e7d640]'></View>
-                  <View className='h-[12px] w-[12px] bg-[#d2e7d660]'></View>
-                  <View className='h-[12px] w-[12px] bg-[#d2e7d6a2]'></View>
-                  <View className='h-[12px] w-[12px] bg-[#d2e7d6dc]'></View>
-                  <View className='h-[12px] w-[12px] bg-[#d2e7d6]'></View>
+                  <View className='bg-[#d2e7d640]' style={{height: scale(10), width: scale(10)}}></View>
+                  <View className='bg-[#d2e7d660]' style={{height: scale(10), width: scale(10)}} ></View>
+                  <View className='bg-[#d2e7d6a2]' style={{height: scale(10), width: scale(10)}}></View>
+                  <View className='bg-[#d2e7d6dc]' style={{height: scale(10), width: scale(10)}}></View>
+                  <View className='bg-[#d2e7d6]' style={{height: scale(10), width: scale(10)}}></View>
                   <Text className='font-pRegular text-gray-400 text-[10px]'>More</Text>
                 </View>
               </View>
@@ -168,7 +168,7 @@ const history = () => {
             <View className='flex-1 w-full p-4' style={{gap: 12}}>
               {filteredDate.map((data, index) => {
                 return(
-                    <TouchableOpacity key={index} onPress={() => togglePressed(data._id)} className={`bg-white rounded-custom border-2 border-gray-100 'h-24'`} activeOpacity={0.7} style={{shadowColor: 'gray', elevation: 4}}>
+                    <TouchableOpacity key={index} onPress={() => togglePressed(data._id)} className={`bg-white rounded-custom border-2 border-gray-100`} activeOpacity={0.7} style={{shadowColor: 'gray', elevation: 4}}>
                       <View className='rounded-custom p-4 flex-row items-center'>
                         <View className='w-[20%] h-10 items-center justify-center'>
                             <Text className='text-pastel-black font-pBold text-[30px]'>{data.aqi}</Text>
