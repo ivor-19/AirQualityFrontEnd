@@ -1,11 +1,7 @@
-import { View, Text, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, Touchable } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import RemixIcon from 'react-native-remix-icon';
-import { scale } from 'react-native-size-matters';
 import axios from 'axios';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { router } from 'expo-router';
-import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { useAuth } from '../context/AuthContext';
 
 const ConnectAsset = () => {
@@ -105,11 +101,13 @@ const ConnectAsset = () => {
                   disabled={!enableButton}
                   onPress={toggleConnect}
                 >
-                  <Text className='text-center font-pRegular text-white'>Connect</Text>
+                  <Text className='text-center font-pRegular text-white'>Pair</Text>
                 </TouchableOpacity>
               )
               }
-            
+              <TouchableOpacity activeOpacity={0.6}>
+                <Text className='font-pRegular text-gray-400 text-[10px]'>or pair using QR</Text>
+              </TouchableOpacity>
         </View>
       </View>
     </View>

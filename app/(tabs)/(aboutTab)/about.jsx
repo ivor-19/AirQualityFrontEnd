@@ -1,10 +1,12 @@
-import { View, Text, SafeAreaView, TextInput } from 'react-native'
+import { View, Text, SafeAreaView, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../../../components/CustomButton'
 import axios from 'axios';
 import CustomFormField from '../../../components/CustomFormField';
 import { Image } from 'expo-image';
 import { scale } from 'react-native-size-matters';
+import { router } from 'expo-router';
+import ComingSoon from '../../../components/ComingSoon';
 
 const about = () => {
   const [username, setUsername] = useState('');
@@ -24,29 +26,8 @@ const about = () => {
     }
   }
   return (
-    <SafeAreaView className='flex-1'>
-      <View className='h-full bg-white items-center w-full p-6 justify-center' style={{ gap: 20 }}>  
-        {/* <CustomFormField
-          title={'Username'}
-          value={username}
-          onChangeText={(text) => setUsername(text)}
-        />
-        <CustomFormField
-          title={'Email'}
-          value={email}
-          onChangeText={(text) => setEmail(text)}
-        />
-        <CustomFormField
-          title={'Password'}
-          value={password}
-          onChangeText={(text) => setPassword(text)}
-        />
-        <CustomButton
-          title={'Sign Up'}
-          customButtomStyle={'w-full'}
-          onPress={handleSubmit}
-        /> */}
-      </View>
+    <SafeAreaView className='h-full w-full'>
+      <ComingSoon pageName={'About'}/>
     </SafeAreaView>
   )
 }

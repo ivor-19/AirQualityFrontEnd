@@ -104,12 +104,9 @@ const settings = () => {
     }
   }
   return (
-    <AlertNotificationRoot
-      theme='light'
-      colors={[lightThemeColors, darkThemeColors]}
-    >
+   
       <View className='flex-1 bg-white'>
-        <CustomHeader title={'Settings'} showBack={true} onPressBack={() => router.push('home')}/>
+        <CustomHeader title={'Settings'}/>
         <View>
           <View className='px-4 w-full bg-white border-b-[1px] border-gray-100 flex-row items-center justify-between' style={{gap: scale(24), height: scale(120)}}>
             <Image source={require('../../../assets/images/sukuna.jpg')} contentFit='contain' className='rounded-full' style={{height: scale(100), width: scale(100)}}></Image>
@@ -118,7 +115,7 @@ const settings = () => {
                   <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
                   <Text className='font-pRegular text-gray-400 text-[10px]'>{user.email}</Text>
                 </View>
-                <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] w-[40%] item' activeOpacity={0.7} onPress={() => router.push('profile')}>
+                <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] item' activeOpacity={0.7} onPress={() => router.push('profile')} style={{width: scale(120)}}>
                   <Text className='font-pRegular text-white text-[10px] text-center'>Go to Profile</Text>
                 </TouchableOpacity>
               </View>
@@ -168,7 +165,9 @@ const settings = () => {
                       </TouchableOpacity>
                     )
                   ) : null}
-                
+                  <TouchableOpacity activeOpacity={0.6}>
+                    <Text className='font-pRegular text-gray-400 text-[10px]'>or pair using QR</Text>
+                  </TouchableOpacity>
               </View>
               ) : null}
         </View>
@@ -197,7 +196,7 @@ const settings = () => {
             </Modal>
         ):null}
       </View>
-    </AlertNotificationRoot>
+  
   )
 }
 

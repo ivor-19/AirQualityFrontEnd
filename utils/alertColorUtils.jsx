@@ -2,7 +2,7 @@
 
 export const lightThemeColors = {
     label: '#000',
-    card: '#f3f4f6',
+    card: '#f3f3f3',
     overlay: '#00000080',
     success: '#b8d8be',
     danger: '#dc3545',

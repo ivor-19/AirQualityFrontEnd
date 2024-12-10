@@ -5,6 +5,8 @@ import RemixIcon from 'react-native-remix-icon';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 import NoInternetChecker from '../../components/NoInternetChecker';
 import Modal from "react-native-modal";
+import { AlertNotificationRoot } from 'react-native-alert-notification';
+import { darkThemeColors, lightThemeColors } from '../../utils/alertColorUtils';
 
 const TabLayout = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -40,7 +42,10 @@ const TabLayout = () => {
   }, [navigation, modalVisible]);
 
   return (
-    <>
+    <AlertNotificationRoot
+      theme='light'
+      colors={[lightThemeColors, darkThemeColors]}
+    >
       <NoInternetChecker />
       <Tabs
         screenOptions={({ route }) => ({
@@ -97,22 +102,23 @@ const TabLayout = () => {
           })}
         />
         <Tabs.Screen
+          name='(aboutTab)'
+          options={({ route }) => ({
+            headerShown: false,
+            title: '',
+            tabBarStyle: { display: route.name === '(aboutTab)' ? 'none' : 'flex' },
+            tabBarIcon: ({ color, focused }) => (
+              <RemixIcon size={24} name={focused ? 'ri-information-fill' : 'ri-information-line'} color={color} />
+            ),
+          })}
+        />
+        <Tabs.Screen
           name='(settingsTab)'
           options={{
             headerShown: false,
             title: '',
             tabBarIcon: ({ color, focused }) => (
               <RemixIcon size={24} name={focused ? 'ri-settings-fill' : 'ri-settings-line'} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name='(aboutTab)'
-          options={{
-            headerShown: false,
-            title: '',
-            tabBarIcon: ({ color, focused }) => (
-              <RemixIcon size={24} name={focused ? 'ri-information-fill' : 'ri-information-line'} color={color} />
             ),
           }}
         />
@@ -149,7 +155,7 @@ const TabLayout = () => {
           </View>
         </View>
       ) : null}
-    </>
+    </AlertNotificationRoot>
   );
 };
 

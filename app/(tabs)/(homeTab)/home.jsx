@@ -89,10 +89,12 @@ const Home = () => {
               <View className={`h-2 w-2 rounded-full`} style={{backgroundColor: aqiIC}}></View>
               <Text className='font-pRegular text-[10px] text-pastel-black'>{aqiIL}</Text>
             </View>
-            <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={() => router.push('statistics')} activeOpacity={0.5}>
-              <Text className='font-pRegular text-[12px] text-pastel-black'>All Statistics</Text>
-              <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
-            </TouchableOpacity>
+            {aqi !== 0 && (
+              <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={() => router.push('statistics')} activeOpacity={0.5}>
+                <Text className='font-pRegular text-[12px] text-pastel-black'>All Statistics</Text>
+                <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
         </View>

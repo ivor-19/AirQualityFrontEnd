@@ -18,7 +18,7 @@ const loginScreen = () => {
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [passwordInvalid, setPasswordInvalid] = useState(false);
   const [emailValidation, setEmailValidaion] = useState('');
-  const [passwordValidation, setPasswodValidaion] = useState('');
+  const [passwordValidation, setPasswordValidaion] = useState('');
   
   const { user, login } = useAuth();
 
@@ -58,7 +58,7 @@ const loginScreen = () => {
         } 
         else if(errorMessage === 'Invalid email or password'){
           setPasswordInvalid(true);
-          setPasswodValidaion(errorMessage);
+          setPasswordValidaion(errorMessage);
         }
       } else {
         console.error('Error creating account', error);

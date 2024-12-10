@@ -41,10 +41,10 @@ const signUpScreen = () => {
         setConfirmPassword('');
 
         setShowModal(true);
-        setTimeout(() => {
-         setShowModal(false);
-         router.push('loginScreen')
-        }, 5000); 
+        // setTimeout(() => {
+        //  setShowModal(false);
+        //  router.push('loginScreen')
+        // }, 3000); 
         
       } catch (error) {
         setLoading(false);

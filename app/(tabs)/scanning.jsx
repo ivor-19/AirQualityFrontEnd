@@ -7,6 +7,7 @@ import { router } from 'expo-router';
 import { MotiView } from '@motify/components';
 import { Easing } from 'react-native-reanimated';
 import { useAuth } from '../../context/AuthContext';
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
 const Scanning = () => {
   const { user, renderUserData } = useAuth(); // Ensure you are getting the latest user object
@@ -77,6 +78,14 @@ const Scanning = () => {
 
             await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData);
             console.log('History data is saved:', newHistoryData);
+
+            Toast.show({
+              type: ALERT_TYPE.WARNING,
+              title: 'Notice',
+              textBody: `Scanning Complete!`,
+              autoClose: 4000,
+              closeOnOverlayTap: true,
+            })
 
             router.push('home');
           } catch (error) {
