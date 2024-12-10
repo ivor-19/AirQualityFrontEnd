@@ -14,7 +14,11 @@ const Index = () => {
     useEffect(() => {
       // Check network status using NetInfo
       const unsubscribe = NetInfo.addEventListener(state => {
-        setIsConnectedToWifi(state.isConnected && state.type === 'wifi');
+        if (state.isConnected && (state.type === 'wifi' || state.type === 'cellular')) {
+          setIsConnectedToWifi(true);
+        } else {
+          setIsConnectedToWifi(false);
+        }
       });
 
       

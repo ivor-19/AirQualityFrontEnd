@@ -10,12 +10,16 @@ const NoInternetChecker = () => {
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener(state => {
-      setIsConnectedToWifi(state.isConnected && state.type === 'wifi');
+      if (state.isConnected && (state.type === 'wifi' || state.type === 'cellular')) {
+        setIsConnectedToWifi(true);
+      } else {
+        setIsConnectedToWifi(false);
+      }
     });
     
     if (isConnectedToWifi) {
       setNoConnection(false);
-      console.log('connected')
+      console.log('connected to wifi or cellular')
     }
 
     if (!isConnectedToWifi) {
@@ -34,7 +38,7 @@ const NoInternetChecker = () => {
         <View className='h-full bg-white items-center w-full p-6 justify-center z-50' style={{ gap: 20 }}>  
           <Image source={require('../assets/images/ghost.png')} style={{height: scale(100), width: scale(100)}}></Image>
           <Text className='font-pBold' style={{fontSize: scale(18)}}>Oops!</Text>
-          <Text className='font-pRegular text-center' style={{fontSize: scale(10)}}>No internet connection was found. Check your internet connection.</Text>
+          <Text className='font-pRegular text-center' style={{fontSize: scale(10)}}>No internet connection was found. Check your internet connection. ss</Text>
         </View>
       ) : null}
     </>
