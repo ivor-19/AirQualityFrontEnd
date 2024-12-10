@@ -149,7 +149,7 @@ const signUpScreen = () => {
       {showModal && (
         <Modal isVisible={showModal} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
           <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
-            <View className='w-[80%] bg-white rounded-[10px] p-4 ' style={{gap: scale(12)}}>
+            <View className='w-[80%] bg-white rounded-[10px] p-4 items-center' style={{gap: scale(12)}}>
               <Text className='font-pRegular text-[12px]'>Your account has been created successfully!</Text>
               <CustomButton title={'Go to login'} onPress={() => {setShowModal(false); router.push('loginScreen')}}/>
             </View>

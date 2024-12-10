@@ -66,7 +66,7 @@ const settings = () => {
   const toggleConnect = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAsset', {assetName})
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAssetName', {assetName})
       if(response.data){
 
         await axios.put(`https://air-quality-back-end-v2.vercel.app/users/editUser/${user._id}`, {asset_model: assetName})
@@ -103,6 +103,17 @@ const settings = () => {
       }
     }
   }
+
+  // const toggleDeleteUser = async () => {
+  //   try {
+  //     const response = await axios.delete(`https://air-quality-back-end-v2.vercel.app/users/deleteUser/${user._id}`);
+  //     console.log('delete successfully', response.data)
+  //     toggleLogout();
+  //   } catch (error) {
+  //     console.error('Error deleting user', error)
+  //   }
+  // }
+  
   return (
    
       <View className='flex-1 bg-white'>
@@ -176,6 +187,7 @@ const settings = () => {
         <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
         <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
+        {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
         {showLogout ? (
             <Modal isVisible={showLogout} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>

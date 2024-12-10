@@ -106,7 +106,7 @@ const TabLayout = () => {
           options={({ route }) => ({
             headerShown: false,
             title: '',
-            tabBarStyle: { display: route.name === '(aboutTab)' ? 'none' : 'flex' },
+            // tabBarStyle: { display: route.name === '(aboutTab)' ? 'none' : 'flex' },
             tabBarIcon: ({ color, focused }) => (
               <RemixIcon size={24} name={focused ? 'ri-information-fill' : 'ri-information-line'} color={color} />
             ),

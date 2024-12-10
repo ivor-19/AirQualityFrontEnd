@@ -42,17 +42,19 @@ const history = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('https://air-quality-back-end-v2.vercel.app/history');
-
-        const filteredDataBasedOnUser = response.data.filter(item => item.scanned_by === user.username)
+        const history = response.data.history;
+    
+        const filteredDataBasedOnUser = history.filter(item => item.scanned_by === user._id);
         setDataHistory(filteredDataBasedOnUser.reverse());
-
-        //Extract the dates for filter
-        const allDates = response.data.map(item => item.date);
+    
+        // Extract the dates for the filter
+        const allDates = history.map(item => item.date);
         const uniqueDates = [...new Set(allDates)];
         setDateFilter(uniqueDates);
+        
         setLoading(false);
       } catch (error) {
-        console.log('Error fetching data: ', error)
+        console.log('Error fetching data: ', error);
         setLoading(false);
       }
     }
@@ -94,7 +96,7 @@ const history = () => {
         </View>
       ) : dataHistory.length === 0 ? (
         <View className='h-full items-center my-20' style={{gap: 12}}>
-          <Image source={require('../../../assets/images/oops_empty.png')} className='h-[300px] w-[300px]'/>
+          <Image source={require('../../../assets/images/oops_empty.png')} style={{height: scale(240), width: scale(240)}}/>
           <Text className='font-pRegular text-gray-500 text-[12px]'>Oops, we couldn't find any history data.</Text>
         </View>
       ) : (
@@ -150,7 +152,7 @@ const history = () => {
               </TouchableOpacity>
               {dateFilterExpand ? (
                 <View className='bg-pastel-green w-full h-auto rounded-[20px] absolute top-10 z-10 px-4 py-2' style={{shadowColor: 'gray', elevation: 4}}>
-                  {dateFilter.map((date, index) => {
+                  {dateFilter.reverse().map((date, index) => {
                     return(
                       <TouchableOpacity key={index} onPress={() => handleSelectedDate(date)} className='h-6'>
                         <Text className='font-pRegular text-[12px]'>{date}</Text>

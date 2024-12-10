@@ -60,7 +60,7 @@ const Scanning = () => {
             setPm2_5(data.pm2_5);
             setC0(data.co);
             setN02(data.no2);
-            setScannedBy(user.username);  // Ensure username is correct
+            setScannedBy(user._id);  // Ensure username is correct
             setScannedUsingModel(user.asset_model);  // Use user.asset_model directly here
 
             const newHistoryData = {
@@ -70,8 +70,8 @@ const Scanning = () => {
               pm2_5: data.pm2_5,
               co: data.co,
               no2: data.no2,
-              scanned_by: user.username,
-              scanned_using_model: user.asset_model, // Make sure this is the correct model
+              scanned_by: user._id,
+              scanned_using_model: user.asset_model, 
             };
 
             console.log('Saving data with model:', user.asset_model); // Debug log to confirm model

@@ -8,6 +8,7 @@ import CustomButton from '../../../../components/CustomButton'
 import { Image } from 'expo-image'
 import { useAuth } from '../../../../context/AuthContext'
 import RemixIcon from 'react-native-remix-icon'
+import ProfileControl from '../../../../components/ProfileControl'
 
 const Profile = () => {
   const { user } = useAuth();
@@ -37,10 +38,19 @@ const Profile = () => {
                 className='rounded-full'
                 style={{height: scale(120), width: scale(120)}}
               />
+              <View className='rounded-full bg-[#00000070] absolute items-center justify-center' style={{height: scale(120), width: scale(120)}} activeOpacity={0.8}>
+                <TouchableOpacity className='items-center justify-center h-[50%] w-[50%] rounded-full' activeOpacity={0.6}>
+                  <Image source={require('../../../../assets/icons/camera.png')} style={{height: scale(30), width: scale(30)}}></Image>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View className='flex-1 w-full py-4 px-2' style={{gap: scale(20)}}>
+            <View className='flex-1 w-full py-4 px-2' style={{gap: scale(30)}}>
               <Text className='font-pSemiBold text-[16px]'>Profile Information</Text>
-              <View style={{gap: scale(12)}}>  
+              <View>
+                <ProfileControl title={'Edit Profile'} username={`Username: ${user.username}`} email={`Email: ${user.email}`}/>
+                <ProfileControl title={'Change Password'}/>
+              </View>
+              {/* <View style={{gap: scale(12)}}>  
                 <View className='w-full'>
                   <View className='w-full flex-row justify-between'>
                       <Text className={`font-pRegular text-left`}>Username</Text>
@@ -105,7 +115,7 @@ const Profile = () => {
                     onPress={() => setEditable(true)}
                   />
                 )}
-              </View>
+              </View> */}
             </View>
           </View>
         </ScrollView>

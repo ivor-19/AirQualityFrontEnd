@@ -34,7 +34,7 @@ const ConnectAsset = () => {
   const toggleConnect = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAsset', {assetName})
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAssetName', {assetName})
       if(response.data){
         console.log('Asset is found');
 
