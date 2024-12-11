@@ -18,12 +18,12 @@ const TabLayout = () => {
   }
 
   const openModal = () => {
-    setModalVisible(true);
+    // setModalVisible(true);
   };
 
   const toggleConfirmScan = () => {
     setModalVisible(false);
-    router.push('scanning');
+    // router.push('scanning');
   };
 
   const toggleCancelScan = () => {

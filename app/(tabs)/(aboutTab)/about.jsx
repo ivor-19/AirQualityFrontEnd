@@ -7,27 +7,38 @@ import { Image } from 'expo-image';
 import { scale } from 'react-native-size-matters';
 import { router } from 'expo-router';
 import ComingSoon from '../../../components/ComingSoon';
+import * as SMS from 'expo-sms';
 
 const about = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  // const [phoneNumber, setPhoneNumber] = useState();
+  // const [message, setMessage] = useState();
 
-  const handleSubmit = async () => {
-    const newAccount = { username, email, password };
+  //email
+  const [to, setTo] = useState('ivorcruz19@gmail.com');
+  const [subject, setSubject] = useState('random sheeesh');
+  const [message, setMessage] = useState('Message from post')
+
+  const sendAlert = async () => {
+    const emailData = { to, subject, message };
+
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/users/signup', newAccount);
-      console.log('Account Setup Complete', response.data);
-      setUsername('');
-      setEmail('');
-      setPassword('');
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData);
+      console.log('Send Message', response.data.message)
     } catch (error) {
-      console.error('Error creating account', error);
+      console.error('Error sending email', error)
     }
   }
+
+  const sendSMS = async () => {
+    const { result } = await SMS.sendSMSAsync('09663470157', 'Hello');
+    if( result === 'sent'){
+      console.log('sent message successfully');
+    }
+  }
+
   return (
     <SafeAreaView className='h-full w-full'>
-      <ComingSoon pageName={'About'}/>
+      <CustomButton title={'Send EMAIL'} onPress={sendAlert}/>
     </SafeAreaView>
   )
 }

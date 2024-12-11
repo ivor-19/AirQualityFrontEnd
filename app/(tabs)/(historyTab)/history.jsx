@@ -41,31 +41,51 @@ const history = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://air-quality-back-end-v2.vercel.app/history');
-        const history = response.data.history;
-    
-        const filteredDataBasedOnUser = history.filter(item => item.scanned_by === user._id);
+        let allHistory = [];
+        let currentPage = 1;
+        let totalPages = 1; // Initially assume there's only 1 page
+  
+        // Fetch data while there are more pages
+        while (currentPage <= totalPages) {
+          const response = await axios.get('https://air-quality-back-end-v2.vercel.app/history', {
+            params: { page: currentPage }
+          });
+  
+          const { history, pagination } = response.data;
+          allHistory = allHistory.concat(history); // Append new data to allHistory
+  
+          // Update pagination info
+          totalPages = pagination.last_page;
+          currentPage++;
+        }
+  
+        // Filter based on user
+        const filteredDataBasedOnUser = allHistory.filter(item => item.scanned_by === user._id);
         setDataHistory(filteredDataBasedOnUser.reverse());
-    
-        // Extract the dates for the filter
-        const allDates = history.map(item => item.date);
+  
+        // Extract unique dates for filtering
+        const allDates = allHistory.map(item => item.date);
         const uniqueDates = [...new Set(allDates)];
         setDateFilter(uniqueDates);
-        
+  
         setLoading(false);
       } catch (error) {
         console.log('Error fetching data: ', error);
         setLoading(false);
       }
-    }
+    };
+  
+    // Call fetchData immediately to load data
     fetchData();
-
-      // Set an interval to fetch data every 2 seconds
-    const interval = setInterval(fetchData, 2000);
-
-    // Cleanup the interval on unmount
+  
+    // Set an interval to fetch data every 2 seconds
+    const interval = setInterval(() => {
+      fetchData();
+    }, 2000);
+  
+    // Cleanup the interval on unmount to prevent multiple intervals
     return () => clearInterval(interval);
-  }, [])
+  }, []); // Empty dependency array, so it runs only once on mount
 
   const filteredDate = selectedDate === 'All' ? dataHistory : dataHistory.filter(item => item.date === selectedDate)
 

@@ -7,10 +7,108 @@ import Svg, { Circle } from 'react-native-svg';
 import { useAQI } from '../../../context/AQIContext'
 import Weather from '../../../components/Weather'
 import { useAuth } from '../../../context/AuthContext'
+import axios from 'axios'
+import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 
 const Home = () => {
   const { user, renderUserData } = useAuth();
-  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, timestamp, scanned_by} = useAQI();  
+  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
+  const [to, setTo] = useState('ivorcruz19@gmail.com');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [qualityMessage, setQualityMessage] = useState('');
+
+  const getCurrentDate = () => {
+    const date = new Date();
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${year}-${month}-${day}`;
+  };
+
+  const getCurrentTime = () => {
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: true,
+    };
+    return new Date().toLocaleTimeString([], options);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`);
+        const data = response.data[0];
+
+        console.log("API Response Data:", response.data);
+        const currentDate = getCurrentDate();
+        const currentTimestamp = getCurrentTime();
+
+        setDate(currentDate);
+        setTimestamp(currentTimestamp);
+        setAqi(data.aqi);
+        setPm2_5(data.pm2_5);
+        setC0(data.co);
+        setN02(data.no2);
+        setScannedBy(user._id);  // Ensure username is correct
+        setScannedUsingModel(user.asset_model);  // Use user.asset_model directly here
+
+        setQualityMessage(
+          `
+           AQI: ${data.aqi}
+           PM 2.5: ${data.pm2_5}
+           CO: ${data.co}
+           NO2: ${data.no2}
+           Timestamp: ${currentTimestamp}
+           Date: ${currentDate}
+           Risk Percentage: ${aqiIL}
+           Condition: ${aqiCon}
+          `
+          )
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchData();
+
+    const interval = setInterval(() => {
+      fetchData();
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []); 
+
+  useEffect(() => {
+    if (qualityMessage) {
+
+    }
+  }, [qualityMessage]);  // Send alert whenever qualityMessage changes
+
+  const sendAlert = async () => {
+    const to = 'ivorcruz19@gmail.com';
+    const subject = 'AIR GUARD ALERT';
+    const message = `
+      Immediate notice: AQI index is too high. We highly recommend that students stay home.
+      ${qualityMessage}
+    `;
+
+    const emailData = { to, subject, message };
+    // console.log(emailData);
+
+    // Uncomment to send the email
+    try {
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData);
+      console.log('Send Message', response.data.message);
+    } catch (error) {
+      console.error('Error sending email', error);
+    }
+  };
+  
+
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -94,7 +192,12 @@ const Home = () => {
                 <Text className='font-pRegular text-[12px] text-pastel-black'>All Statistics</Text>
                 <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
               </TouchableOpacity>
+              
             )}
+            <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={sendAlert} activeOpacity={0.5}>
+              <Text className='font-pRegular text-[12px] text-pastel-black'>Send</Text>
+              <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
+            </TouchableOpacity>
           </View>
         </View>
         </View>
