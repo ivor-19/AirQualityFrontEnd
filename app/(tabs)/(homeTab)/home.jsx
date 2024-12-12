@@ -55,19 +55,6 @@ const Home = () => {
         setScannedBy(user._id);  // Ensure username is correct
         setScannedUsingModel(user.asset_model);  // Use user.asset_model directly here
 
-        setQualityMessage(
-          `
-           AQI: ${data.aqi}
-           PM 2.5: ${data.pm2_5}
-           CO: ${data.co}
-           NO2: ${data.no2}
-           Timestamp: ${currentTimestamp}
-           Date: ${currentDate}
-           Risk Percentage: ${aqiIL}
-           Condition: ${aqiCon}
-          `
-          )
-
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -80,33 +67,6 @@ const Home = () => {
 
     return () => clearInterval(interval);
   }, []); 
-
-  useEffect(() => {
-    if (qualityMessage) {
-
-    }
-  }, [qualityMessage]);  // Send alert whenever qualityMessage changes
-
-  const sendAlert = async () => {
-    const to = 'ivorcruz19@gmail.com';
-    const subject = 'AIR GUARD ALERT';
-    const message = `
-      Immediate notice: AQI index is too high. We highly recommend that students stay home.
-      ${qualityMessage}
-    `;
-
-    const emailData = { to, subject, message };
-    // console.log(emailData);
-
-    // Uncomment to send the email
-    try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData);
-      console.log('Send Message', response.data.message);
-    } catch (error) {
-      console.error('Error sending email', error);
-    }
-  };
-  
 
 
 
@@ -194,10 +154,10 @@ const Home = () => {
               </TouchableOpacity>
               
             )}
-            <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={sendAlert} activeOpacity={0.5}>
+            {/* <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={sendAlert} activeOpacity={0.5}>
               <Text className='font-pRegular text-[12px] text-pastel-black'>Send</Text>
               <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
         </View>
