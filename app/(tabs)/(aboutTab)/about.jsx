@@ -38,7 +38,7 @@ const about = () => {
 
   return (
     <SafeAreaView className='h-full w-full'>
-      <CustomButton title={'Send EMAIL'} onPress={sendAlert}/>
+      <ComingSoon pageName={'About'}/>
     </SafeAreaView>
   )
 }

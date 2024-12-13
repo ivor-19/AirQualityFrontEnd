@@ -108,7 +108,7 @@ const history = () => {
   
   return (
     <SafeAreaView className='flex-1 bg-white'>
-      <CustomHeader title={'Data History'}/>
+      <CustomHeader title={'Inbox'}/>
       {loading ? (
         <View className='h-full items-center my-20'>
           <Image source={require('../../../assets/animated/loading.gif')} className='h-[30%] w-[30%]'/>
@@ -230,14 +230,19 @@ const history = () => {
                         </View>
                       </View>
                       {pressed === data._id ? (
-                        <View className='bg-white rounded-custom h-24 p-4 w-full flex-row'>
-                          <View className='w-[50%]'>
-                            <Text className='font-pRegular'>PM2.5: <Text className='font-pBold'>{data.pm2_5}</Text></Text>
-                            <Text className='font-pRegular'>CO: <Text className='font-pBold'>{data.co}</Text></Text>
+                        <View className='bg-white rounded-custom p-4 w-full flex-col'>
+                           <View>
+                            <Text className='font-pRegular text-[10px]'>{data.message}</Text>
                           </View>
-                          <View className='w-[50%]'>
-                            <Text className='font-pRegular'>NO2: <Text className='font-pBold'>{data.no2}</Text></Text>
-                            <Text className='font-pRegular'>???: <Text className='font-pBold'>???</Text></Text>
+                          <View className=' flex-row hidden'>
+                            <View className='w-[50%]'>
+                              <Text className='font-pRegular'>PM2.5: <Text className='font-pBold'>{data.pm2_5}</Text></Text>
+                              <Text className='font-pRegular'>CO: <Text className='font-pBold'>{data.co}</Text></Text>
+                            </View>
+                            <View className='w-[50%]'>
+                              <Text className='font-pRegular'>NO2: <Text className='font-pBold'>{data.no2}</Text></Text>
+                              <Text className='font-pRegular'>???: <Text className='font-pBold'>???</Text></Text>
+                            </View>
                           </View>
                         </View>
                       ): null}

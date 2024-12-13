@@ -8,93 +8,37 @@ import { MotiView } from '@motify/components';
 import { Easing } from 'react-native-reanimated';
 import { useAuth } from '../../context/AuthContext';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import RemixIcon from 'react-native-remix-icon';
+import { Image } from 'expo-image';
+import { scale } from 'react-native-size-matters';
 
 const Scanning = () => {
   const { user, renderUserData } = useAuth(); // Ensure you are getting the latest user object
-
-  const [loading, setLoading] = useState(true);
-  const { setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI();
+  const { aqi, pm2_5, co, no2, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
   const navigation = useNavigation();
   const [animationKey, setAnimationKey] = useState(0);
 
-  const getCurrentDate = () => {
-    const date = new Date();
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-  };
-
-  const getCurrentTime = () => {
-    const options = {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true,
-    };
-    return new Date().toLocaleTimeString([], options);
-  };
-
   useFocusEffect(
     React.useCallback(() => {
-      // No need to set model state, just use user.asset_model directly when saving data
-      // You can remove `model` state if it's redundant
+
     }, [user.asset_model])
   );
 
   useEffect(() => {
     const handleTimeOut = () => {
       setTimeout(() => {
-        const fetchData = async () => {
-          try {
-            const response = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`);
-            const data = response.data[0];
 
-            console.log("API Response Data:", response.data);
-            const currentDate = getCurrentDate();
-            const currentTimestamp = getCurrentTime();
+        Toast.show({
+          type: ALERT_TYPE.WARNING,
+          title: 'Notice',
+          textBody: `Scanning Complete!`,
+          autoClose: 4000,
+          closeOnOverlayTap: true,
+        })
 
-            setDate(currentDate);
-            setTimestamp(currentTimestamp);
-            setAqi(data.aqi);
-            setPm2_5(data.pm2_5);
-            setC0(data.co);
-            setN02(data.no2);
-            setScannedBy(user._id);  // Ensure username is correct
-            setScannedUsingModel(user.asset_model);  // Use user.asset_model directly here
-
-            const newHistoryData = {
-              date: currentDate,
-              timestamp: currentTimestamp,
-              aqi: data.aqi,
-              pm2_5: data.pm2_5,
-              co: data.co,
-              no2: data.no2,
-              scanned_by: user._id,
-              scanned_using_model: user.asset_model, 
-            };
-
-            console.log('Saving data with model:', user.asset_model); // Debug log to confirm model
-
-            await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData);
-            console.log('History data is saved:', newHistoryData);
-
-            Toast.show({
-              type: ALERT_TYPE.WARNING,
-              title: 'Notice',
-              textBody: `Scanning Complete!`,
-              autoClose: 4000,
-              closeOnOverlayTap: true,
-            })
-
-            router.push('home');
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-        };
-
-        fetchData();
-      }, 3000);
+        router.push('home');
+        
+      }, 4000);
     };
 
     const reset = navigation.addListener('focus', () => {
@@ -109,7 +53,8 @@ const Scanning = () => {
 
   return (
     <View className='flex-1 items-center justify-center bg-white'>
-      {[...Array(3).keys()].map((index) => {
+      <Image source={require('../../assets/animated/direct.gif')} style={{height: scale(160), width: scale(160)}}></Image>
+      {/* {[...Array(3).keys()].map((index) => {
         return (
           <MotiView
             from={{ opacity: 0.7, scale: 1.5 }}
@@ -135,6 +80,9 @@ const Scanning = () => {
       })}
       <View className='absolute items-center justify-center bottom-28'>
         <Text className='font-pRegular text-[10px] text-gray-500'>Conducting scans with the {user.asset_model}</Text>
+      </View> */}
+      <View className='absolute items-center justify-center bottom-28'>
+        <Text className='font-pRegular text-[10px] text-gray-500'>Your message is being delivered...</Text>
       </View>
     </View>
   );

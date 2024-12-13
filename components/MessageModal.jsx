@@ -8,6 +8,8 @@ import { useNavigation } from '@react-navigation/native'
 import { useAuth } from '../context/AuthContext'
 import { useAQI } from '../context/AQIContext'
 import axios from 'axios'
+import RemixIcon from 'react-native-remix-icon';
+import { router } from 'expo-router'
 
 const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
     const { user, renderUserData } = useAuth();
@@ -17,7 +19,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
         {id: 2, email: "zpt.pogi@gmail.com"},
     ]
     const [toEmail, setToEmail] = useState([]);
-    const [toSubject, setToSubject] = useState('Subject')
+    const [toSubject, setToSubject] = useState('Alert')
     const [toMessage, setToMessage] = useState('Immediate notice: AQI index is too high. We highly recommend that students stay home.')
     const [qualityMessage, setQualityMessage] = useState('');
 
@@ -46,6 +48,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
             setQualityMessage(
             `AQI: ${aqi}\nPM 2.5: ${pm2_5}\nCO: ${co}\nNO2: ${no2}\nTimestamp: ${currentTimestamp}\nDate: ${currentDate}\nRisk Percentage: ${aqiIL}\nCondition: ${aqiCon}`
             )
+        
             // console.log(qualityMessage)
             const response = await axios.get('https://air-quality-back-end-v2.vercel.app/students/getEmails');
             const emails = response.data.emails;
@@ -57,24 +60,50 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
         
     
     const sendAlert = async () => {
-    try{
-        const to = `${toEmail}`;
-        const subject = `${toSubject}`;
-        const message = `${toMessage}\n${qualityMessage}`;
+        try{
+            const to = `${toEmail}`;
+            const subject = `${toSubject}`;
+            const message = `${toMessage}\n${qualityMessage}`;
 
-        const emailData = { to, subject, message };
+            const emailData = { to, subject, message };
 
-        console.log(emailData);
-        try {
-            const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData);
-            console.log('Send Message', response.data.message);
+            console.log(emailData);
+            try {
+                onPressCancelSend();
+                router.push('scanning');
+                const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData);
+                console.log('Send Message', response.data.message);
+                const responseReadings = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`);
+                const data = responseReadings.data[0];
+    
+                console.log("API Response Data:", responseReadings.data);
+                // const currentDate = getCurrentDate();
+                // const currentTimestamp = getCurrentTime();
+                const newHistoryData = {
+                    date: date,
+                    timestamp: timestamp,
+                    aqi: aqi,
+                    pm2_5: pm2_5,
+                    co: co,
+                    no2: no2,
+                    scanned_by: user._id,
+                    scanned_using_model: user.asset_model, 
+                    message: message,
+                };
+                console.log('Saving data with model:', user.asset_model); // Debug log to confirm model
+    
+                await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData);
+                console.log('History data is saved:', newHistoryData);
+
             } catch (error) {
+                console.error('Error sending email', error);
+            }
+            
+
+        }
+        catch (error){
             console.error('Error sending email', error);
         }
-    }
-    catch (error){
-        console.error('Error sending email', error);
-    }
     };
   
   return (
@@ -130,8 +159,9 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                 <TouchableOpacity onPress={onPressCancelSend} className='py-2 px-4' activeOpacity={0.6}>
                     <Text className='font-pRegular text-[10px]'>Cancel</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={sendAlert} className='py-2 px-4 bg-pastel-black rounded-custom' activeOpacity={0.6}>
+                <TouchableOpacity onPress={sendAlert} className='space-x-1 py-2 px-4 bg-pastel-black rounded-custom flex-row items-center justify-center' activeOpacity={0.6}>
                     <Text className='text-white font-pRegular text-[10px]'>Send</Text>
+                    <RemixIcon name='ri-send-plane-fill' color='white' size={14}></RemixIcon>
                 </TouchableOpacity>
                 </View>
             </View>
