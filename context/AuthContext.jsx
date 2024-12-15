@@ -23,7 +23,23 @@ export const AuthProvider = ({ children }) => {
 
       if (storedToken && storedUserId && storedUsername && storedEmail && storedAssetModel && storedFirstAccess) {
         setToken(storedToken);
-        setUser({ _id: storedUserId ,username: storedUsername, email: storedEmail, asset_model: storedAssetModel, first_access: storedFirstAccess });
+        setUser({
+          _id: storedUserId,
+          username: storedUsername,
+          email: storedEmail,
+          asset_model: storedAssetModel,
+          first_access: storedFirstAccess
+        });
+
+        if(storedToken !== ''){
+          if (storedFirstAccess === "No") {
+            console.log("User is returning, redirecting to home");
+            router.replace('home');
+          }
+        }
+      } else {
+        console.log("No user token or user data found, redirecting to login screen");
+        router.replace('landingPage');
       }
     };
 

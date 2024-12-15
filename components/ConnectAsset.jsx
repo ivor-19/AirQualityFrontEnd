@@ -34,38 +34,55 @@ const ConnectAsset = () => {
   const toggleConnect = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAssetName', {assetName})
-      if(response.data){
+      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAssetName', { assetName });
+      if (response.data) {
         console.log('Asset is found');
-
-        await axios.put(`https://air-quality-back-end-v2.vercel.app/users/editUser/${user._id}`, {asset_model: assetName, first_access: "No"})
-        
-        const updatedUser = { ...user, asset_model: assetName, first_access: "No" };
-        renderUserData(updatedUser); 
-
-        isConnected(true);
+        console.log(response.data);
+  
+        const updateResponse = await axios.post(`https://air-quality-back-end-v2.vercel.app/users/editUser/${user._id}`, { 
+          asset_model: assetName, 
+          first_access: "No" 
+        });
+        console.log('User updated:', updateResponse);
+  
+        if (updateResponse.data) {
+          const updatedUser = { ...user, asset_model: assetName, first_access: "No" };
+          renderUserData(updatedUser);
+  
+          isConnected(true);
+          setLoading(false);
+          isAssetNotFound(false);
+          setEnableButton(false);
+          textInputRef.current.blur();
+  
+          // Step 5: Redirect to home page
+          router.replace('home');
+        } else {
+          setLoading(false);
+          console.log('Error: User was not updated');
+        }
+      } else {
+        isAssetNotFound(true);
+        setValidationMessage("Can't find asset name");
         setLoading(false);
-        isAssetNotFound(false);
-        setEnableButton(false);
-        textInputRef.current.blur();
-
-        router.replace('home');
+        isConnected(false);
       }
     } catch (error) {
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.message || error.response.data.error;
-        console.log(errorMessage)
+        console.log(errorMessage);
         if (errorMessage === "Can't find asset name") {
-          isAssetNotFound(true)
+          isAssetNotFound(true);
           setValidationMessage(errorMessage);
           setLoading(false);
           isConnected(false);
-        } 
+        }
       } else {
-        console.error('Error creating account', error);
+        console.error('Error updating user:', error);
+        setLoading(false);
       }
     }
-  }
+  };
   return (
     <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <View className='w-[80%] bg-white rounded-[10px] p-4 '>

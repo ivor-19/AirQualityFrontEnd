@@ -71,9 +71,10 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
             try {
                 onPressCancelSend();
                 router.push('scanning');
-                const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData);
+                const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData); //Send email to gmails
                 console.log('Send Message', response.data.message);
-                const responseReadings = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`);
+
+                const responseReadings = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`); 
                 const data = responseReadings.data[0];
     
                 console.log("API Response Data:", responseReadings.data);
@@ -92,7 +93,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                 };
                 console.log('Saving data with model:', user.asset_model); // Debug log to confirm model
     
-                await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData);
+                await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData); //Save the email to inbox 
                 console.log('History data is saved:', newHistoryData);
 
             } catch (error) {
@@ -113,10 +114,6 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                 <Text className='font-pRegular text-[12px]'>
                     You are about to send a message
                 </Text>
-                {/* <TouchableOpacity className='flex-row items-center h-6' style={{ gap: 4 }} activeOpacity={0.6} onPress={toggleDontShow}>
-                <RemixIcon name={dontShow ? 'ri-checkbox-fill' : 'ri-checkbox-blank-line'} size={16}></RemixIcon>
-                <Text className='font-pRegular text-[10px]'>Don't show this message again</Text>
-                </TouchableOpacity> */}
                 <View className='w-full border-[1px] border-gray-200 rounded-[6px] flex-row items-center px-2 space-x-1 py-1'>
                 <Text className='font-pRegular' style={{fontSize: scale(10)}}>To: </Text>
                 <ScrollView horizontal={true}>

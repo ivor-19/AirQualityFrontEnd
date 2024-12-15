@@ -7,7 +7,7 @@ import { scale } from 'react-native-size-matters';
 import SplashScreen from '../components/SplashScreen';
 import NetInfo from '@react-native-community/netinfo'; // Import NetInfo
 
-const index = () => {
+const landingPage = () => {
     const [showSplashScreen, setShowSplashScreen] = useState(true);
     const [isConnectedToWifi, setIsConnectedToWifi] = useState(false);
 
@@ -68,4 +68,4 @@ const index = () => {
     );
 };
 
-export default index;
+export default landingPage;

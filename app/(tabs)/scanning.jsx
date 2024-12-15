@@ -27,11 +27,10 @@ const Scanning = () => {
   useEffect(() => {
     const handleTimeOut = () => {
       setTimeout(() => {
-
         Toast.show({
-          type: ALERT_TYPE.WARNING,
-          title: 'Notice',
-          textBody: `Scanning Complete!`,
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Sending Complete!',
+          textBody: `All your emails have been successfully sent. Thank you for your patience.`,
           autoClose: 4000,
           closeOnOverlayTap: true,
         })

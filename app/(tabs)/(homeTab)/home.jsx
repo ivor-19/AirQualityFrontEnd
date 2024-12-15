@@ -9,6 +9,7 @@ import Weather from '../../../components/Weather'
 import { useAuth } from '../../../context/AuthContext'
 import axios from 'axios'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { scale } from 'react-native-size-matters'
 
 const Home = () => {
   const { user, renderUserData } = useAuth();
@@ -143,13 +144,13 @@ const Home = () => {
           </View>
           <View className='h-[10%] flex-row justify-between items-center'>
             <View className='flex-row flex-1 items-center' style={{gap: 6}}>
-              <Text className='font-pRegular text-[10px] text-pastel-black'>Risk Percentage:</Text>
-              <View className={`h-2 w-2 rounded-full`} style={{backgroundColor: aqiIC}}></View>
-              <Text className='font-pRegular text-[10px] text-pastel-black'>{aqiIL}</Text>
+              <Text className='font-pRegular text-pastel-black' style={{fontSize: scale(8)}}>Risk Percentage:</Text>
+              <View className={`rounded-full`} style={{height: scale(6), width: scale(6), backgroundColor: aqiIC}}></View>
+              <Text className='font-pRegular text-pastel-black' style={{fontSize: scale(8)}}>{aqiIL}</Text>
             </View>
             {aqi !== 0 && (
-              <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={() => router.push('statistics')} activeOpacity={0.5}>
-                <Text className='font-pRegular text-[12px] text-pastel-black'>All Statistics</Text>
+              <TouchableOpacity className='bg-gray-100 px-3 items-center rounded-xl flex-row justify-between' style={{height: scale(24), width: scale(110)}} onPress={() => router.push('statistics')} activeOpacity={0.5}>
+                <Text className='font-pRegular text-pastel-black' style={{fontSize: scale(10)}}>All Statistics</Text>
                 <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
               </TouchableOpacity>
               

@@ -229,4 +229,15 @@ const TabLayout = () => {
   );
 }
 
+
+ const newAssetAQ = {
+    aqi: "0",
+    pm2_5:  "0",
+    co:  "0",
+    no2:  "0",
+    asset_model:( dito yung asset name),
+  };
+
+  await axios.post('https://air-quality-back-end-v2.vercel.app/aqReadings/addAQReadings', newAssetAQ);
+
 export default TabLayout;
