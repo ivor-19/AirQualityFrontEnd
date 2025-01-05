@@ -17,7 +17,7 @@ export const AQIProvider = ({ children }) => {
   // IndicatorColor = IC
   // IndicatorLabel = IL
 
-  const { color: aqiIC, label: aqiIL, condition: aqiCon ,details: aqiDet } = getAqiIndicator(aqi);
+  const { color: aqiIC, label: aqiIL, condition: aqiCon ,details: aqiDet, attention: aqiAttention } = getAqiIndicator(aqi);
   const { color: coIC, label: coIL } = getCoIndicator(co);
   const { color: no2IC, label: no2IL } = getNo2Indicator(no2);
 
@@ -42,7 +42,7 @@ export const AQIProvider = ({ children }) => {
         no2, setN02, 
         scanned_by, setScannedBy,
         scanned_using_model, setScannedUsingModel,
-        aqiIC, aqiIL, aqiCon, aqiDet,
+        aqiIC, aqiIL, aqiCon, aqiDet, aqiAttention,
         coIC, coIL, 
         no2IC, no2IL, 
         resetAQI,

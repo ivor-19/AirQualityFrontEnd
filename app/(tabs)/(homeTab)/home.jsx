@@ -53,6 +53,9 @@ const Home = () => {
         setPm2_5(data.pm2_5);
         setC0(data.co);
         setN02(data.no2);
+
+        // const highestValue = Math.max(data.pm2_5, data.co, data.no2);
+        // setAqi(highestValue);
         setScannedBy(user._id);  // Ensure username is correct
         setScannedUsingModel(user.asset_model);  // Use user.asset_model directly here
 

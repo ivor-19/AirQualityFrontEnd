@@ -13,14 +13,14 @@ import { router } from 'expo-router'
 
 const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
     const { user, renderUserData } = useAuth();
-    const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
+    const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, aqiAttention, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
     const emails = [
         {id: 1, email: "ivorcruz19@gmail.com"},
         {id: 2, email: "zpt.pogi@gmail.com"},
     ]
     const [toEmail, setToEmail] = useState([]);
     const [toSubject, setToSubject] = useState('Alert')
-    const [toMessage, setToMessage] = useState('Immediate notice: AQI index is too high. We highly recommend that students stay home.')
+    const [toMessage, setToMessage] = useState('')
     const [qualityMessage, setQualityMessage] = useState('');
 
     const getCurrentDate = () => {
@@ -48,6 +48,8 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
             setQualityMessage(
             `AQI: ${aqi}\nPM 2.5: ${pm2_5}\nCO: ${co}\nNO2: ${no2}\nTimestamp: ${currentTimestamp}\nDate: ${currentDate}\nRisk Percentage: ${aqiIL}\nCondition: ${aqiCon}`
             )
+
+           setToMessage(aqiAttention);
         
             // console.log(qualityMessage)
             const response = await axios.get('https://air-quality-back-end-v2.vercel.app/students/getEmails');
