@@ -14,6 +14,7 @@ import CustomHeader from '../../../components/CustomHeader';
 import { Image } from 'expo-image';
 import { darkThemeColors, lightThemeColors } from '../../../utils/alertColorUtils';
 import Modal from "react-native-modal";
+import api from '../../../utils/api';
 
 const settings = () => {
   const { user, logout, renderUserData } = useAuth();
@@ -66,10 +67,10 @@ const settings = () => {
   const toggleConnect = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAssetName', {assetName})
+      const response = await api.post('/assets/getAssetName', {assetName})
       if(response.data){
 
-        await axios.put(`https://air-quality-back-end-v2.vercel.app/users/editUser/${user._id}`, {asset_model: assetName})
+        await api.put(`/users/editUser/${user._id}`, {asset_model: assetName})
 
         console.log('Asset is found');
         isConnected(true);

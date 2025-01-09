@@ -8,6 +8,7 @@ import { ContributionGraph } from 'react-native-chart-kit'
 import { scale } from 'react-native-size-matters'
 import { useAuth } from '../../../context/AuthContext'
 import CustomHeader from '../../../components/CustomHeader'
+import api from '../../../utils/api';
 
 const history = () => {
   const { user, renderUserData } = useAuth();
@@ -47,7 +48,7 @@ const history = () => {
   
         // Fetch data while there are more pages
         while (currentPage <= totalPages) {
-          const response = await axios.get('https://air-quality-back-end-v2.vercel.app/history', {
+          const response = await api.get('/history', {
             params: { page: currentPage }
           });
   

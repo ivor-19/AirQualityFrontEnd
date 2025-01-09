@@ -18,12 +18,12 @@ const AuthLayout = () => {
     
     if (isConnectedToWifi) {
       setNoConnection(false);
-      console.log('connected')
+     
     }
 
     if (!isConnectedToWifi) {
       setNoConnection(true);
-      console.log('no connection')
+     
     }
 
     return () => {

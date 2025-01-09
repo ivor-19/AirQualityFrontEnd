@@ -9,6 +9,8 @@ import { Image } from 'expo-image';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { useAuth } from '../../context/AuthContext';
+import api from '../../utils/api';
+
 
 const loginScreen = () => {
   const [loading, setLoading] = useState(false);
@@ -25,7 +27,7 @@ const loginScreen = () => {
   const handleLogin = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/users/login', { email, password });
+      const response = await api.post('/users/login', { email, password });
       if (response.data.token) {
         const { token, user } = response.data;
         login(token, user);

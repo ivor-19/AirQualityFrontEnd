@@ -8,6 +8,8 @@ import { scale } from 'react-native-size-matters';
 import { router } from 'expo-router';
 import ComingSoon from '../../../components/ComingSoon';
 import * as SMS from 'expo-sms';
+import api from '../../../utils/api';
+
 
 const about = () => {
   // const [phoneNumber, setPhoneNumber] = useState();
@@ -22,7 +24,7 @@ const about = () => {
     const emailData = { to, subject, message };
 
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData);
+      const response = await api.post('/email/send', emailData);
       console.log('Send Message', response.data.message)
     } catch (error) {
       console.error('Error sending email', error)

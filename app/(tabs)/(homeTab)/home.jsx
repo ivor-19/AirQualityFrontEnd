@@ -10,9 +10,10 @@ import { useAuth } from '../../../context/AuthContext'
 import axios from 'axios'
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { scale } from 'react-native-size-matters'
+import api from '../../../utils/api';
 
 const Home = () => {
-  const { user, renderUserData } = useAuth();
+  const { user, renderUserData, token } = useAuth();
   const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
   const [to, setTo] = useState('ivorcruz19@gmail.com');
   const [subject, setSubject] = useState('');
@@ -40,9 +41,15 @@ const Home = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`);
+        const response = await api.get(
+          `/aqReadings/${user.asset_model}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, 
+            },
+          }
+        );
         const data = response.data[0];
-
         console.log("API Response Data:", response.data);
         const currentDate = getCurrentDate();
         const currentTimestamp = getCurrentTime();

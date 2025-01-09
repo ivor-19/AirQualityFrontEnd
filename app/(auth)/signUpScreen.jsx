@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 import Modal from "react-native-modal";
+import api from '../../utils/api';
 
 const signUpScreen = () => {
   const [username, setUsername] = useState('');
@@ -31,7 +32,7 @@ const signUpScreen = () => {
       const newAccount = { username, email, password, asset_model: " ", first_access: "Yes" };
       setLoading(true);
       try {
-        const response = await axios.post('https://air-quality-back-end-v2.vercel.app/users/signup', newAccount);
+        const response = await api.post('/users/signup', newAccount);
         console.log('Account Setup Complete', response.data);
         
         setUsername('');

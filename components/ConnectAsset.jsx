@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios';
 import { router } from 'expo-router';
 import { useAuth } from '../context/AuthContext';
+import api from '../utils/api';
+
 
 const ConnectAsset = () => {
   const { user, renderUserData } = useAuth();
@@ -34,12 +36,12 @@ const ConnectAsset = () => {
   const toggleConnect = async () => {
     setLoading(true);
     try {
-      const response = await axios.post('https://air-quality-back-end-v2.vercel.app/assets/getAssetName', { assetName });
+      const response = await api.post('/assets/getAssetName', { assetName });
       if (response.data) {
         console.log('Asset is found');
         console.log(response.data);
   
-        const updateResponse = await axios.post(`https://air-quality-back-end-v2.vercel.app/users/editUser/${user._id}`, { 
+        const updateResponse = await api.post(`/users/editUser/${user._id}`, { 
           asset_model: assetName, 
           first_access: "No" 
         });

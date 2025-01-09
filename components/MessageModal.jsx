@@ -10,6 +10,7 @@ import { useAQI } from '../context/AQIContext'
 import axios from 'axios'
 import RemixIcon from 'react-native-remix-icon';
 import { router } from 'expo-router'
+import api from '../utils/api';
 
 const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
     const { user, renderUserData } = useAuth();
@@ -52,7 +53,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
            setToMessage(aqiAttention);
         
             // console.log(qualityMessage)
-            const response = await axios.get('https://air-quality-back-end-v2.vercel.app/students/getEmails');
+            const response = await api.get('/students/getEmails');
             const emails = response.data.emails;
 
             setToEmail(emails.map(item => item.email).join(','))
@@ -73,10 +74,10 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
             try {
                 onPressCancelSend();
                 router.push('scanning');
-                const response = await axios.post('https://air-quality-back-end-v2.vercel.app/email/send', emailData); //Send email to gmails
+                const response = await api.post('/email/send', emailData); //Send email to gmails
                 console.log('Send Message', response.data.message);
 
-                const responseReadings = await axios.get(`https://air-quality-back-end-v2.vercel.app/aqReadings/${user.asset_model}`); 
+                const responseReadings = await api.get(`/aqReadings/${user.asset_model}`); 
                 const data = responseReadings.data[0];
     
                 console.log("API Response Data:", responseReadings.data);
@@ -95,7 +96,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                 };
                 console.log('Saving data with model:', user.asset_model); // Debug log to confirm model
     
-                await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData); //Save the email to inbox 
+                await api.post('/history', newHistoryData); //Save the email to inbox 
                 console.log('History data is saved:', newHistoryData);
 
             } catch (error) {
