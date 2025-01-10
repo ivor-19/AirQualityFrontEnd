@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
+// import jwt_decode from 'jwt-decode'; // Import jwt-decode
 import { router } from 'expo-router';
 
 const AuthContext = createContext();
@@ -31,6 +32,12 @@ export const AuthProvider = ({ children }) => {
         ]);
 
       if (storedToken && storedUserId && storedUsername && storedEmail && storedAssetModel && storedFirstAccess) {
+        // if (checkTokenExpiry(storedToken)) {
+        //   console.log('Token expired, logging out...');
+        //   logout(); // Log out the user if the token is expired
+        //   router.replace('loginScreen'); // Redirect to the login screen
+        //   return;
+        // }
         setToken(storedToken);
         setUser({
           _id: storedUserId,
@@ -90,6 +97,31 @@ export const AuthProvider = ({ children }) => {
     await SecureStore.setItemAsync('email', updatedUser.email || user.email);
     await SecureStore.setItemAsync('asset_model', updatedUser.asset_model || user.asset_model);
     await SecureStore.setItemAsync('first_access', updatedUser.first_access || user.first_access);
+  };
+
+  const checkTokenExpiry = (token) => {
+    if (!token) {
+      console.error('Token is missing or invalid');
+      return true;  // Treat missing token as expired
+    }
+
+    // try {
+    //   const decoded = jwt_decode(token);  // Decode the JWT token
+    //   const currentTime = Date.now() / 1000;  // Current time in seconds
+    //   const remainingTime = decoded.exp - currentTime;  // Remaining time before expiration in seconds
+
+    //   // Convert remaining time to a more readable format (minutes, hours)
+    //   const remainingMinutes = Math.floor(remainingTime / 60);
+    //   const remainingHours = Math.floor(remainingTime / 3600);
+
+    //   // Log the remaining time
+    //   console.log(`Token expires in ${remainingMinutes} minutes`);
+
+    //   return decoded.exp < currentTime; // Check if the token is expired
+    // } catch (error) {
+    //   console.error('Error decoding tokens', error);
+    //   return true;  // Return expired if there's an error decoding
+    // }
   };
 
   return (

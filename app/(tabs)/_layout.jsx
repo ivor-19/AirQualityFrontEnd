@@ -11,11 +11,15 @@ import { useAQI } from '../../context/AQIContext';
 import { scale } from 'react-native-size-matters';
 import { ScrollView } from '@motify/components';
 import MessageModal from '../../components/MessageModal';
+import { useAuth } from '../../context/AuthContext';
+import SessionsExpired from '../../components/SessionsExpired';
 
 const TabLayout = () => {
   const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
   const [modalVisible, setModalVisible] = useState(false);
+  const [showSession, setShowSession] = useState(false);
   const navigation = useNavigation(); // Initialize navigation
+  const { token } = useAuth();
 
   const openModal = () => {
     setModalVisible(true);
@@ -30,6 +34,14 @@ const TabLayout = () => {
   const toggleCancelSend = () => {
     setModalVisible(false);
   };
+
+  useEffect(() => {
+    setShowSession(false);
+    if(token === ''){
+      console.log('No token was found. Session expired.')
+      setShowSession(true);
+    }
+  }, [token]); 
 
   useEffect(() => {
     const resetModalOnFocus = navigation.addListener('focus', () => {
@@ -131,6 +143,9 @@ const TabLayout = () => {
       {/* Modal that will show when sample tab is clicked */}
       {modalVisible ? (
        <MessageModal onPressCancelSend={toggleCancelSend} onPressConfirmSend={toggleConfirmSend}/>
+      ) : null}
+      {showSession ? (
+        <SessionsExpired />
       ) : null}
     </AlertNotificationRoot>
   );

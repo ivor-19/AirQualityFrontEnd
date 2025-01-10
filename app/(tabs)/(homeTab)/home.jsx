@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import RemixIcon from 'react-native-remix-icon'
 import { router } from 'expo-router'
@@ -15,10 +15,6 @@ import api from '../../../utils/api';
 const Home = () => {
   const { user, renderUserData, token } = useAuth();
   const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
-  const [to, setTo] = useState('ivorcruz19@gmail.com');
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
-  const [qualityMessage, setQualityMessage] = useState('');
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -39,7 +35,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    if(token !== ''){
+     const fetchData = async () => {
       try {
         const response = await api.get(
           `/aqReadings/${user.asset_model}`,
@@ -77,6 +74,10 @@ const Home = () => {
     }, 2000);
 
     return () => clearInterval(interval);
+    }
+    else{
+      console.log('empty token')
+    }
   }, []); 
 
 
@@ -171,7 +172,10 @@ const Home = () => {
             </TouchableOpacity> */}
           </View>
         </View>
-        </View>
+      </View>
+      
+        
+      
     </SafeAreaView>
   )
 }
