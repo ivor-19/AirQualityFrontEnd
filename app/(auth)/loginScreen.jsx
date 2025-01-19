@@ -118,6 +118,7 @@ const loginScreen = () => {
                         <Text className='font-pBold text-pastel-black' style={{fontSize: scale(10)}}> Sign Up</Text>
                     </View>
                 </TouchableOpacity>
+                <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v6.0.0</Text>
             </View>
           </View>
         </ScrollView>
