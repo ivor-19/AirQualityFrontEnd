@@ -38,6 +38,7 @@ const loginScreen = () => {
         await SecureStore.setItemAsync('_id', user._id);
         await SecureStore.setItemAsync('username', user.username);
         await SecureStore.setItemAsync('email', user.email);
+        await SecureStore.setItemAsync('role', user.role);
         await SecureStore.setItemAsync('asset_model', user.asset_model);
         await SecureStore.setItemAsync('first_access', user.first_access);
   
@@ -46,7 +47,12 @@ const loginScreen = () => {
           router.replace('onboarding');
         }
         else if(user.first_access === "No"){
-          router.replace('home');
+          if(user.role === "Admin"){
+            router.replace('home');
+          }
+          else{
+            router.replace('studentHome');
+          }
         }
       }
     } catch (error) {

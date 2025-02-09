@@ -248,7 +248,7 @@ const history = () => {
                         </View>
                       ): null}
                       
-                  </TouchableOpacity>
+                    </TouchableOpacity>
                   )
               })}
             </View>

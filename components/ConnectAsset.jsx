@@ -58,7 +58,12 @@ const ConnectAsset = () => {
           textInputRef.current.blur();
   
           // Step 5: Redirect to home page
-          router.replace('home');
+          if(user.role === "Student"){
+            router.replace('studentHome');
+          }
+          else if(user.role === "Admin"){
+            router.replace('home');
+          }
         } else {
           setLoading(false);
           console.log('Error: User was not updated');
@@ -89,6 +94,7 @@ const ConnectAsset = () => {
     <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <View className='w-[80%] bg-white rounded-[10px] p-4 '>
         <View className='w-full bg-white items-center' style={{gap: 10}}>
+          <Text>ROle: {user.role}</Text>
           {assetNotFound ? (
               <View className='w-[100%]'>
                 <Text className='text-right font-pRegular text-[10px] text-red-400'>{validationMessage}</Text>

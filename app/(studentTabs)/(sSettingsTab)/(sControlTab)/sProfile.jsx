@@ -10,7 +10,7 @@ import { useAuth } from '../../../../context/AuthContext'
 import RemixIcon from 'react-native-remix-icon'
 import ProfileControl from '../../../../components/ProfileControl'
 
-const Profile = () => {
+const StudentProfile = () => {
   const { user } = useAuth();
   const [editable, setEditable] = useState(false); // Fixed here
   const [usenameInvalid, isUsernameInvalid] = useState(false);
@@ -124,4 +124,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default StudentProfile

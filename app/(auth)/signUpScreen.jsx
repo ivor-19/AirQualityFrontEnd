@@ -29,7 +29,14 @@ const signUpScreen = () => {
 
   const handleSubmit = async () => {
     if(password === confirmPassword) {
-      const newAccount = { username, email, password, asset_model: " ", first_access: "Yes" };
+      const newAccount = { 
+        username, 
+        email, 
+        password, 
+        role: 'Student',  // Default role
+        asset_model: " ", 
+        first_access: "Yes" 
+      };
       setLoading(true);
       try {
         const response = await api.post('/users/signup', newAccount);

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { router, Tabs } from 'expo-router';
 import RemixIcon from 'react-native-remix-icon';
-import { useNavigation, useRoute } from '@react-navigation/native'; // Import useNavigation
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 import NoInternetChecker from '../../components/NoInternetChecker';
 import Modal from "react-native-modal";
 import { AlertNotificationRoot } from 'react-native-alert-notification';
@@ -20,21 +20,6 @@ const TabLayout = () => {
   const [showSession, setShowSession] = useState(false);
   const navigation = useNavigation(); // Initialize navigation
   const { token, user } = useAuth();
-  const r = useRoute();
-
-  const openModal = () => {
-    setModalVisible(true);
-  };
-
-  const toggleConfirmSend = () => {
-    setModalVisible(false);
-    console.log('send')
-    // router.push('scanning');
-  };
-
-  const toggleCancelSend = () => {
-    setModalVisible(false);
-  };
 
   useEffect(() => {
     setShowSession(false);
@@ -55,15 +40,6 @@ const TabLayout = () => {
 
     return resetModalOnFocus; // Cleanup the listener when the component unmounts
   }, [navigation, modalVisible]);
-
-  useEffect(() => {
-    console.log('Current Route:', r.name); 
-    if (r.name === 'scanning') {
-      console.log('You are in the Scanning page');
-    } else if (r.name === 'AchatPage') {
-      console.log('You are in the Achat Page');
-    }
-  }, [r]);
 
   return (
     <AlertNotificationRoot
@@ -90,7 +66,7 @@ const TabLayout = () => {
       >
         {/* Tab Screens */}
         <Tabs.Screen
-          name='(homeTab)'
+          name='(studentHomeTab)'
           options={{
             headerShown: false,
             title: '',
@@ -100,38 +76,7 @@ const TabLayout = () => {
           }}
         />
         <Tabs.Screen
-          name='(historyTab)'
-          options={{
-            headerShown: false,
-            title: '',
-            tabBarIcon: ({ color, focused }) => (
-              <RemixIcon size={24} name={focused ? 'ri-file-list-2-fill' : 'ri-file-list-2-line'} color={color} />
-            ),
-          }}
-        />
-        <Tabs.Screen
-          name='scanning'
-          options={({ route }) => ({
-            headerShown: false,
-            title: '',
-            tabBarStyle: { display: route.name === 'scanning' ? 'none' : 'flex' },
-            tabBarButton: (props) => (
-             
-                <View className={`h-20 w-20 bg-pastel-black items-center justify-center rounded-full absolute top-[-50] border-4 border-white`}>
-                  <TouchableOpacity
-                    onPress={openModal}
-                    className='h-full w-full items-center justify-center rounded-full'
-                    activeOpacity={0.5}
-                  >
-                    <RemixIcon size={24} name={'ri-send-plane-fill'} color='white' />
-                  </TouchableOpacity>
-                </View>
-             
-            ),
-          })}
-        />
-        <Tabs.Screen
-          name='AchatPage'
+          name='chatPage'
           options={{
             headerShown: false,
             title: '',
@@ -141,7 +86,7 @@ const TabLayout = () => {
           }}
         />
         <Tabs.Screen
-          name='(settingsTab)'
+          name='(sSettingsTab)'
           options={{
             headerShown: false,
             title: '',
@@ -150,12 +95,8 @@ const TabLayout = () => {
             ),
           }}
         />
-      </Tabs>
 
-      {/* Modal that will show when sample tab is clicked */}
-      {modalVisible ? (
-       <MessageModal onPressCancelSend={toggleCancelSend} onPressConfirmSend={toggleConfirmSend}/>
-      ) : null}
+      </Tabs>
       {showSession ? (
         <SessionsExpired />
       ) : null}

@@ -98,6 +98,16 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                 await axios.post('https://air-quality-back-end-v2.vercel.app/history', newHistoryData); //Save the email to inbox 
                 console.log('History data is saved:', newHistoryData);
 
+                const newChatAlert = {
+                    message: message,
+                    sender: user.username,
+                    role: user.role,
+                    date: date,
+                }
+
+                await axios.post('https://air-quality-back-end-v2.vercel.app/chat', newChatAlert)
+                console.log('Chat is send');
+
             } catch (error) {
                 console.error('Error sending email', error);
             }

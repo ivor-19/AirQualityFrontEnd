@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
           storedUserId,
           storedUsername,
           storedEmail,
+          storedRole,
           storedAssetModel,
           storedFirstAccess
         ] = await Promise.all([
@@ -27,11 +28,12 @@ export const AuthProvider = ({ children }) => {
           SecureStore.getItemAsync('_id'),
           SecureStore.getItemAsync('username'),
           SecureStore.getItemAsync('email'),
+          SecureStore.getItemAsync('role'),
           SecureStore.getItemAsync('asset_model'),
           SecureStore.getItemAsync('first_access')
         ]);
 
-      if (storedToken && storedUserId && storedUsername && storedEmail && storedAssetModel && storedFirstAccess) {
+      if (storedToken && storedUserId && storedUsername && storedEmail && storedRole && storedAssetModel && storedFirstAccess) {
         // if (checkTokenExpiry(storedToken)) {
         //   console.log('Token expired, logging out...');
         //   logout(); // Log out the user if the token is expired
@@ -43,6 +45,7 @@ export const AuthProvider = ({ children }) => {
           _id: storedUserId,
           username: storedUsername,
           email: storedEmail,
+          role: storedRole,
           asset_model: storedAssetModel,
           first_access: storedFirstAccess
         });
@@ -50,7 +53,13 @@ export const AuthProvider = ({ children }) => {
         if(storedToken !== ''){
           if (storedFirstAccess === "No") {
             console.log("User is returning, redirecting to home");
-            router.replace('home');
+            console.log("Stored Token: ", storedToken);
+            if(storedRole === "Admin"){
+              router.replace('home');
+            }
+            else{
+              router.replace('studentHome');
+            }
           }
         }
       } else {
@@ -69,6 +78,7 @@ export const AuthProvider = ({ children }) => {
     SecureStore.setItemAsync('_id', userData._id);
     SecureStore.setItemAsync('username', userData.username);
     SecureStore.setItemAsync('email', userData.email);
+    SecureStore.setItemAsync('role', userData.role);
     SecureStore.setItemAsync('asset_model', userData.asset_model);
     SecureStore.setItemAsync('first_access', userData.first_access);
   };
@@ -80,6 +90,7 @@ export const AuthProvider = ({ children }) => {
     SecureStore.deleteItemAsync('_id');
     SecureStore.deleteItemAsync('username');
     SecureStore.deleteItemAsync('email');
+    SecureStore.deleteItemAsync('role');
     SecureStore.deleteItemAsync('asset_model');
     SecureStore.deleteItemAsync('first_access');
 
@@ -95,6 +106,7 @@ export const AuthProvider = ({ children }) => {
     await SecureStore.setItemAsync('_id', updatedUser._id || user._id);
     await SecureStore.setItemAsync('username', updatedUser.username || user.username);
     await SecureStore.setItemAsync('email', updatedUser.email || user.email);
+    await SecureStore.setItemAsync('email', updatedUser.role || user.role);
     await SecureStore.setItemAsync('asset_model', updatedUser.asset_model || user.asset_model);
     await SecureStore.setItemAsync('first_access', updatedUser.first_access || user.first_access);
   };
