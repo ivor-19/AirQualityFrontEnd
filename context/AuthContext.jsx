@@ -22,7 +22,8 @@ export const AuthProvider = ({ children }) => {
           storedEmail,
           storedRole,
           storedAssetModel,
-          storedFirstAccess
+          storedFirstAccess,
+          storedTokenNotif
         ] = await Promise.all([
           SecureStore.getItemAsync('userToken'),
           SecureStore.getItemAsync('_id'),
@@ -30,10 +31,11 @@ export const AuthProvider = ({ children }) => {
           SecureStore.getItemAsync('email'),
           SecureStore.getItemAsync('role'),
           SecureStore.getItemAsync('asset_model'),
-          SecureStore.getItemAsync('first_access')
+          SecureStore.getItemAsync('first_access'),
+          SecureStore.getItemAsync('token_notif')
         ]);
 
-      if (storedToken && storedUserId && storedUsername && storedEmail && storedRole && storedAssetModel && storedFirstAccess) {
+      if (storedToken && storedUserId && storedUsername && storedEmail && storedRole && storedAssetModel && storedFirstAccess && storedTokenNotif) {
         // if (checkTokenExpiry(storedToken)) {
         //   console.log('Token expired, logging out...');
         //   logout(); // Log out the user if the token is expired
@@ -47,7 +49,8 @@ export const AuthProvider = ({ children }) => {
           email: storedEmail,
           role: storedRole,
           asset_model: storedAssetModel,
-          first_access: storedFirstAccess
+          first_access: storedFirstAccess,
+          token_notif: storedTokenNotif
         });
 
         if(storedToken !== ''){
@@ -81,6 +84,7 @@ export const AuthProvider = ({ children }) => {
     SecureStore.setItemAsync('role', userData.role);
     SecureStore.setItemAsync('asset_model', userData.asset_model);
     SecureStore.setItemAsync('first_access', userData.first_access);
+    SecureStore.setItemAsync('token_notif', userData.token_notif);
   };
 
   const logout = () => {
@@ -93,6 +97,7 @@ export const AuthProvider = ({ children }) => {
     SecureStore.deleteItemAsync('role');
     SecureStore.deleteItemAsync('asset_model');
     SecureStore.deleteItemAsync('first_access');
+    SecureStore.deleteItemAsync('token_notif');
 
     // Redirect the user to the login screen
     console.log("User logged out");
@@ -106,9 +111,10 @@ export const AuthProvider = ({ children }) => {
     await SecureStore.setItemAsync('_id', updatedUser._id || user._id);
     await SecureStore.setItemAsync('username', updatedUser.username || user.username);
     await SecureStore.setItemAsync('email', updatedUser.email || user.email);
-    await SecureStore.setItemAsync('email', updatedUser.role || user.role);
+    await SecureStore.setItemAsync('role', updatedUser.role || user.role);
     await SecureStore.setItemAsync('asset_model', updatedUser.asset_model || user.asset_model);
     await SecureStore.setItemAsync('first_access', updatedUser.first_access || user.first_access);
+    await SecureStore.setItemAsync('token_notif', updatedUser.token_notif || user.token_notif);
   };
 
   const checkTokenExpiry = (token) => {

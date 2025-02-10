@@ -5,8 +5,33 @@ import { router } from 'expo-router';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 
+import { usePushNotifications } from "../usePushNotifications";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 
 const ConnectAsset = () => {
+    const { expoPushToken, notification, registerForPushNotifications } = usePushNotifications();
+    
+    useEffect(() => {
+      registerForPushNotifications();
+    }, []);
+  
+    useEffect(() => {
+      if (expoPushToken) {
+        console.log("Production Push Token:", expoPushToken);
+        // Here you should send this token to your backend server
+      }
+    }, [expoPushToken]);
+
+
   const { user, renderUserData } = useAuth();
 
   const [loading, setLoading] = useState(false);
@@ -43,7 +68,8 @@ const ConnectAsset = () => {
   
         const updateResponse = await api.post(`/users/editUser/${user._id}`, { 
           asset_model: assetName, 
-          first_access: "No" 
+          first_access: "No",
+          token_notif: expoPushToken.data
         });
         console.log('User updated:', updateResponse);
   
@@ -95,6 +121,20 @@ const ConnectAsset = () => {
       <View className='w-[80%] bg-white rounded-[10px] p-4 '>
         <View className='w-full bg-white items-center' style={{gap: 10}}>
           <Text>ROle: {user.role}</Text>
+          <View className="h-32 w-full items-center justify-center top-0 bottom-0 z-100">
+            <Text className='font-bold'>Push Notification Demo</Text>
+            <Text>Your push token:</Text>
+            <Text className='bg-gray-400 text-[12px]'>{expoPushToken?.data || "No token yet"}</Text>
+            {notification && (
+              <View>
+                <Text>Last Notification:</Text>
+                <Text>
+                  {JSON.stringify(notification.request.content, null, 2)}
+                </Text>
+              </View>
+            )}
+            
+          </View>
           {assetNotFound ? (
               <View className='w-[100%]'>
                 <Text className='text-right font-pRegular text-[10px] text-red-400'>{validationMessage}</Text>

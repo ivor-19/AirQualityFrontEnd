@@ -11,8 +11,35 @@ import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 
+import { usePushNotifications } from "../../usePushNotifications";
+import * as Notifications from "expo-notifications";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 
 const loginScreen = () => {
+  const { expoPushToken, notification, registerForPushNotifications } = usePushNotifications();
+  
+  useEffect(() => {
+    registerForPushNotifications();
+  }, []);
+
+  useEffect(() => {
+    if (expoPushToken) {
+      console.log("Production Push Token:", expoPushToken);
+      // Here you should send this token to your backend server
+    }
+  }, [expoPushToken]);
+
+  //----------------------------
+
+
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
@@ -41,6 +68,17 @@ const loginScreen = () => {
         await SecureStore.setItemAsync('role', user.role);
         await SecureStore.setItemAsync('asset_model', user.asset_model);
         await SecureStore.setItemAsync('first_access', user.first_access);
+        await SecureStore.setItemAsync('token_notif', user.token_notif);
+        
+        if(user.token_notif !== expoPushToken.data){
+          try{
+            const res = await api.post('/expoToken', {token_notif: expoPushToken.data})
+            console.log(res.data);
+          }
+          catch(error){
+            console.error("Error adding token notification", error)
+          }
+        }
   
         setLoading(false);
         if(user.first_access === "Yes"){
@@ -84,6 +122,7 @@ const loginScreen = () => {
           </View>
         }
       <ScrollView>
+
         <Image source={require('../../assets/background/drop3.png')} className='absolute opacity-50' style={{top: scale(-30), left: scale(0), height: scale(400), width: scale(400)}} contentFit='contain'></Image>
         <Image source={require('../../assets/background/drop4.png')} className='absolute opacity-50' style={{top: scale(400), height: scale(600), width: scale(600)}} contentFit='contain'></Image>
           <View className='h-full w-full p-8 mt-16' style={{ gap: scale(16) }}> 
@@ -125,6 +164,20 @@ const loginScreen = () => {
                     </View>
                 </TouchableOpacity>
                 <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v6.0.0</Text>
+                <View className="h-32 w-full items-center justify-center top-0 bottom-0 z-100 hidden">
+                  <Text className='font-bold'>Push Notification Demo</Text>
+                  <Text>Your push token:</Text>
+                  <Text className='bg-gray-400 text-[12px]'>{expoPushToken?.data || "No token yet"}</Text>
+                  {notification && (
+                    <View>
+                      <Text>Last Notification:</Text>
+                      <Text>
+                        {JSON.stringify(notification.request.content, null, 2)}
+                      </Text>
+                    </View>
+                  )}
+                  
+                </View>
             </View>
           </View>
         </ScrollView>

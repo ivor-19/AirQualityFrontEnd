@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "21641461085",
+    "project_id": "fire-airguard",
+    "storage_bucket": "fire-airguard.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21641461085:android:b7d10e35a6f4fe1c7e3cb4",
+        "android_client_info": {
+          "package_name": "com.rov19.client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKo7Ag4m4afZvVKUaAcQfY_tINpcYur3o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

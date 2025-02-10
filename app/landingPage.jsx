@@ -6,6 +6,7 @@ import { Image } from 'expo-image';
 import { scale } from 'react-native-size-matters';
 import SplashScreen from '../components/SplashScreen';
 import NetInfo from '@react-native-community/netinfo'; // Import NetInfo
+import TokenNotification from '../components/TokenNotification';
 
 const landingPage = () => {
     const [showSplashScreen, setShowSplashScreen] = useState(true);

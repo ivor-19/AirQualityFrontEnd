@@ -15,7 +15,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/app-icons/leaf-adaptive-icon.png"
       },
-      "package": "com.rov19.client"
+      "package": "com.rov19.client",
+      "googleServicesFile": "./android/app/google-services.json",
+      "useNextNotificationsApi": true
     },
     "web": {
       "bundler": "metro",
@@ -33,8 +35,23 @@
         }
       ],
       "expo-localization",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/app-icons/leaf-adaptive-icon.png",
+          "color": "#ffffff",
+          "sounds": ["./assets/notification-sound.wav"]
+        }
+      ]
     ],
+    "notification": {
+      "icon": "./assets/app-icons/leaf-adaptive-icon.png",
+      "color": "#ffffff",
+      "iosDisplayInForeground": true,
+      "androidMode": "default",
+      "androidCollapsedTitle": "New Notification"
+    },
     "experiments": {
       "typedRoutes": true
     },

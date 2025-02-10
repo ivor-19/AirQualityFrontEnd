@@ -9,6 +9,7 @@ import { scale } from 'react-native-size-matters'
 import api from '../../utils/api'
 import { useAuth } from '../../context/AuthContext'
 import { Image } from 'expo-image'
+import axios from 'axios'
 
 const chatPage = () => {
   const { user } = useAuth();
@@ -17,6 +18,9 @@ const chatPage = () => {
   const scrollViewRef = useRef();
   const prevChatLengthRef = useRef(chat.length);
   const [loading, setLoading] = useState(true);
+
+  const [notifTokens, setNotifTokens] = useState([]);
+  const [userNotifToken, setUserNotifToken] = useState("");
 
   useEffect(() => {
     if (chat.length > prevChatLengthRef.current) {
@@ -39,11 +43,51 @@ const chatPage = () => {
     fetchChats();
   },[chat])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get('/expoToken');
+        const tokenList = response.data.tokens.map(item => item.token_notif);
+        // const uniqueTokens = [...new Set(tokenList)];
+        console.log("token list: ", tokenList)
+
+        const getUserNotifToken = await api.get(`/users/${user._id}`);
+        console.log("Notif Token: ", getUserNotifToken.data.user.token_notif);
+        
+        setNotifTokens(tokenList);
+        setUserNotifToken(getUserNotifToken.data.user.token_notif);
+      } catch (error) {
+        console.error("Error getting notification token:", error);
+      
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const handleSend = async () => {
+    //userNotifToken = "this is example because userNotifToken is the one should be compared"
     const newChat = {message, sender: user.username, role: user.role}
     try {
       const response = await api.post('/chat', newChat)
       console.log('Send success', response.data);
+
+      const uniqueTokens = [...new Set(notifTokens)]; // filter the tokens if duplicate is found
+      const tokensToSend = uniqueTokens.filter(token => token !== userNotifToken); // filter the token to not send a notification to themselves
+
+      const notificationPromises = tokensToSend.map(token => 
+        axios.post("https://exp.host/--/api/v2/push/send", {
+          to: token,
+          title: "Air Guard Chat",
+          body: `${user.username}: ${message}`,
+          sound: "default"
+        })
+      );
+
+      // Wait for all notifications to be sent
+      const responses = await Promise.all(notificationPromises);
+      console.log("Notifications sent successfully", responses);
+
       setMessage('');
       Keyboard.dismiss();
     } catch (error) {

@@ -35,7 +35,8 @@ const signUpScreen = () => {
         password, 
         role: 'Student',  // Default role
         asset_model: " ", 
-        first_access: "Yes" 
+        first_access: "Yes",
+        token_notif: " ",
       };
       setLoading(true);
       try {

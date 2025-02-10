@@ -41,11 +41,12 @@ const Onboarding = () => {
         showsHorizontalScrollIndicator={false}
         pagingEnabled
       />
-      {showConnect ? (
+      {/* Uncomment this if you want to require a user to input the model name at the start */}
+      {/* {showConnect ? (
         <Modal isVisible={showConnect} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
           <ConnectAsset />
         </Modal>
-      ) : null}
+      ) : null} */}
     </>
   )
 }

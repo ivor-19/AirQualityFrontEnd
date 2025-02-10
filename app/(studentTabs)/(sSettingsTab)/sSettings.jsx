@@ -30,6 +30,8 @@ const StudentSettings = () => {
   const textInputRef = useRef(null);
   const [showLogout, setShowLogout] = useState(false);
 
+  const [notif_tokens, setNotifTokens] = useState([]);
+
   useFocusEffect(
     React.useCallback(() => {
       setLoading(false);
@@ -105,6 +107,46 @@ const StudentSettings = () => {
     }
   }
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get('/expoToken');
+        const tokenList = response.data.tokens.map(item => item.token_notif);
+        // const uniqueTokens = [...new Set(tokenList)];
+        console.log("token list: ", tokenList)
+        
+        setNotifTokens(tokenList);
+      } catch (error) {
+        console.error("Error getting notification token:", error);
+      
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const sendNotif = async () => {
+    try{
+      const uniqueTokens = [...new Set(notif_tokens)];
+
+      const notificationPromises = uniqueTokens.map(token => 
+        axios.post("https://exp.host/--/api/v2/push/send", {
+          to: token,
+          title: "Hello",
+          body: "This is a test push notification",
+          sound: "default"
+        })
+      );
+
+      // Wait for all notifications to be sent
+      const responses = await Promise.all(notificationPromises);
+      console.log("Notifications sent successfully", responses);
+    }
+    catch(error){
+      console.error("Error sending notification", error)
+    }
+  }
+
   // const toggleDeleteUser = async () => {
   //   try {
   //     const response = await axios.delete(`https://air-quality-back-end-v2.vercel.app/users/deleteUser/${user._id}`);
@@ -126,6 +168,7 @@ const StudentSettings = () => {
                 <View className='flex-1 justify-center'>
                   <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
                   <Text className='font-pRegular text-gray-400 text-[10px]'>{user.email}</Text>
+                  <Text className='font-pRegular text-gray-400 text-[10px]'>{user.token_notif}</Text>
                 </View>
                 <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] item' activeOpacity={0.7} onPress={() => router.push('profile')} style={{width: scale(120)}}>
                   <Text className='font-pRegular text-white text-[10px] text-center'>Go to Profile</Text>
@@ -189,6 +232,14 @@ const StudentSettings = () => {
         <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
         <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v6.0.0</Text>
+        <TouchableOpacity onPress={sendNotif} className='w-full items-center bg-gray-100 py-2'>
+          <Text>Send notif</Text>
+        </TouchableOpacity>
+        <View>
+          {notif_tokens.map((token, index) => (
+            <Text key={index}>{token}</Text>
+          ))}
+        </View>
         {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
         {showLogout ? (
