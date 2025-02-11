@@ -10,9 +10,11 @@ import { useAQI } from '../context/AQIContext'
 import axios from 'axios'
 import RemixIcon from 'react-native-remix-icon';
 import { router } from 'expo-router'
+import { useNotificationContext } from '../context/NotificationContext'
 
 const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
     const { user, renderUserData } = useAuth();
+    const { notifTokens, userNotifToken } = useNotificationContext();
     const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, aqiAttention, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
     const emails = [
         {id: 1, email: "ivorcruz19@gmail.com"},
@@ -60,7 +62,6 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
         fetch();
     }, [])
         
-    
     const sendAlert = async () => {
         try{
             const to = `${toEmail}`;
@@ -107,6 +108,24 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
 
                 await axios.post('https://air-quality-back-end-v2.vercel.app/chat', newChatAlert)
                 console.log('Chat is send');
+                
+
+                //For Notifications
+                const uniqueTokens = [...new Set(notifTokens)]; // filter the tokens if duplicate is found
+                const tokensToSend = uniqueTokens.filter(token => token !== userNotifToken); // filter the token to not send a notification to themselves
+
+                const notificationPromises = tokensToSend.map(token => 
+                    axios.post("https://exp.host/--/api/v2/push/send", {
+                    to: token,
+                    title: "Air Guard Chat",
+                    body: `Admin: ${message}`,
+                    sound: "default"
+                    })
+                );
+
+                // Wait for all notifications to be sent
+                const responses = await Promise.all(notificationPromises);
+                console.log("Notifications sent successfully", responses);
 
             } catch (error) {
                 console.error('Error sending email', error);

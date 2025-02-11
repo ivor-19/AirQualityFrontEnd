@@ -15,9 +15,11 @@ import { Image } from 'expo-image';
 import { darkThemeColors, lightThemeColors } from '../../../utils/alertColorUtils';
 import Modal from "react-native-modal";
 import api from '../../../utils/api';
+import { useNotificationContext } from '../../../context/NotificationContext';
 
 const settings = () => {
   const { user, logout, renderUserData } = useAuth();
+  const { notifTokens } = useNotificationContext();
   const { resetAQI } = useAQI();
 
   const [loading, setLoading] = useState(false);
@@ -64,46 +66,46 @@ const settings = () => {
     }
   }
 
-  const toggleConnect = async () => {
-    setLoading(true);
-    try {
-      const response = await api.post('/assets/getAssetName', {assetName})
-      if(response.data){
+  // const toggleConnect = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await api.post('/assets/getAssetName', {assetName})
+  //     if(response.data){
 
-        await api.put(`/users/editUser/${user._id}`, {asset_model: assetName})
+  //       await api.put(`/users/editUser/${user._id}`, {asset_model: assetName})
 
-        console.log('Asset is found');
-        isConnected(true);
-        setLoading(false);
-        isAssetNotFound(false);
-        setEnableButton(false);
-        textInputRef.current.blur();
+  //       console.log('Asset is found');
+  //       isConnected(true);
+  //       setLoading(false);
+  //       isAssetNotFound(false);
+  //       setEnableButton(false);
+  //       textInputRef.current.blur();
 
-        renderUserData({ ...user, asset_model: assetName });
-        resetAQI();
-        Toast.show({
-          type: ALERT_TYPE.SUCCESS,
-          title: 'Success',
-          textBody: `You are now connected to model: ${assetName}`,
-          autoClose: 3000,
-          closeOnOverlayTap: true,
-        })
-      }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessage = error.response.data.message || error.response.data.error;
-        console.log(errorMessage)
-        if (errorMessage === "Can't find asset name") {
-          isAssetNotFound(true)
-          setValidationMessage(errorMessage);
-          setLoading(false);
-          isConnected(false);
-        } 
-      } else {
-        console.error('Error creating account', error);
-      }
-    }
-  }
+  //       renderUserData({ ...user, asset_model: assetName });
+  //       resetAQI();
+  //       Toast.show({
+  //         type: ALERT_TYPE.SUCCESS,
+  //         title: 'Success',
+  //         textBody: `You are now connected to model: ${assetName}`,
+  //         autoClose: 3000,
+  //         closeOnOverlayTap: true,
+  //       })
+  //     }
+  //   } catch (error) {
+  //     if (error.response && error.response.data) {
+  //       const errorMessage = error.response.data.message || error.response.data.error;
+  //       console.log(errorMessage)
+  //       if (errorMessage === "Can't find asset name") {
+  //         isAssetNotFound(true)
+  //         setValidationMessage(errorMessage);
+  //         setLoading(false);
+  //         isConnected(false);
+  //       } 
+  //     } else {
+  //       console.error('Error creating account', error);
+  //     }
+  //   }
+  // }
 
   // const toggleDeleteUser = async () => {
   //   try {
@@ -146,7 +148,7 @@ const settings = () => {
                 <Text className='font-pRegular text-gray-400 text-[10px]'>{showModelAsset ? '' : 'edit'}</Text>
               </View>
             </TouchableOpacity>
-            {showModelAsset ? (
+            {/* {showModelAsset ? (
                 <View className='w-full bg-white items-center pb-4' style={{gap: 10}}>
                   {assetNotFound ? (
                     <View className='w-[80%]'>
@@ -181,14 +183,15 @@ const settings = () => {
                     <Text className='font-pRegular text-gray-400 text-[10px]'>or pair using QR</Text>
                   </TouchableOpacity>
               </View>
-              ) : null}
+              ) : null} */}
         </View>
         <SettingsControl title={'User Guide and Tutorial'} icon={'ri-guide-line'}/>
         <SettingsControl title={'About this app'} icon={'ri-question-line'}/>
         <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
         <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
-        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v6.0.0</Text>
+        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.0.0</Text>
+
         {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
         {showLogout ? (

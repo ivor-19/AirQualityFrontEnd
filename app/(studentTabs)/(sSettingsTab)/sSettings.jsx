@@ -30,8 +30,6 @@ const StudentSettings = () => {
   const textInputRef = useRef(null);
   const [showLogout, setShowLogout] = useState(false);
 
-  const [notif_tokens, setNotifTokens] = useState([]);
-
   useFocusEffect(
     React.useCallback(() => {
       setLoading(false);
@@ -66,86 +64,48 @@ const StudentSettings = () => {
     }
   }
 
-  const toggleConnect = async () => {
-    setLoading(true);
-    try {
-      const response = await api.post('/assets/getAssetName', {assetName})
-      if(response.data){
+  // const toggleConnect = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const response = await api.post('/assets/getAssetName', {assetName})
+  //     if(response.data){
 
-        await api.put(`/users/editUser/${user._id}`, {asset_model: assetName})
+  //       await api.put(`/users/editUser/${user._id}`, {asset_model: assetName})
 
-        console.log('Asset is found');
-        isConnected(true);
-        setLoading(false);
-        isAssetNotFound(false);
-        setEnableButton(false);
-        textInputRef.current.blur();
+  //       console.log('Asset is found');
+  //       isConnected(true);
+  //       setLoading(false);
+  //       isAssetNotFound(false);
+  //       setEnableButton(false);
+  //       textInputRef.current.blur();
 
-        renderUserData({ ...user, asset_model: assetName });
-        resetAQI();
-        Toast.show({
-          type: ALERT_TYPE.SUCCESS,
-          title: 'Success',
-          textBody: `You are now connected to model: ${assetName}`,
-          autoClose: 3000,
-          closeOnOverlayTap: true,
-        })
-      }
-    } catch (error) {
-      if (error.response && error.response.data) {
-        const errorMessage = error.response.data.message || error.response.data.error;
-        console.log(errorMessage)
-        if (errorMessage === "Can't find asset name") {
-          isAssetNotFound(true)
-          setValidationMessage(errorMessage);
-          setLoading(false);
-          isConnected(false);
-        } 
-      } else {
-        console.error('Error creating account', error);
-      }
-    }
-  }
+  //       renderUserData({ ...user, asset_model: assetName });
+  //       resetAQI();
+  //       Toast.show({
+  //         type: ALERT_TYPE.SUCCESS,
+  //         title: 'Success',
+  //         textBody: `You are now connected to model: ${assetName}`,
+  //         autoClose: 3000,
+  //         closeOnOverlayTap: true,
+  //       })
+  //     }
+  //   } catch (error) {
+  //     if (error.response && error.response.data) {
+  //       const errorMessage = error.response.data.message || error.response.data.error;
+  //       console.log(errorMessage)
+  //       if (errorMessage === "Can't find asset name") {
+  //         isAssetNotFound(true)
+  //         setValidationMessage(errorMessage);
+  //         setLoading(false);
+  //         isConnected(false);
+  //       } 
+  //     } else {
+  //       console.error('Error creating account', error);
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get('/expoToken');
-        const tokenList = response.data.tokens.map(item => item.token_notif);
-        // const uniqueTokens = [...new Set(tokenList)];
-        console.log("token list: ", tokenList)
-        
-        setNotifTokens(tokenList);
-      } catch (error) {
-        console.error("Error getting notification token:", error);
-      
-      }
-    };
 
-    fetchData();
-  }, []);
-
-  const sendNotif = async () => {
-    try{
-      const uniqueTokens = [...new Set(notif_tokens)];
-
-      const notificationPromises = uniqueTokens.map(token => 
-        axios.post("https://exp.host/--/api/v2/push/send", {
-          to: token,
-          title: "Hello",
-          body: "This is a test push notification",
-          sound: "default"
-        })
-      );
-
-      // Wait for all notifications to be sent
-      const responses = await Promise.all(notificationPromises);
-      console.log("Notifications sent successfully", responses);
-    }
-    catch(error){
-      console.error("Error sending notification", error)
-    }
-  }
 
   // const toggleDeleteUser = async () => {
   //   try {
@@ -168,9 +128,9 @@ const StudentSettings = () => {
                 <View className='flex-1 justify-center'>
                   <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
                   <Text className='font-pRegular text-gray-400 text-[10px]'>{user.email}</Text>
-                  <Text className='font-pRegular text-gray-400 text-[10px]'>{user.token_notif}</Text>
+                  {/* <Text className='font-pRegular text-gray-400 text-[10px]'>{user.token_notif}</Text> */}
                 </View>
-                <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] item' activeOpacity={0.7} onPress={() => router.push('profile')} style={{width: scale(120)}}>
+                <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] item' activeOpacity={0.7} onPress={() => router.push('sProfile')} style={{width: scale(120)}}>
                   <Text className='font-pRegular text-white text-[10px] text-center'>Go to Profile</Text>
                 </TouchableOpacity>
               </View>
@@ -189,7 +149,7 @@ const StudentSettings = () => {
                 <Text className='font-pRegular text-gray-400 text-[10px]'>{showModelAsset ? '' : 'edit'}</Text>
               </View>
             </TouchableOpacity>
-            {showModelAsset ? (
+            {/* {showModelAsset ? (
                 <View className='w-full bg-white items-center pb-4' style={{gap: 10}}>
                   {assetNotFound ? (
                     <View className='w-[80%]'>
@@ -224,22 +184,14 @@ const StudentSettings = () => {
                     <Text className='font-pRegular text-gray-400 text-[10px]'>or pair using QR</Text>
                   </TouchableOpacity>
               </View>
-              ) : null}
+              ) : null} */}
         </View>
         <SettingsControl title={'User Guide and Tutorial'} icon={'ri-guide-line'}/>
         <SettingsControl title={'About this app'} icon={'ri-question-line'}/>
         <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
         <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
-        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v6.0.0</Text>
-        <TouchableOpacity onPress={sendNotif} className='w-full items-center bg-gray-100 py-2'>
-          <Text>Send notif</Text>
-        </TouchableOpacity>
-        <View>
-          {notif_tokens.map((token, index) => (
-            <Text key={index}>{token}</Text>
-          ))}
-        </View>
+        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.0.0</Text>
         {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
         {showLogout ? (

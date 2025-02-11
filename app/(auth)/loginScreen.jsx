@@ -163,7 +163,7 @@ const loginScreen = () => {
                         <Text className='font-pBold text-pastel-black' style={{fontSize: scale(10)}}> Sign Up</Text>
                     </View>
                 </TouchableOpacity>
-                <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v6.0.0</Text>
+                <Text className='font-pRegular text-gray-400 text-[10px] text-center'>7.0.0</Text>
                 <View className="h-32 w-full items-center justify-center top-0 bottom-0 z-100 hidden">
                   <Text className='font-bold'>Push Notification Demo</Text>
                   <Text>Your push token:</Text>

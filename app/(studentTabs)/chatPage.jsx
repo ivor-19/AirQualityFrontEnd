@@ -10,17 +10,17 @@ import api from '../../utils/api'
 import { useAuth } from '../../context/AuthContext'
 import { Image } from 'expo-image'
 import axios from 'axios'
+import { useNotificationContext } from '../../context/NotificationContext'
 
 const chatPage = () => {
   const { user } = useAuth();
+  const { notifTokens, userNotifToken } = useNotificationContext();
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
   const scrollViewRef = useRef();
   const prevChatLengthRef = useRef(chat.length);
   const [loading, setLoading] = useState(true);
 
-  const [notifTokens, setNotifTokens] = useState([]);
-  const [userNotifToken, setUserNotifToken] = useState("");
 
   useEffect(() => {
     if (chat.length > prevChatLengthRef.current) {
@@ -42,28 +42,6 @@ const chatPage = () => {
     }
     fetchChats();
   },[chat])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get('/expoToken');
-        const tokenList = response.data.tokens.map(item => item.token_notif);
-        // const uniqueTokens = [...new Set(tokenList)];
-        console.log("token list: ", tokenList)
-
-        const getUserNotifToken = await api.get(`/users/${user._id}`);
-        console.log("Notif Token: ", getUserNotifToken.data.user.token_notif);
-        
-        setNotifTokens(tokenList);
-        setUserNotifToken(getUserNotifToken.data.user.token_notif);
-      } catch (error) {
-        console.error("Error getting notification token:", error);
-      
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleSend = async () => {
     //userNotifToken = "this is example because userNotifToken is the one should be compared"

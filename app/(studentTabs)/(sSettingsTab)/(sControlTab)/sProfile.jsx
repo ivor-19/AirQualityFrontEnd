@@ -28,7 +28,7 @@ const StudentProfile = () => {
   return (
     <KeyboardAvoidingView className='flex-1' behavior='height'> 
       <View className='bg-white h-full w-full'>
-        <CustomHeader title={'Profile'} showBack={true} onPressBack={() => router.push('settings')}/>
+        <CustomHeader title={'Profile'} showBack={true} onPressBack={() => router.push('sSettings')}/>
         <ScrollView>
           <View className='flex-1 p-4 items-center'>
             <View className='items-center justify-center w-full' style={{height: scale('120')}}>

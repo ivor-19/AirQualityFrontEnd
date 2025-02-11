@@ -6,6 +6,7 @@ import { AlertNotificationRoot } from 'react-native-alert-notification';
 import { View } from "react-native";
 import { AuthProvider } from "../context/AuthContext";
 import { darkThemeColors, lightThemeColors } from "../utils/alertColorUtils";
+import { NotificationProvider } from "../context/NotificationContext";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -44,17 +45,19 @@ export default function RootLayout() {
         colors={[lightThemeColors, darkThemeColors]}
       >
         <AuthProvider>
-          <AQIProvider>
-            <Stack>
-              <Stack.Screen name="index"  options={{headerShown: false,}}/>
-              <Stack.Screen name="landingPage"  options={{headerShown: false,}}/>
-              <Stack.Screen name="onboarding"  options={{headerShown: false,}}/>
-              <Stack.Screen name="(tabs)"  options={{headerShown: false,}}/>
-              <Stack.Screen name="(auth)"  options={{headerShown: false,}}/>
-              <Stack.Screen name="(studentTabs)"  options={{headerShown: false,}}/>
-              {/* <Stack.Screen name="scanning"  options={{headerShown: false,}}/> */}
-            </Stack>
-          </AQIProvider>
+          <NotificationProvider>
+            <AQIProvider>
+              <Stack>
+                <Stack.Screen name="index"  options={{headerShown: false,}}/>
+                <Stack.Screen name="landingPage"  options={{headerShown: false,}}/>
+                <Stack.Screen name="onboarding"  options={{headerShown: false,}}/>
+                <Stack.Screen name="(tabs)"  options={{headerShown: false,}}/>
+                <Stack.Screen name="(auth)"  options={{headerShown: false,}}/>
+                <Stack.Screen name="(studentTabs)"  options={{headerShown: false,}}/>
+                {/* <Stack.Screen name="scanning"  options={{headerShown: false,}}/> */}
+              </Stack>
+            </AQIProvider>
+          </NotificationProvider>
         </AuthProvider>
       </AlertNotificationRoot>
     </>

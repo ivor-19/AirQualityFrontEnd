@@ -9,9 +9,12 @@ import { scale } from 'react-native-size-matters'
 import api from '../../utils/api'
 import { useAuth } from '../../context/AuthContext'
 import { Image } from 'expo-image'
+import axios from 'axios'
+import { useNotificationContext } from '../../context/NotificationContext'
 
 const AdminChatPage = () => {
   const { user } = useAuth();
+  const { notifTokens, userNotifToken } = useNotificationContext();
   const [message, setMessage] = useState('');
   const [chat, setChat] = useState([]);
   const scrollViewRef = useRef();
@@ -39,11 +42,29 @@ const AdminChatPage = () => {
     fetchChats();
   },[chat])
 
+
   const handleSend = async () => {
     const newChat = {message, sender: user.username, role: user.role}
     try {
       const response = await api.post('/chat', newChat)
       console.log('Send success', response.data);
+
+      const uniqueTokens = [...new Set(notifTokens)]; // filter the tokens if duplicate is found
+      const tokensToSend = uniqueTokens.filter(token => token !== userNotifToken); // filter the token to not send a notification to themselves
+
+      const notificationPromises = tokensToSend.map(token => 
+        axios.post("https://exp.host/--/api/v2/push/send", {
+          to: token,
+          title: "Air Guard Chat",
+          body: `Admin: ${message}`,
+          sound: "default"
+        })
+      );
+
+      // Wait for all notifications to be sent
+      const responses = await Promise.all(notificationPromises);
+      console.log("Notifications sent successfully", responses);
+
       setMessage('');
       Keyboard.dismiss();
     } catch (error) {
