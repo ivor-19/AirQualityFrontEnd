@@ -29,7 +29,7 @@ const CustomFormField = ({title, placeholder, onChangeText, value, textAlign, co
                 `} 
                 style={{height: scale(40)}}>
                 <TextInput 
-                    className={`${(title === 'Password' || title === 'Confirm Password' || showEditButton === true)  ? 'w-[90%]' : 'w-full'} h-full flex-row font-pRegular
+                    className={`${(title === 'Password' || title === 'Confirm Password' || title === 'New Password' || showEditButton === true)  ? 'w-[90%]' : 'w-full'} h-full flex-row font-pRegular
                                 
                              `}
                     placeholder={placeholder}
@@ -37,13 +37,13 @@ const CustomFormField = ({title, placeholder, onChangeText, value, textAlign, co
                     onChangeText={onChangeText}
                     value={value}
                     textAlign={textAlign}
-                    secureTextEntry={(title === 'Password' || title === 'Confirm Password') && !showPassword}
+                    secureTextEntry={(title === 'Password' || title === 'Confirm Password' || title === 'New Password') && !showPassword}
                     autoCapitalize='none'
                     editable={isEditable}
                 >
 
                 </TextInput>
-                {(title === 'Password' || title === 'Confirm Password') &&
+                {(title === 'Password' || title === 'Confirm Password' || title === 'New Password') &&
                     <TouchableOpacity activeOpacity={0.6} onPress={toggleShowPassword} className='w-[10%] items-center justify-center h-full z-10'>
                         <RemixIcon name={showPassword ? 'ri-eye-fill' : 'ri-eye-off-fill'} color='gray' size={18}></RemixIcon>
                     </TouchableOpacity>

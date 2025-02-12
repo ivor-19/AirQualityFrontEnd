@@ -1,29 +1,74 @@
-import { View, Text, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, ScrollView, TextInput, TouchableOpacity, KeyboardAvoidingView, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import CustomHeader from '../../../../components/CustomHeader'
 import { router } from 'expo-router'
 import { scale } from 'react-native-size-matters'
 import CustomFormField from '../../../../components/CustomFormField'
-import CustomButton from '../../../../components/CustomButton'
 import { Image } from 'expo-image'
 import { useAuth } from '../../../../context/AuthContext'
 import RemixIcon from 'react-native-remix-icon'
-import ProfileControl from '../../../../components/ProfileControl'
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
+import api from '../../../../utils/api'
 
 const StudentProfile = () => {
   const { user } = useAuth();
-  const [editable, setEditable] = useState(false); // Fixed here
-  const [usenameInvalid, isUsernameInvalid] = useState(false);
-  const [emailInvalid, isEmailInvalid] = useState(false);
+  const [editable, setEditable] = useState(true); // Fixed here
+  const [open, setOpen] = useState(false);
 
   const [username, setUsername] = useState(user.username);
   const [email, setEmail] = useState(user.email);
 
-  const toggleCancel = () => {
-    setEditable(false);
-    setUsername(user.username);
-    setEmail(user.email);
+  const [password, setPassword]= useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordNotMatch, setPasswordNotMatch] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+  
+
+  const [loading, setLoading ] = useState(false);
+
+  const toggleOpen = () => {
+    setOpen(prevState => !prevState);
   }
+
+  const toggleChangePassword = async () => {
+    if(password === confirmPassword){
+      setLoading(true);
+      setEditable(false);
+      try{
+        await api.post(`/users/editUser/${user._id}`, {password: confirmPassword})
+        setTimeout(() => {
+          Toast.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: 'Your password has been successfully updated!',
+            textBody: `Please ensure you keep it secure. If you didn't make this change, please contact support immediately.`,
+            autoClose: 4000,
+            closeOnOverlayTap: true,
+          })
+          setLoading(false);
+          setOpen(false);
+          setPassword('');
+          setConfirmPassword('');
+          setEditable(true);
+        }, 4000);
+        
+      }
+      catch (error){
+        console.error('Error changing password', error);
+      }
+    }
+    else{
+      setPasswordNotMatch(true);
+    }
+  }
+
+  useEffect(() => {
+    if(password.trim().length >= 5 ){
+      setShowConfirm(true);
+    }
+    else{
+      setShowConfirm(false);
+    }
+  },[password])
 
   return (
     <KeyboardAvoidingView className='flex-1' behavior='height'> 
@@ -44,78 +89,57 @@ const StudentProfile = () => {
                 </TouchableOpacity>
               </View>
             </View>
-            <View className='flex-1 w-full py-4 px-2' style={{gap: scale(30)}}>
+            <View className='flex-1 w-full py-4 px-2' style={{gap: scale(10)}}>
               <Text className='font-pSemiBold text-[16px]'>Profile Information</Text>
-              <View>
-                <ProfileControl title={'Edit Profile'} username={`Username: ${user.username}`} email={`Email: ${user.email}`}/>
-                <ProfileControl title={'Change Password'}/>
+              <View style={{gap: scale(10)}}>
+                <View>
+                  <Text className='font-pRegular text-gray-400' style={{ fontSize: scale(10) }}>Username: {user.username}</Text>
+                  <Text className='font-pRegular text-gray-400' style={{ fontSize: scale(10) }}>Email: {user.email}</Text> 
+                </View>
+                <View className='border-y-[1px] border-gray-100'>
+                  <TouchableOpacity className='w-full bg-white flex-row items-center justify-between py-4' activeOpacity={0.6} onPress={toggleOpen}>
+                      <View className='justify-center'>
+                          <Text className='font-pSemiBold text-pastel-black'>Change Password</Text>
+                      </View>
+                      <RemixIcon name={open === true ? 'ri-arrow-drop-up-line' : 'ri-arrow-drop-down-line'} size={30} />
+                  </TouchableOpacity>
+                  {open && 
+                    <View className='pb-4' style={{gap: 10}}>
+                      <View className='flex-col' style={{gap: 10}}>
+                        <CustomFormField
+                          title={'New Password'}
+                          value={password}
+                          onChangeText={(text) => setPassword(text)}
+                          validationMessage={'Password do not match'}
+                          isEditable={editable}
+                        />
+                        <CustomFormField
+                          title={'Confirm Password'}
+                          value={confirmPassword}
+                          onChangeText={(text) => {setConfirmPassword(text); setPasswordNotMatch(false)}}
+                          containerStyle={passwordNotMatch === true ? 'border-2 border-red-300' : 'border-gray-300 focus:border-pastel-green-v2'}
+                          validationMessage={'Password do not match'}
+                          isInvalid={passwordNotMatch}
+                          isEditable={editable}
+                        />
+                      </View>
+                      <View className={`w-full items-end`}>
+                        {loading ? (
+                          <View className='w-full'>
+                            <ActivityIndicator size="large" color="#000"/>
+                          </View>
+                        ):(
+                          showConfirm &&
+                            <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] items-center justify-center w-20' activeOpacity={0.7} onPress={toggleChangePassword}>
+                              <Text className='font-pRegular text-white' style={{fontSize: scale(8)}}>Confirm</Text>
+                            </TouchableOpacity>
+                          
+                        )}
+                      </View>
+                    </View>
+                  }
+                </View>
               </View>
-              {/* <View style={{gap: scale(12)}}>  
-                <View className='w-full'>
-                  <View className='w-full flex-row justify-between'>
-                      <Text className={`font-pRegular text-left`}>Username</Text>
-                      {usenameInvalid ? (
-                        <Text className={`font-pRegular text-right text-[10px] text-red-400`}>Username is already taken</Text>
-                      ):null}
-                  </View>
-                  <View className={`${editable ? 'bg-white' : 'bg-gray-200'} border-[1px] border-gray-300 rounded-[12px] h-12 px-2 flex-row items-center focus:border-2`}>
-                      <TextInput 
-                          className={`w-[90%]  h-full flex-row font-pRegular`}
-                          placeholder='Username'
-                          placeholderTextColor={'gray'}
-                          onChangeText={(text) => setUsername(text)}
-                          value={username}
-                          autoCapitalize='none'
-                          editable={editable}
-                      >
-                      </TextInput> 
-                  </View>
-                </View>
-                <View className='w-full'>
-                  <View className='w-full flex-row justify-between'>
-                      <Text className={`font-pRegular text-left`}>Email</Text>
-                      {emailInvalid ? (
-                        <Text className={`font-pRegular text-right text-[10px] text-red-400`}>Email is already taken</Text>
-                      ):null}
-                  </View>
-                  <View className={`${editable ? 'bg-white' : 'bg-gray-200'} border-[1px] border-gray-300 rounded-[12px] h-12 px-2 flex-row items-center focus:border-2`}>
-                      <TextInput 
-                          className={`w-[90%]  h-full flex-row font-pRegular`}
-                          placeholder='Username'
-                          placeholderTextColor={'gray'}
-                          onChangeText={(text) => setEmail(text)}
-                          value={email}
-                          autoCapitalize='none'
-                          editable={editable}
-                      >
-                      </TextInput> 
-                  </View>
-                </View>
-              </View>
-              <View className='w-full'>
-                {editable ? (
-                  <View className='w-full flex flex-row space-x-2' style={{gap: scale(6)}}>
-                    <CustomButton 
-                      customButtomStyle={'flex-1 bg-gray-200'} 
-                      title={'Cancel'}
-                      customTitleStyle={'text-black-pastel font-pRegular'}
-                      onPress={() => toggleCancel()}
-                    />
-                    <CustomButton 
-                      customButtomStyle={'flex-1 bg-pastel-black'} 
-                      title={'Save'}
-                      customTitleStyle={'text-white font-pRegular'}
-                    />
-                </View>
-                ):(
-                  <CustomButton 
-                    customButtomStyle={'w-full bg-pastel-black'} 
-                    title={'Edit'}
-                    customTitleStyle={'text-white font-pRegular'}
-                    onPress={() => setEditable(true)}
-                  />
-                )}
-              </View> */}
             </View>
           </View>
         </ScrollView>

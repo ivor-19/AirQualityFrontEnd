@@ -7,8 +7,6 @@ import Svg, { Circle } from 'react-native-svg';
 import { useAQI } from '../../../context/AQIContext'
 import Weather from '../../../components/Weather'
 import { useAuth } from '../../../context/AuthContext'
-import axios from 'axios'
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { scale } from 'react-native-size-matters'
 import api from '../../../utils/api';
 
@@ -166,16 +164,9 @@ const StudentHome = () => {
               </TouchableOpacity>
               
             )}
-            {/* <TouchableOpacity className='bg-gray-100 px-3 w-32 h-8 items-center rounded-xl flex-row justify-between' onPress={sendAlert} activeOpacity={0.5}>
-              <Text className='font-pRegular text-[12px] text-pastel-black'>Send</Text>
-              <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
-            </TouchableOpacity> */}
           </View>
         </View>
       </View>
-      
-        
-      
     </SafeAreaView>
   )
 }

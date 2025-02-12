@@ -1,18 +1,13 @@
-import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, StyleSheet } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import RemixIcon from 'react-native-remix-icon';
 import { scale } from 'react-native-size-matters';
-import axios from 'axios';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
 import { router } from 'expo-router';
-import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { useAuth } from '../../../context/AuthContext';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAQI } from '../../../context/AQIContext';
 import SettingsControl from '../../../components/SettingsControl';
 import CustomHeader from '../../../components/CustomHeader';
 import { Image } from 'expo-image';
-import { darkThemeColors, lightThemeColors } from '../../../utils/alertColorUtils';
 import Modal from "react-native-modal";
 import api from '../../../utils/api';
 
@@ -29,6 +24,7 @@ const StudentSettings = () => {
   const [validationMessage, setValidationMessage] = useState('');
   const textInputRef = useRef(null);
   const [showLogout, setShowLogout] = useState(false);
+  const [refreshUser, setRefreshUser] = useState(null); // refresh user
 
   useFocusEffect(
     React.useCallback(() => {
@@ -42,11 +38,6 @@ const StudentSettings = () => {
       textInputRef.current?.blur();
     }, [user.asset_model])
   );
-
-  const toggleShow = () => {
-    setShowModelAsset(prevState => !prevState);
-    setEnableButton(false);
-  }
 
   const toggleLogout = () => {
     logout();
@@ -63,6 +54,27 @@ const StudentSettings = () => {
       setEnableButton(false);
     }
   }
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await api.get(`/users/${user?._id}`);
+        console.log(response.data.user.username);
+        
+        // Update the user state with the latest username
+        renderUserData({
+          ...user,
+          username: response.data.user.username,
+        });
+        
+ 
+      } catch (error) {
+        console.error("Error fetching user", error); 
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   // const toggleConnect = async () => {
   //   setLoading(true);
@@ -128,7 +140,7 @@ const StudentSettings = () => {
                 <View className='flex-1 justify-center'>
                   <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
                   <Text className='font-pRegular text-gray-400 text-[10px]'>{user.email}</Text>
-                  {/* <Text className='font-pRegular text-gray-400 text-[10px]'>{user.token_notif}</Text> */}
+                 
                 </View>
                 <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] item' activeOpacity={0.7} onPress={() => router.push('sProfile')} style={{width: scale(120)}}>
                   <Text className='font-pRegular text-white text-[10px] text-center'>Go to Profile</Text>
@@ -136,20 +148,20 @@ const StudentSettings = () => {
               </View>
           </View>
         </View>
-        <View className='border-b-[1px] border-gray-100'>
+        {/* <View className='border-b-[1px] border-gray-100'>
             <TouchableOpacity activeOpacity={0.6} onPress={toggleShow}>
               <View className='px-4 w-full bg-white flex-row items-center justify-between' style={{height: scale(54)}}>
                 <View className='flex-row items-center justify-center' style={{gap: scale(12)}}>
                   <RemixIcon name='ri-robot-2-line'></RemixIcon>
                   <Text className='font-pRegular text-pastel-black'>Model asset name</Text>
                 </View>
-                {/* <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px]' activeOpacity={0.7} onPress={toggleShow}>
+                <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px]' activeOpacity={0.7} onPress={toggleShow}>
                   <Text className='font-pRegular text-white text-[10px]'>Edit</Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
                 <Text className='font-pRegular text-gray-400 text-[10px]'>{showModelAsset ? '' : 'edit'}</Text>
               </View>
             </TouchableOpacity>
-            {/* {showModelAsset ? (
+            {showModelAsset ? (
                 <View className='w-full bg-white items-center pb-4' style={{gap: 10}}>
                   {assetNotFound ? (
                     <View className='w-[80%]'>
@@ -184,14 +196,14 @@ const StudentSettings = () => {
                     <Text className='font-pRegular text-gray-400 text-[10px]'>or pair using QR</Text>
                   </TouchableOpacity>
               </View>
-              ) : null} */}
-        </View>
+              ) : null}
+        </View> */}
         <SettingsControl title={'User Guide and Tutorial'} icon={'ri-guide-line'}/>
         <SettingsControl title={'About this app'} icon={'ri-question-line'}/>
         <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
         <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
-        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.0.0</Text>
+        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.1.0</Text>
         {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
         {showLogout ? (

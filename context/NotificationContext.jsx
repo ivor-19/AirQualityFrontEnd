@@ -22,7 +22,7 @@ export const NotificationProvider = ({ children }) => {
         console.log("Fetched tokens:", tokenList); // Log tokens to verify
         setNotifTokens(tokenList);
         
-        setUserNotifToken(getUserNotifToken.data.user.token_notif);
+        setUserNotifToken(getUserNotifToken.data.user.device_notif);
       } catch (error) {
         console.error("Error getting notification token:", error);
       }

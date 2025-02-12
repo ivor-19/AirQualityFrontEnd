@@ -21,7 +21,6 @@ const chatPage = () => {
   const prevChatLengthRef = useRef(chat.length);
   const [loading, setLoading] = useState(true);
 
-
   useEffect(() => {
     if (chat.length > prevChatLengthRef.current) {
       scrollViewRef.current?.scrollToEnd({ animated: true });
@@ -65,7 +64,6 @@ const chatPage = () => {
       // Wait for all notifications to be sent
       const responses = await Promise.all(notificationPromises);
       console.log("Notifications sent successfully", responses);
-
       setMessage('');
       Keyboard.dismiss();
     } catch (error) {
@@ -147,8 +145,7 @@ const chatPage = () => {
                 placeholderTextColor={'gray'}
                 onChangeText={(text) => setMessage(text)}
                 value={message}
-                autoCapitalize='none'
-                
+                autoCapitalize='none'     
               >
               </TextInput>
             </View>

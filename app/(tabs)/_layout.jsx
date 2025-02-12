@@ -4,18 +4,13 @@ import { router, Tabs } from 'expo-router';
 import RemixIcon from 'react-native-remix-icon';
 import { useNavigation, useRoute } from '@react-navigation/native'; // Import useNavigation
 import NoInternetChecker from '../../components/NoInternetChecker';
-import Modal from "react-native-modal";
 import { AlertNotificationRoot } from 'react-native-alert-notification';
 import { darkThemeColors, lightThemeColors } from '../../utils/alertColorUtils';
-import { useAQI } from '../../context/AQIContext';
-import { scale } from 'react-native-size-matters';
-import { ScrollView } from '@motify/components';
 import MessageModal from '../../components/MessageModal';
 import { useAuth } from '../../context/AuthContext';
 import SessionsExpired from '../../components/SessionsExpired';
 
 const TabLayout = () => {
-  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
   const [modalVisible, setModalVisible] = useState(false);
   const [showSession, setShowSession] = useState(false);
   const navigation = useNavigation(); // Initialize navigation

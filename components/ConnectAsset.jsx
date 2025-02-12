@@ -69,7 +69,6 @@ const ConnectAsset = () => {
         const updateResponse = await api.post(`/users/editUser/${user._id}`, { 
           asset_model: assetName, 
           first_access: "No",
-          token_notif: expoPushToken.data
         });
         console.log('User updated:', updateResponse);
   

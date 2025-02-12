@@ -1,12 +1,10 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, ScrollView, Alert } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import CustomButton from '../../components/CustomButton'
-import axios from 'axios';
 import CustomFormField from '../../components/CustomFormField';
 import { scale } from 'react-native-size-matters';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
-import { ALERT_TYPE, AlertNotificationRoot, Dialog } from 'react-native-alert-notification';
 import Modal from "react-native-modal";
 import api from '../../utils/api';
 
@@ -16,16 +14,11 @@ const signUpScreen = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const [passwordNotMatch, setPasswordNotMatch] = useState(false);
   const [usernameTaken, setUsernameTaken] = useState(false);
   const [emailTaken, setEmailTaken] = useState(false);
-
-  const toggleGoLogin = () => {
-    router.push('loginScreen')
-  }
 
   const handleSubmit = async () => {
     if(password === confirmPassword) {
@@ -36,7 +29,6 @@ const signUpScreen = () => {
         role: 'Student',  // Default role
         asset_model: " ", 
         first_access: "Yes",
-        token_notif: " ",
       };
       setLoading(true);
       try {
@@ -50,10 +42,6 @@ const signUpScreen = () => {
         setConfirmPassword('');
 
         setShowModal(true);
-        // setTimeout(() => {
-        //  setShowModal(false);
-        //  router.push('loginScreen')
-        // }, 3000); 
         
       } catch (error) {
         setLoading(false);
@@ -146,15 +134,6 @@ const signUpScreen = () => {
         </View>
         </ScrollView>
       </SafeAreaView>
-      {/* {success &&
-        <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-            <View className='w-[80%] bg-white rounded-[10px] px-8 '>
-                <View className='my-5' style={{gap: 10}}>
-                <Text className='font-pRegular text-[12px]'>Your account has been created successfully! Redirecting to Login page...</Text>
-                </View>
-            </View>
-        </View>
-      } */}
       {showModal && (
         <Modal isVisible={showModal} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
           <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>

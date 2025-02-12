@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useAQI } from '../../context/AQIContext';
-import axios from 'axios';
 import { router } from 'expo-router';
-import { MotiView } from '@motify/components';
-import { Easing } from 'react-native-reanimated';
 import { useAuth } from '../../context/AuthContext';
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, Toast } from 'react-native-alert-notification';
 import RemixIcon from 'react-native-remix-icon';
 import { Image } from 'expo-image';
 import { scale } from 'react-native-size-matters';
@@ -86,13 +83,5 @@ const Scanning = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default Scanning;

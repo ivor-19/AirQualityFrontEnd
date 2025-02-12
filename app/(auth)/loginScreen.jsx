@@ -1,7 +1,6 @@
-import { View, Text, SafeAreaView, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
+import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CustomButton from '../../components/CustomButton'
-import axios from 'axios';
 import CustomFormField from '../../components/CustomFormField';
 import { scale } from 'react-native-size-matters';
 import { router } from 'expo-router';
@@ -22,7 +21,6 @@ Notifications.setNotificationHandler({
   }),
 });
 
-
 const loginScreen = () => {
   const { expoPushToken, notification, registerForPushNotifications } = usePushNotifications();
   
@@ -39,9 +37,7 @@ const loginScreen = () => {
 
   //----------------------------
 
-
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailInvalid, setEmailInvalid] = useState(false);
@@ -68,17 +64,9 @@ const loginScreen = () => {
         await SecureStore.setItemAsync('role', user.role);
         await SecureStore.setItemAsync('asset_model', user.asset_model);
         await SecureStore.setItemAsync('first_access', user.first_access);
-        await SecureStore.setItemAsync('token_notif', user.token_notif);
-        
-        if(user.token_notif !== expoPushToken.data){
-          try{
-            const res = await api.post('/expoToken', {token_notif: expoPushToken.data})
-            console.log(res.data);
-          }
-          catch(error){
-            console.error("Error adding token notification", error)
-          }
-        }
+
+        const res = await api.post('/expoToken', {token_notif: expoPushToken.data})
+        console.log(res.data);
   
         setLoading(false);
         if(user.first_access === "Yes"){
@@ -163,7 +151,7 @@ const loginScreen = () => {
                         <Text className='font-pBold text-pastel-black' style={{fontSize: scale(10)}}> Sign Up</Text>
                     </View>
                 </TouchableOpacity>
-                <Text className='font-pRegular text-gray-400 text-[10px] text-center'>7.0.0</Text>
+                <Text className='font-pRegular text-gray-400 text-[10px] text-center'>7.1.0</Text>
                 <View className="h-32 w-full items-center justify-center top-0 bottom-0 z-100 hidden">
                   <Text className='font-bold'>Push Notification Demo</Text>
                   <Text>Your push token:</Text>
@@ -181,15 +169,6 @@ const loginScreen = () => {
             </View>
           </View>
         </ScrollView>
-        {/* {success &&
-          <View className='h-full w-full absolute z-50 items-center justify-center' style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-              <View className='w-[80%] bg-white rounded-[10px] px-8 '>
-                  <View className='my-5' style={{gap: 10}}>
-                  <Text className='font-pRegular text-[12px]'>Login successful, welcome aboard!</Text>
-                  </View>
-              </View>
-          </View>
-        } */}
       </SafeAreaView>
     </AlertNotificationRoot>
   )

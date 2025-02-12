@@ -45,7 +45,7 @@ const OnboardingItems = ({customStyle, title, image, customImageStyle, descripti
       const updateResponse = await api.post(`/users/editUser/${user._id}`, { 
         asset_model: "modelx21", 
         first_access: "No",
-        token_notif: expoPushToken.data
+        device_notif: expoPushToken.data
       });
       console.log('User updated:', updateResponse);
 
