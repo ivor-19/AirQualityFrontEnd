@@ -2,7 +2,7 @@
   "expo": {
     "name": "Air Guard",
     "slug": "air-guard",
-    "version": "7.1.0",
+    "version": "7.2.0",
     "orientation": "portrait",
     "icon": "./assets/app-icons/leaf-icon.png",
     "scheme": "myapp",
