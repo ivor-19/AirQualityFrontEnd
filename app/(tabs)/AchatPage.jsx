@@ -20,6 +20,27 @@ const AdminChatPage = () => {
   const scrollViewRef = useRef();
   const prevChatLengthRef = useRef(chat.length);
   const [loading, setLoading] = useState(true);
+  const [disableButton, setDisableButton] = useState(false);
+  
+  const getCurrentTime = () => {
+    const options = {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true,
+    };
+    return new Date().toLocaleTimeString([], options);
+  };
+
+  const getCurrentDate = () => {
+    const date = new Date();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+
+  const currentTime = getCurrentTime();
+  const currentDate = getCurrentDate();
 
   useEffect(() => {
     if (chat.length > prevChatLengthRef.current) {
@@ -44,33 +65,40 @@ const AdminChatPage = () => {
 
 
   const handleSend = async () => {
-    const newChat = {message, sender: user.username, role: user.role}
+    if (!message.trim()) {
+      console.log('Message is empty, nothing to send');
+      return; 
+    }
+    
+    const newChat = { message, sender: user.username, role: user.role, timestamp: currentTime, date: currentDate};
     try {
-      const response = await api.post('/chat', newChat)
+      setDisableButton(true);
+      const response = await api.post('/chat', newChat);
       console.log('Send success', response.data);
-
+  
       const uniqueTokens = [...new Set(notifTokens)]; // filter the tokens if duplicate is found
       const tokensToSend = uniqueTokens.filter(token => token !== userNotifToken); // filter the token to not send a notification to themselves
-
+  
       const notificationPromises = tokensToSend.map(token => 
         axios.post("https://exp.host/--/api/v2/push/send", {
           to: token,
           title: "Air Guard Chat",
-          body: `Admin: ${message}`,
+          body: `${user.username}: ${message}`,
           sound: "default"
         })
       );
-
+  
       // Wait for all notifications to be sent
       const responses = await Promise.all(notificationPromises);
       console.log("Notifications sent successfully", responses);
-
       setMessage('');
+      setDisableButton(false);
+      
       Keyboard.dismiss();
     } catch (error) {
-      console.error('Error sending chat', error)
+      console.error('Error sending chat', error);
     }
-  }
+  };
 
 
   return (
@@ -116,22 +144,28 @@ const AdminChatPage = () => {
             {/* content start */}
             {chat.map((data, index) => {
               return(
-                <View className={`w-full flex flex-row ${data.sender === user.username ? 'flex-row-reverse justify-start' : ''}`} key={index}>
-                  <View className={`w-[10%] justify-end`}>
+                <View className={`w-full flex flex-row ${data.sender === user.username ? 'flex-row-reverse justify-start gap-1' : ''}`} key={index}>
+                  <View className={`w-[10%] justify-end pb-4`}>
                     <RemixIcon name='ri-account-circle-fill' size={28} color='blue'/>
                   </View>
-                  <View className={`bg-white rounded-custom border-2 border-gray-100 max-w-[80%]`} activeOpacity={0.7} style={{shadowColor: 'gray', elevation: 4}}>
-                    <View className='rounded-custom p-4 flex-col items-center' style={{gap: 6}}>
-                      <View className='w-full px-2'>
-                        <Text className='text-pastel-black font-pRegular text-[12px]'>{data.message}</Text>
-                      </View> 
-                      <View className='w-full px-2  flex flex-row justify-between'>
-                        <Text className='font-pRegular text-[8px] text-gray-600'>
-                          {data.sender === user.username ? 'You' : data.sender}{data.role === "Admin" ? ' - Admin' : ''} 
-                        </Text>
-                        {/* <Text className='font-pRegular text-[8px] text-gray-600'>{data.date}</Text> */}
+                  <View className='max-w-[80%] flex-col' style={{gap: scale(4)}}>
+                    <Text className={`font-pRegular text-[8px] text-gray-600 ${data.sender === user.username ? 'text-right' : 'text-left'}`}>
+                      {data.sender === user.username ? 'You' : data.sender}{data.role === "Admin" ? ' - Admin' : ''} 
+                    </Text>
+                    <View className={`bg-white rounded-[18px] border-2 border-gray-100`} activeOpacity={0.7} style={{shadowColor: 'gray', elevation: 4}}>
+                      <View className='p-2 flex-col items-center' style={{gap: 6}}>
+                        <View className='w-full px-2'>
+                          <Text className='text-pastel-black font-pRegular text-[12px]'>{data.message}</Text>
+                        </View> 
+                        <View className='w-full px-2  flex flex-row justify-between'>
+                        
+                          {/* <Text className='font-pRegular text-[8px] text-gray-600'>{data.date}</Text> */}
+                        </View>
                       </View>
                     </View>
+                    <Text className={`font-pRegular text-[8px] text-gray-600 px-2 ${data.sender === user.username ? 'text-right' : 'text-left'}`}>
+                      {`${data.timestamp} - ${data.date}`}
+                      </Text>           
                   </View>
                 </View>      
               )
@@ -153,7 +187,7 @@ const AdminChatPage = () => {
             </View>
     
             <View className='w-[10%]'>
-              <TouchableOpacity onPress={handleSend}>
+              <TouchableOpacity onPress={handleSend} disabled={disableButton}>
                 <RemixIcon name='ri-send-plane-2-fill'/>
               </TouchableOpacity>
             </View>

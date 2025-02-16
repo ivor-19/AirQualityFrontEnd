@@ -95,7 +95,7 @@ const Profile = () => {
               <View style={{gap: scale(10)}}>
                 <View>
                   <Text className='font-pRegular text-gray-400' style={{ fontSize: scale(10) }}>Username: {user.username}</Text>
-                  <Text className='font-pRegular text-gray-400' style={{ fontSize: scale(10) }}>Email: {user.email}</Text> 
+                  <Text className='font-pRegular text-gray-400' style={{ fontSize: scale(10) }}>Student ID: {user.account_id}</Text> 
                 </View>
                 
                 <TouchableOpacity className='w-full bg-white flex-row items-center justify-between py-4' activeOpacity={0.6} onPress={toggleOpen}>

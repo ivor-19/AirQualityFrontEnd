@@ -1,6 +1,5 @@
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
 import React, { useState, useEffect } from 'react';
-import { router, Tabs } from 'expo-router';
+import { Tabs } from 'expo-router';
 import RemixIcon from 'react-native-remix-icon';
 import { useNavigation } from '@react-navigation/native'; // Import useNavigation
 import NoInternetChecker from '../../components/NoInternetChecker';
@@ -8,18 +7,19 @@ import Modal from "react-native-modal";
 import { AlertNotificationRoot } from 'react-native-alert-notification';
 import { darkThemeColors, lightThemeColors } from '../../utils/alertColorUtils';
 import { useAQI } from '../../context/AQIContext';
-import { scale } from 'react-native-size-matters';
-import { ScrollView } from '@motify/components';
-import MessageModal from '../../components/MessageModal';
 import { useAuth } from '../../context/AuthContext';
 import SessionsExpired from '../../components/SessionsExpired';
+import api from '../../utils/api';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 const TabLayout = () => {
-  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
   const [modalVisible, setModalVisible] = useState(false);
   const [showSession, setShowSession] = useState(false);
   const navigation = useNavigation(); // Initialize navigation
-  const { token, user } = useAuth();
+  const { token, user, logout } = useAuth();
+  const { resetAQI } = useAQI();
+  const [showBlock, setShowBlock] = useState(false);
+
 
   useEffect(() => {
     setShowSession(false);
@@ -40,6 +40,33 @@ const TabLayout = () => {
 
     return resetModalOnFocus; // Cleanup the listener when the component unmounts
   }, [navigation, modalVisible]);
+
+  useEffect(() => {
+    const fetchUserStatus = async() => {
+      try {
+        const response = await api.get(`/users/${user?._id}`);
+        console.log("STATUS", response.data.user.status);
+        if(response.data.user.status === "Block"){
+          setShowBlock(true);
+        }
+ 
+      } catch (error) {
+        console.error("Error fetching user", error); 
+      }
+    }
+    fetchUserStatus();
+    const interval = setInterval(() => {
+      fetchUserStatus();
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  },[])
+
+  const toggleLogout = () => {
+    logout();
+    resetAQI();
+    setShowBlock(false);
+  }
 
   return (
     <AlertNotificationRoot
@@ -100,6 +127,21 @@ const TabLayout = () => {
       {showSession ? (
         <SessionsExpired />
       ) : null}
+      {showBlock ? (
+        <Modal isVisible={showBlock} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
+          <View className='absolute h-full w-full items-center justify-center z-50' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+            <View className='w-[80%] bg-white rounded-[10px] p-4' style={{gap: 10}}>
+              <Text className='font-pSemiBold text-[16px]'>Account Blocked!</Text>
+              <Text className='font-pRegular text-[12px]'>Your account has been temporarily blocked due to suspicious activity. Please contact support for further assistance.</Text>
+              <View className='flex-row justify-end mt-4'>
+                <TouchableOpacity onPress={toggleLogout} className='bg-pastel-black w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
+                  <Text className='text-center font-pRegular text-white text-[12px]'>Exit</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      ):null}
     </AlertNotificationRoot>
   );
 };

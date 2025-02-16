@@ -33,20 +33,40 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
         return `${year}-${month}-${day}`;
       };
     
-      const getCurrentTime = () => {
+    const getCurrentTime = () => {
         const options = {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-          hour12: true,
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
         };
         return new Date().toLocaleTimeString([], options);
+    };
+    const currentDate = getCurrentDate();
+    const currentTimestamp = getCurrentTime();
+
+    const getChatDate = () => {
+        const date = new Date();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${month}/${day}/${year}`;
       };
+    
+    const getChatTime = () => {
+        const options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true,
+        };
+        return new Date().toLocaleTimeString([], options);
+    };
+    const chatDate = getChatDate();
+    const chatTime = getChatTime();
+   
     
     useEffect(() => {
         const fetch = async () => {
-            const currentDate = getCurrentDate();
-            const currentTimestamp = getCurrentTime();
             setQualityMessage(
             `AQI: ${aqi}\nPM 2.5: ${pm2_5}\nCO: ${co}\nNO2: ${no2}\nTimestamp: ${currentTimestamp}\nDate: ${currentDate}\nRisk Percentage: ${aqiIL}\nCondition: ${aqiCon}`
             )
@@ -103,7 +123,8 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                     message: message,
                     sender: user.username,
                     role: user.role,
-                    date: date,
+                    timestamp: chatTime,
+                    date: chatDate,
                 }
 
                 await axios.post('https://air-quality-back-end-v2.vercel.app/chat', newChatAlert)

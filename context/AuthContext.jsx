@@ -18,24 +18,28 @@ export const AuthProvider = ({ children }) => {
       const [
           storedToken,
           storedUserId,
+          storedAccountId,
           storedUsername,
           storedEmail,
           storedRole,
+          storedStatus,
           storedAssetModel,
           storedFirstAccess,
           storedDeviceNotif
         ] = await Promise.all([
           SecureStore.getItemAsync('userToken'),
           SecureStore.getItemAsync('_id'),
+          SecureStore.getItemAsync('account_id'),
           SecureStore.getItemAsync('username'),
           SecureStore.getItemAsync('email'),
           SecureStore.getItemAsync('role'),
+          SecureStore.getItemAsync('status'),
           SecureStore.getItemAsync('asset_model'),
           SecureStore.getItemAsync('first_access'),
           SecureStore.getItemAsync('device_notif')
         ]);
 
-      if (storedToken && storedUserId && storedUsername && storedEmail && storedRole && storedAssetModel && storedFirstAccess && storedDeviceNotif) {
+      if (storedToken && storedUserId && storedAccountId && storedUsername && storedEmail && storedRole && storedStatus && storedAssetModel && storedFirstAccess && storedDeviceNotif) {
         // if (checkTokenExpiry(storedToken)) {
         //   console.log('Token expired, logging out...');
         //   logout(); // Log out the user if the token is expired
@@ -45,9 +49,11 @@ export const AuthProvider = ({ children }) => {
         setToken(storedToken);
         setUser({
           _id: storedUserId,
+          account_id: storedAccountId,
           username: storedUsername,
           email: storedEmail,
           role: storedRole,
+          status: storedStatus,
           asset_model: storedAssetModel,
           first_access: storedFirstAccess,
           device_notif: storedDeviceNotif
@@ -77,14 +83,16 @@ export const AuthProvider = ({ children }) => {
   const login = (authToken, userData) => {
     setToken(authToken);
     setUser(userData);
-    SecureStore.setItemAsync('userToken', authToken);
-    SecureStore.setItemAsync('_id', userData._id);
-    SecureStore.setItemAsync('username', userData.username);
-    SecureStore.setItemAsync('email', userData.email);
-    SecureStore.setItemAsync('role', userData.role);
-    SecureStore.setItemAsync('asset_model', userData.asset_model);
-    SecureStore.setItemAsync('first_access', userData.first_access);
-    SecureStore.setItemAsync('device_notif', userData.device_notif);
+    SecureStore.setItemAsync('userToken', String(authToken));
+    SecureStore.setItemAsync('_id', String(userData._id));
+    SecureStore.setItemAsync('account_id', String(userData.account_id));
+    SecureStore.setItemAsync('username', String(userData.username));
+    SecureStore.setItemAsync('email', String(userData.email || ''));
+    SecureStore.setItemAsync('role', String(userData.role));
+    SecureStore.setItemAsync('status', String(userData.status));
+    SecureStore.setItemAsync('asset_model', String(userData.asset_model || ''));
+    SecureStore.setItemAsync('first_access', String(userData.first_access));
+    SecureStore.setItemAsync('device_notif', String(userData.device_notif || ''));
   };
 
   const logout = () => {
@@ -92,9 +100,11 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     SecureStore.deleteItemAsync('userToken');
     SecureStore.deleteItemAsync('_id');
+    SecureStore.deleteItemAsync('account_id');
     SecureStore.deleteItemAsync('username');
     SecureStore.deleteItemAsync('email');
     SecureStore.deleteItemAsync('role');
+    SecureStore.deleteItemAsync('status');
     SecureStore.deleteItemAsync('asset_model');
     SecureStore.deleteItemAsync('first_access');
     SecureStore.deleteItemAsync('device_notif');
@@ -109,9 +119,11 @@ export const AuthProvider = ({ children }) => {
 
     await SecureStore.setItemAsync('userToken', updatedUser.token || token);
     await SecureStore.setItemAsync('_id', updatedUser._id || user._id);
+    await SecureStore.setItemAsync('account_id', updatedUser.account_id || user.account_id);
     await SecureStore.setItemAsync('username', updatedUser.username || user.username);
     await SecureStore.setItemAsync('email', updatedUser.email || user.email);
     await SecureStore.setItemAsync('role', updatedUser.role || user.role);
+    await SecureStore.setItemAsync('status', updatedUser.status || user.status);
     await SecureStore.setItemAsync('asset_model', updatedUser.asset_model || user.asset_model);
     await SecureStore.setItemAsync('first_access', updatedUser.first_access || user.first_access);
     await SecureStore.setItemAsync('device_notif', updatedUser.device_notif || user.device_notif);

@@ -9,6 +9,7 @@ import Weather from '../../../components/Weather'
 import { useAuth } from '../../../context/AuthContext'
 import { scale } from 'react-native-size-matters'
 import api from '../../../utils/api';
+import { useFocusEffect } from '@react-navigation/native'
 
 const StudentHome = () => {
   const { user, renderUserData, token } = useAuth();
@@ -77,7 +78,6 @@ const StudentHome = () => {
       console.log('empty token')
     }
   }, []); 
-
 
 
   return (
@@ -158,7 +158,7 @@ const StudentHome = () => {
               <Text className='font-pRegular text-pastel-black' style={{fontSize: scale(8)}}>{aqiIL}</Text>
             </View>
             {aqi !== 0 && (
-              <TouchableOpacity className='bg-gray-100 px-3 items-center rounded-xl flex-row justify-between' style={{height: scale(24), width: scale(110)}} onPress={() => router.push('statistics')} activeOpacity={0.5}>
+              <TouchableOpacity className='bg-gray-100 px-3 items-center rounded-xl flex-row justify-between' style={{height: scale(24), width: scale(110)}} onPress={() => router.push('studentStatistics')} activeOpacity={0.5}>
                 <Text className='font-pRegular text-pastel-black' style={{fontSize: scale(10)}}>All Statistics</Text>
                 <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
               </TouchableOpacity>
