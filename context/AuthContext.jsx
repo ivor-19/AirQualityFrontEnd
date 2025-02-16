@@ -36,7 +36,7 @@ export const AuthProvider = ({ children }) => {
           SecureStore.getItemAsync('status'),
           SecureStore.getItemAsync('asset_model'),
           SecureStore.getItemAsync('first_access'),
-          SecureStore.getItemAsync('device_notif')
+          SecureStore.getItemAsync('device_notif'),
         ]);
 
       if (storedToken && storedUserId && storedAccountId && storedUsername && storedEmail && storedRole && storedStatus && storedAssetModel && storedFirstAccess && storedDeviceNotif) {
@@ -83,16 +83,16 @@ export const AuthProvider = ({ children }) => {
   const login = (authToken, userData) => {
     setToken(authToken);
     setUser(userData);
-    SecureStore.setItemAsync('userToken', String(authToken));
-    SecureStore.setItemAsync('_id', String(userData._id));
-    SecureStore.setItemAsync('account_id', String(userData.account_id));
-    SecureStore.setItemAsync('username', String(userData.username));
-    SecureStore.setItemAsync('email', String(userData.email || ''));
-    SecureStore.setItemAsync('role', String(userData.role));
-    SecureStore.setItemAsync('status', String(userData.status));
-    SecureStore.setItemAsync('asset_model', String(userData.asset_model || ''));
-    SecureStore.setItemAsync('first_access', String(userData.first_access));
-    SecureStore.setItemAsync('device_notif', String(userData.device_notif || ''));
+    SecureStore.setItemAsync('userToken', authToken);
+    SecureStore.setItemAsync('_id', userData._id);
+    SecureStore.setItemAsync('account_id', userData.account_id);
+    SecureStore.setItemAsync('username', userData.username);
+    SecureStore.setItemAsync('email', userData.email);
+    SecureStore.setItemAsync('role', userData.role);
+    SecureStore.setItemAsync('status', userData.status);
+    SecureStore.setItemAsync('asset_model', userData.asset_model);
+    SecureStore.setItemAsync('first_access', userData.first_access);
+    SecureStore.setItemAsync('device_notif', userData.device_notif);
   };
 
   const logout = () => {

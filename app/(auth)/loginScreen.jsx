@@ -61,15 +61,15 @@ const loginScreen = () => {
   
         // Ensure all values are strings before storing
         await SecureStore.setItemAsync('userToken', token);
-        await SecureStore.setItemAsync('_id', String(user._id));
-        await SecureStore.setItemAsync('account_id', String(user.account_id));
-        await SecureStore.setItemAsync('username', String(user.username));
-        await SecureStore.setItemAsync('email', String(user.email || '')); // Handle null/undefined
-        await SecureStore.setItemAsync('role', String(user.role));
-        await SecureStore.setItemAsync('status', String(user.status));
-        await SecureStore.setItemAsync('asset_model', String(user.asset_model || ''));
-        await SecureStore.setItemAsync('first_access', String(user.first_access));
-        await SecureStore.setItemAsync('device_notif', String(user.device_notif || ''));
+        await SecureStore.setItemAsync('_id', user._id);
+        await SecureStore.setItemAsync('account_id', user.account_id);
+        await SecureStore.setItemAsync('username', user.username);
+        await SecureStore.setItemAsync('email', user.email);
+        await SecureStore.setItemAsync('role', user.role);
+        await SecureStore.setItemAsync('status', user.status);
+        await SecureStore.setItemAsync('asset_model', user.asset_model);
+        await SecureStore.setItemAsync('first_access', user.first_access);
+        await SecureStore.setItemAsync('device_notif', user.device_notif);
 
         const res = await api.post('/expoToken', {token_notif: expoPushToken.data})
         console.log(res.data);
