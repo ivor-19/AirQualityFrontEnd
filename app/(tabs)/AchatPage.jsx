@@ -95,11 +95,15 @@ const AdminChatPage = () => {
       setDisableButton(false);
       
       Keyboard.dismiss();
+      scrollViewRef.current?.scrollToEnd({ animated: true });
     } catch (error) {
       console.error('Error sending chat', error);
     }
   };
 
+  const handleInputFocus = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  };
 
   return (
     <SafeAreaView className='h-full w-full bg-white'>
@@ -144,18 +148,18 @@ const AdminChatPage = () => {
             {/* content start */}
             {chat.map((data, index) => {
               return(
-                <View className={`w-full flex flex-row ${data.sender === user.username ? 'flex-row-reverse justify-start gap-1' : ''}`} key={index}>
-                  <View className={`w-[10%] justify-end pb-4`}>
-                    <RemixIcon name='ri-account-circle-fill' size={28} color='blue'/>
+                <View className={`w-full flex flex-row ${data.sender === user.username ? 'flex-row-reverse justify-start' : ''}`} key={index}>
+                  <View className={`w-[10%] justify-end pb-2`}>
+                    <RemixIcon name='ri-account-circle-fill' size={scale(26)} color={data.role === 'Admin' ? 'green' : 'gray'}/>
                   </View>
                   <View className='max-w-[80%] flex-col' style={{gap: scale(4)}}>
-                    <Text className={`font-pRegular text-[8px] text-gray-600 ${data.sender === user.username ? 'text-right' : 'text-left'}`}>
+                    <Text className={`font-pRegular text-gray-600 px-2 ${data.sender === user.username ? 'text-right' : 'text-left'}`} style={{fontSize: scale(7)}}>
                       {data.sender === user.username ? 'You' : data.sender}{data.role === "Admin" ? ' - Admin' : ''} 
                     </Text>
                     <View className={`bg-white rounded-[18px] border-2 border-gray-100`} activeOpacity={0.7} style={{shadowColor: 'gray', elevation: 4}}>
-                      <View className='p-2 flex-col items-center' style={{gap: 6}}>
+                      <View className='p-3 flex-col items-center' style={{gap: 6}}>
                         <View className='w-full px-2'>
-                          <Text className='text-pastel-black font-pRegular text-[12px]'>{data.message}</Text>
+                          <Text className='text-pastel-black font-pRegular' style={{fontSize: scale(10)}}>{data.message}</Text>
                         </View> 
                         <View className='w-full px-2  flex flex-row justify-between'>
                         
@@ -163,9 +167,9 @@ const AdminChatPage = () => {
                         </View>
                       </View>
                     </View>
-                    <Text className={`font-pRegular text-[8px] text-gray-600 px-2 ${data.sender === user.username ? 'text-right' : 'text-left'}`}>
-                      {`${data.timestamp} - ${data.date}`}
-                      </Text>           
+                    <Text className={`font-pRegular text-gray-600 px-2 ${data.sender === user.username ? 'text-right' : 'text-left'}`} style={{fontSize: scale(7)}}>
+                     {`${data.timestamp} - ${data.date}`}
+                    </Text>              
                   </View>
                 </View>      
               )
@@ -181,7 +185,7 @@ const AdminChatPage = () => {
                 onChangeText={(text) => setMessage(text)}
                 value={message}
                 autoCapitalize='none'
-                
+                onFocus={handleInputFocus} 
               >
               </TextInput>
             </View>

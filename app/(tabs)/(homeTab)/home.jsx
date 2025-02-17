@@ -90,40 +90,40 @@ const Home = () => {
         <View className='w-full flex flex-row space-x-2 h-28'>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
             <View className='flex-1 p-2' style={{gap: 20}}>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>PM 2.5</Text>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>PM 2.5</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
                   <Image source={require('../../../assets/icons/pm2.5.png')} className='h-10 w-10'/>
                 </View>
               </View>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>{pm2_5}</Text>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{pm2_5}</Text>
             </View>
           </View>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
             <View className='flex-1 p-2' style={{gap: 20}}>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>CO</Text>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>CO</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
                   <Image source={require('../../../assets/icons/smoke-white.png')} className='h-10 w-10'/>
                 </View>
               </View>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>{co}</Text>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{co}</Text>
             </View>
           </View>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
             <View className='flex-1 p-2' style={{gap: 20}}>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>NO2</Text>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>NO2</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
                   <Image source={require('../../../assets/icons/nitrogen.png')} className='h-10 w-10'/>
                 </View>
               </View>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>{no2}</Text>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{no2}</Text>
             </View>
           </View>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
             <View className='flex-1 p-2' style={{gap: 20}}>
-              <Text className='font-pSemiBold text-[10px] text-center text-pastel-black'>???</Text>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>???</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
                   <RemixIcon name='ri-bubble-chart-fill' color='white'/>
@@ -136,7 +136,7 @@ const Home = () => {
         {/* Graph */}
         <View className='flex-[0.9] bg-white rounded-custom py-4 px-8 border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>
           <View className='h-[10%] justify-center'>
-            <Text className='text-center font-pRegular text-[16px]'>Statistics</Text>
+            <Text className='text-center font-pRegular' style={{fontSize: scale(14)}}>Statistics</Text>
           </View>
           <View className='flex-1 items-center justify-center'>
             <Svg height="300" width="300">
@@ -146,9 +146,9 @@ const Home = () => {
               <Circle cx="150" cy="150" r="90" stroke="gray" strokeWidth="2" fill="none" strokeDasharray="2,5" />
             </Svg>
             <View className='absolute items-center justify-center h-14'>
-              <Text className='font-pBold text-[42px] text-pastel-black'>{aqi}</Text>
-              <Text className='font-pRegular text-[10px]'>AQI score</Text>
-              {timestamp && <Text className='font-pRegular text-[10px] text-gray-400'>Timestamp: {timestamp}</Text>}
+              <Text className='font-pBold text-pastel-black' style={{fontSize: scale(36)}}>{aqi}</Text>
+              <Text className='font-pRegular' style={{fontSize: scale(8)}}>AQI score</Text>
+              {timestamp && <Text className='font-pRegular text-gray-400' style={{fontSize: scale(8)}}>Timestamp: {timestamp}</Text>}
             </View>
           </View>
           <View className='h-[10%] flex-row justify-between items-center'>
@@ -159,7 +159,7 @@ const Home = () => {
             </View>
             {aqi !== 0 && (
               <TouchableOpacity className='bg-gray-100 px-3 items-center rounded-xl flex-row justify-between' style={{height: scale(24), width: scale(110)}} onPress={() => router.push('statistics')} activeOpacity={0.5}>
-                <Text className='font-pRegular text-pastel-black' style={{fontSize: scale(10)}}>All Statistics</Text>
+                <Text className='font-pRegular text-pastel-black' style={{fontSize: scale(8)}}>View Statistics</Text>
                 <RemixIcon name='ri-arrow-right-up-line' size={16}></RemixIcon>
               </TouchableOpacity>
               

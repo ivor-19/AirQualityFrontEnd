@@ -4,7 +4,7 @@
     "slug": "air-guard",
     "version": "7.2.0",
     "orientation": "portrait",
-    "icon": "./assets/app-icons/leaf-icon.png",
+    "icon": "./assets/app-icons/leaf-dark.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -40,14 +40,14 @@
         "expo-notifications",
         {
           "icon": "./assets/app-icons/leaf-adaptive-icon.png",
-          "color": "#ffffff",
+          "color": "#323232",
           "sounds": ["./assets/notification-sound.wav"]
         }
       ]
     ],
     "notification": {
       "icon": "./assets/app-icons/leaf-adaptive-icon.png",
-      "color": "#ffffff",
+      "color": "#323232",
       "iosDisplayInForeground": true,
       "androidMode": "default",
       "androidCollapsedTitle": "New Notification"

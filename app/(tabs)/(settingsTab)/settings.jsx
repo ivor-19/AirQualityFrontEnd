@@ -141,7 +141,7 @@ const settings = () => {
               <View className='h-full w-full py-4'>
                 <View className='flex-1 justify-center'>
                   <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
-                  <Text className='font-pRegular text-gray-400 text-[10px]'>{user.account_id}</Text>
+                  <Text className='font-pRegular text-gray-400' style={{fontSize: scale(8)}}>{user.account_id}</Text>
                 </View>
                 <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] item' activeOpacity={0.7} onPress={() => router.push('profile')} style={{width: scale(120)}}>
                   <Text className='font-pRegular text-white text-[10px] text-center'>Go to Profile</Text>

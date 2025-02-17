@@ -139,7 +139,7 @@ const StudentSettings = () => {
               <View className='h-full w-full py-4'>
                 <View className='flex-1 justify-center'>
                   <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
-                  <Text className='font-pRegular text-gray-400 text-[10px]'>{user.account_id}</Text>
+                  <Text className='font-pRegular text-gray-400' style={{fontSize: scale(8)}}>{user.account_id}</Text>
                  
                 </View>
                 <TouchableOpacity className='bg-pastel-black px-4 py-2 rounded-[10px] item' activeOpacity={0.7} onPress={() => router.push('sProfile')} style={{width: scale(120)}}>
@@ -210,8 +210,8 @@ const StudentSettings = () => {
             <Modal isVisible={showLogout} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
               <View className='absolute h-full w-full items-center justify-center z-50' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
                 <View className='w-[80%] bg-white rounded-[10px] p-4' style={{gap: 10}}>
-                  <Text className='font-pSemiBold text-[16px]'>Logout?</Text>
-                  <Text className='font-pRegular text-[12px]'>Are you sure you want to logout?</Text>
+                  <Text className='font-pSemiBold' style={{fontSize: scale(14)}}>Logout?</Text>
+                  <Text className='font-pRegular' style={{fontSize: scale(10)}}>Are you sure you want to logout?</Text>
                   <View className='flex-row justify-between mt-4'>
                     <TouchableOpacity onPress={() => setShowLogout(false)} className='bg-gray-100 w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
                       <Text className='text-center font-pRegular text-black text-[12px] '>Cancel</Text>

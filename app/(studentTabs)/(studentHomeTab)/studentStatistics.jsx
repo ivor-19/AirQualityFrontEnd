@@ -6,6 +6,7 @@ import { Image } from 'expo-image'
 import CustomLineChart from '../../../components/CustomLineChart'
 import { useAQI } from '../../../context/AQIContext'
 import CustomHeader from '../../../components/CustomHeader'
+import { scale } from 'react-native-size-matters'
 
 const studentStatistics = () => {
     const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, aqiDet, coIC, coIL, no2IC, no2IL, timestamp } = useAQI();
@@ -17,22 +18,22 @@ const studentStatistics = () => {
                 <View className='h-full w-full p-4' style={{gap: 12}}>
                     <View className='h-32 flex flex-row space-x-2'>
                         <View className='bg-white h-full w-[40%] rounded-custom items-center justify-center p-4 border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>
-                            <Text className='font-pBold text-[24px]'>{aqi}</Text>
-                            <Text className='font-pRegular text-[10px]'>AQI score</Text>
-                            <Text className='font-pRegular text-[10px] text-gray-400'>Timestamp: {timestamp}</Text>
+                            <Text className='font-pBold' style={{fontSize: scale(20)}}>{aqi}</Text>
+                            <Text className='font-pRegular' style={{fontSize: scale(8)}}>AQI score</Text>
+                            <Text className='font-pRegular text-gray-400' style={{fontSize: scale(7)}}>Timestamp: {timestamp}</Text>
                         </View>
                         <View className='bg-white h-full flex-1 rounded-custom p-4 border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>
                             <View className='flex-row items-center' style={{gap: 4}}>
-                                <Text className='font-pRegular text-[10px]'>Risk Indicator: </Text>
+                                <Text className='font-pRegular' style={{fontSize: scale(8)}}>Risk Indicator: </Text>
                                 <View className={`h-[6px] w-[6px] rounded-full`} style={{backgroundColor: aqiIC}}></View>
-                                <Text className='font-pSemiBold text-[10px]'>{aqiIL}</Text>
+                                <Text className='font-pSemiBold' style={{fontSize: scale(8)}}>{aqiIL}</Text>
                             </View>
                             <View className='flex-row' style={{gap: 4}}>
-                                <Text className='font-pRegular text-[10px]'>Condition: </Text>
-                                <Text className='font-pSemiBold text-[10px]'>{aqiCon}</Text>
+                                <Text className='font-pRegular' style={{fontSize: scale(8)}}>Condition: </Text>
+                                <Text className='font-pSemiBold' style={{fontSize: scale(8)}}>{aqiCon}</Text>
                             </View>
                             <View className='h-20 mt-2'>
-                                <Text className='font-pRegular text-[10px]'>
+                                <Text className='font-pRegular' style={{fontSize: scale(8)}}>
                                     {aqiDet}
                                 </Text>
                             </View>
@@ -44,7 +45,7 @@ const studentStatistics = () => {
                     <View className='w-full flex-1 flex flex-col space-y-2'>
                         <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
-                                <Text className='text-pastel-black font-pBold text-[30px]'>{pm2_5}</Text>
+                                <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{pm2_5}</Text>
                                 <Text className='text-pastel-black font-pRegular text-[10px]'>µg/m³</Text>
                             </View>
                             <View className='flex-1 h-full px-2'>
@@ -59,7 +60,7 @@ const studentStatistics = () => {
                         </View>
                         <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
-                                <Text className='text-pastel-black font-pBold text-[30px]'>{co}</Text>
+                                <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{co}</Text>
                                 <Text className='text-pastel-black font-pRegular text-[10px]'>PPM</Text>
                             </View>
                             <View className='flex-1 h-full px-2'>
@@ -74,7 +75,7 @@ const studentStatistics = () => {
                         </View>
                         <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
-                                <Text className='text-pastel-black font-pBold text-[30px]'>{no2}</Text>
+                                <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{no2}</Text>
                                 <Text className='text-pastel-black font-pRegular text-[10px]'>PPB</Text>
                             </View>
                             <View className='flex-1 h-full px-2'>
@@ -89,7 +90,7 @@ const studentStatistics = () => {
                         </View>
                         <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
-                                <Text className='text-pastel-black font-pBold text-[30px]'>?</Text>
+                                <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>?</Text>
                                 <Text className='text-pastel-black font-pRegular text-[10px]'>???</Text>
                             </View>
                             <View className='flex-1 h-full px-2'>

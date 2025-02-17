@@ -56,23 +56,35 @@ const loginScreen = () => {
       const response = await api.post('/users/login', { account_id, password });
       if (response.data.token) {
         const { token, user } = response.data;
-        login(token, user);
-        console.log('Login successful, token:', token, user);
-  
-        // Ensure all values are strings before storing
-        await SecureStore.setItemAsync('userToken', token);
-        await SecureStore.setItemAsync('_id', user._id);
-        await SecureStore.setItemAsync('account_id', user.account_id);
-        await SecureStore.setItemAsync('username', user.username);
-        await SecureStore.setItemAsync('email', user.email);
-        await SecureStore.setItemAsync('role', user.role);
-        await SecureStore.setItemAsync('status', user.status);
-        await SecureStore.setItemAsync('asset_model', user.asset_model);
-        await SecureStore.setItemAsync('first_access', user.first_access);
-        await SecureStore.setItemAsync('device_notif', user.device_notif);
 
-        const res = await api.post('/expoToken', {token_notif: expoPushToken.data})
+        await api.post(`/users/editUser/${user._id}`, { device_notif: expoPushToken.data });
+        const userDeviceNotif = await api.get(`/users/${user?._id}`);
+
+        const updatedUser = {
+            ...user,
+            device_notif: userDeviceNotif.data.user.device_notif
+        };
+
+        login(token, updatedUser); 
+        console.log('Login successful eyee, token:', token, updatedUser);
+        
+        // Store in SecureStore
+        await SecureStore.setItemAsync('userToken', token);
+        await SecureStore.setItemAsync('_id', updatedUser._id);
+        await SecureStore.setItemAsync('account_id', updatedUser.account_id);
+        await SecureStore.setItemAsync('username', updatedUser.username);
+        await SecureStore.setItemAsync('email', updatedUser.email);
+        await SecureStore.setItemAsync('role', updatedUser.role);
+        await SecureStore.setItemAsync('status', updatedUser.status);
+        await SecureStore.setItemAsync('asset_model', updatedUser.asset_model);
+        await SecureStore.setItemAsync('first_access', updatedUser.first_access);
+        await SecureStore.setItemAsync('device_notif', updatedUser.device_notif);
+        
+        const res = await api.post('/expoToken', {token_notif: expoPushToken.data});
         console.log(res.data);
+
+
+        //add a edit device_notif every login so it reflects the current device used
   
         setLoading(false);
         if(user.status === "Block"){

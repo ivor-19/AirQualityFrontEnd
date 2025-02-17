@@ -7,7 +7,7 @@ export const getAqiIndicator = (aqi) => {
       details: 'Conditions are stable and low-risk, requiring minimal attention.', 
       attention: 'Alert: Air quality is optimal, no health concerns. Outdoor activities can continue as usual.'
     };
-  } else if(aqi <= 100) {
+  } else if(aqi <= 40) {
     return { 
       color: '#008000', 
       label: 'Low', 
@@ -15,7 +15,7 @@ export const getAqiIndicator = (aqi) => {
       details: 'Conditions are mostly safe with minimal risk; basic precautions are enough.', 
       attention: 'Advisory: Air quality is acceptable. Minor precautions may be needed for sensitive individuals.'
     };
-  } else if(aqi <= 150) {
+  } else if(aqi <= 60) {
     return { 
       color: '#FFC300', 
       label: 'Moderate', 
@@ -23,7 +23,7 @@ export const getAqiIndicator = (aqi) => {
       details: 'Conditions could lead to mild health effects under certain circumstances.', 
       attention: 'Warning: Air quality is moderate. Sensitive individuals may experience mild symptoms; consider limiting strenuous outdoor activities.'
     };
-  } else if(aqi <= 200) {
+  } else if(aqi <= 150) {
     return { 
       color: '#C70039', 
       label: 'High', 
@@ -31,7 +31,7 @@ export const getAqiIndicator = (aqi) => {
       details: 'Conditions may cause health issues if ignored; increased vigilance and precautions are necessary.', 
       attention: 'Warning: Air quality is poor. People with respiratory or heart conditions should reduce outdoor exposure.'
     };
-  } else if(aqi <= 300) {
+  } else if(aqi <= 200) {
     return { 
       color: '#900C3F', 
       label: 'Very High', 
