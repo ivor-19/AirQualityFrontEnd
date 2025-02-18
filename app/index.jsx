@@ -8,7 +8,7 @@ import SplashScreen from '../components/SplashScreen';
 import NetInfo from '@react-native-community/netinfo'; // Import NetInfo
 
 const index = () => {
-    const [showSplashScreen, setShowSplashScreen] = useState(true);
+    const [showSplashScreen, setShowSplashScreen] = useState(false);
     const [isConnectedToWifi, setIsConnectedToWifi] = useState(false);
 
     useEffect(() => {

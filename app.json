@@ -2,7 +2,7 @@
   "expo": {
     "name": "Air Guard",
     "slug": "air-guard",
-    "version": "7.3.0",
+    "version": "7.4.0",
     "orientation": "portrait",
     "icon": "./assets/app-icons/leaf-dark.png",
     "scheme": "myapp",
@@ -13,7 +13,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/app-icons/leaf-adaptive-icon.png"
+        "foregroundImage": "./assets/app-icons/airguard-adaptive-icon.png",
+        "monochromeImage": "./assets/app-icons/airguard-adaptive-icon.png",
+        "backgroundImage": "./assets/app-icons/airguard-adaptive-icon.png",
+        "backgroundColor": "#323232"
       },
       "package": "com.rov19.client",
       "googleServicesFile": "./android/app/google-services.json",
@@ -29,7 +32,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/app-icons/leaf-splash.png",
+          "image": "./assets/app-icons/airguard-splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain"
         }
@@ -39,15 +42,15 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/app-icons/leaf-adaptive-icon.png",
-          "color": "#323232",
+          "icon": "./assets/app-icons/leaf-notification.png",
+          "color": "#ffffff",
           "sounds": ["./assets/notification-sound.wav"]
         }
       ]
     ],
     "notification": {
-      "icon": "./assets/app-icons/leaf-adaptive-icon.png",
-      "color": "#323232",
+      "icon": "./assets/app-icons/leaf-notification.png",
+      "color": "#ffffff",
       "iosDisplayInForeground": true,
       "androidMode": "default",
       "androidCollapsedTitle": "New Notification"

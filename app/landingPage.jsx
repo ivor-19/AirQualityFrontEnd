@@ -9,7 +9,7 @@ import NetInfo from '@react-native-community/netinfo'; // Import NetInfo
 import TokenNotification from '../components/TokenNotification';
 
 const landingPage = () => {
-    const [showSplashScreen, setShowSplashScreen] = useState(true);
+    const [showSplashScreen, setShowSplashScreen] = useState(false);
     const [isConnectedToWifi, setIsConnectedToWifi] = useState(false);
 
     useEffect(() => {
