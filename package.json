@@ -1,7 +1,7 @@
 {
   "name": "air-guard",
   "main": "expo-router/entry",
-  "version": "7.4.2",
+  "version": "7.4.3",
   "scripts": {
     "start": "expo start -c",
     "reset-project": "node ./scripts/reset-project.js",
@@ -48,7 +48,7 @@
     "nodemailer": "^6.9.16",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-native": "^0.76.6",
+    "react-native": "0.76.7",
     "react-native-alert-notification": "^0.4.2",
     "react-native-chart-kit": "^6.12.0",
     "react-native-geolocation-service": "^5.3.1",
