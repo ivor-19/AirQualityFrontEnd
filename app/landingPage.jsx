@@ -24,9 +24,10 @@ const landingPage = () => {
 
       
       if (isConnectedToWifi) {
-        setTimeout(() => {
-          setShowSplashScreen(false);
-        }, 2000); // If connected to Wi-Fi, show for 2 seconds
+        // setTimeout(() => {
+        //   setShowSplashScreen(false);
+        // }, 2000); // If connected to Wi-Fi, show for 2 seconds
+        setShowSplashScreen(false);
       }
 
       if (!isConnectedToWifi) {

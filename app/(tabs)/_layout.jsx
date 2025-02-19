@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, Modal } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { router, Tabs } from 'expo-router';
 import RemixIcon from 'react-native-remix-icon';
@@ -9,12 +9,17 @@ import { darkThemeColors, lightThemeColors } from '../../utils/alertColorUtils';
 import MessageModal from '../../components/MessageModal';
 import { useAuth } from '../../context/AuthContext';
 import SessionsExpired from '../../components/SessionsExpired';
+import api from '../../utils/api';
+import { useAQI } from '../../context/AQIContext';
 
 const TabLayout = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [showSession, setShowSession] = useState(false);
   const navigation = useNavigation(); // Initialize navigation
-  const { token, user } = useAuth();
+  const { token, user, logout } = useAuth();
+  const { resetAQI } = useAQI();
+  const [showBlock, setShowBlock] = useState(false);
+  const [deletedAccount, setDeletedAccount] = useState(false);
   const r = useRoute();
 
   const openModal = () => {
@@ -59,6 +64,35 @@ const TabLayout = () => {
       console.log('You are in the Achat Page');
     }
   }, [r]);
+
+  useEffect(() => {
+    const fetchUserStatus = async() => {
+      try {
+        const response = await api.get(`/users/${user?._id}`);
+        console.log("STATUS", response.data.user.status);
+        if(response.data.user.status === "Block"){
+          setShowBlock(true);
+        }
+ 
+      } catch (error) {
+        console.log("Account is deleted")
+        setDeletedAccount(true);
+      }
+    }
+    fetchUserStatus();
+    const interval = setInterval(() => {
+      fetchUserStatus();
+    }, 10000); // 10 seconds
+
+    return () => clearInterval(interval);
+  },[])
+
+  const toggleLogout = () => {
+    logout();
+    resetAQI();
+    setShowBlock(false);
+    setDeletedAccount(false);
+  }
 
   return (
     <AlertNotificationRoot
@@ -154,6 +188,36 @@ const TabLayout = () => {
       {showSession ? (
         <SessionsExpired />
       ) : null}
+      {showBlock ? (
+        <Modal isVisible={showBlock} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
+          <View className='absolute h-full w-full items-center justify-center z-50' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+            <View className='w-[80%] bg-white rounded-[10px] p-4' style={{gap: 10}}>
+              <Text className='font-pSemiBold text-[16px]'>Account Blocked!</Text>
+              <Text className='font-pRegular text-[12px]'>Your account has been temporarily blocked due to suspicious activity. Please contact support for further assistance.</Text>
+              <View className='flex-row justify-end mt-4'>
+                <TouchableOpacity onPress={toggleLogout} className='bg-pastel-black w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
+                  <Text className='text-center font-pRegular text-white text-[12px]'>Exit</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      ):null}
+      {deletedAccount ? (
+        <Modal isVisible={deletedAccount} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
+          <View className='absolute h-full w-full items-center justify-center z-50' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
+            <View className='w-[80%] bg-white rounded-[10px] p-4' style={{gap: 10}}>
+              <Text className='font-pSemiBold text-[16px]'>Account Access Issue!</Text>
+              <Text className='font-pRegular text-[12px]'>We couldn't locate your account in our system. It may have been deleted or is not currently available. Please contact support for further assistance.</Text>
+              <View className='flex-row justify-end mt-4'>
+                <TouchableOpacity onPress={toggleLogout} className='bg-pastel-black w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
+                  <Text className='text-center font-pRegular text-white text-[12px]'>Exit</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      ):null}
     </AlertNotificationRoot>
   );
 };

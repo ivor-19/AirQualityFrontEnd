@@ -203,7 +203,7 @@ const StudentSettings = () => {
         <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
         <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
-        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.3.0</Text>
+        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.4.1</Text>
         {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
         {showLogout ? (

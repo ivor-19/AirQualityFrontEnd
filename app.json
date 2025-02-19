@@ -2,7 +2,7 @@
   "expo": {
     "name": "Air Guard",
     "slug": "air-guard",
-    "version": "7.4.0",
+    "version": "7.4.2",
     "orientation": "portrait",
     "icon": "./assets/app-icons/leaf-dark.png",
     "scheme": "myapp",
@@ -42,14 +42,14 @@
       [
         "expo-notifications",
         {
-          "icon": "./assets/app-icons/leaf-notification.png",
+          "icon": "./assets/app-icons/leaf-notif.png",
           "color": "#ffffff",
           "sounds": ["./assets/notification-sound.wav"]
         }
       ]
     ],
     "notification": {
-      "icon": "./assets/app-icons/leaf-notification.png",
+      "icon": "./assets/app-icons/leaf-notif.png",
       "color": "#ffffff",
       "iosDisplayInForeground": true,
       "androidMode": "default",
