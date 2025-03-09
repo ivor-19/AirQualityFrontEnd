@@ -39,35 +39,35 @@ const OnboardingItems = ({customStyle, title, image, customImageStyle, descripti
     }
   }, [expoPushToken]);
 
-  const toggleUpdate = async () => {
-    setLoading(true);
-    try{
-      const updateResponse = await api.post(`/users/editUser/${user._id}`, { 
-        asset_model: "modelx21", 
-        first_access: "No",
-      });
-      console.log('User updated:', updateResponse);
+  // const toggleUpdate = async () => {
+  //   setLoading(true);
+  //   try{
+  //     const updateResponse = await api.post(`/users/editUser/${user._id}`, { 
+  //       asset_model: "modelx21", 
+  //       first_access: "No",
+  //     });
+  //     console.log('User updated:', updateResponse);
 
-      if (updateResponse.data) {
-        const updatedUser = { ...user, asset_model: "modelx21", first_access: "No" };
-        renderUserData(updatedUser);
-        setLoading(false);
-        // Step 5: Redirect to home page
-        if(user.role === "Student"){
-          router.replace('studentHome');
-        }
-        else if(user.role === "Admin"){
-          router.replace('home');
-        }
-      } else {
-        setLoading(false);
-        console.log('Error: User was not updated');
-      }
-    }
-    catch(error){
-      console.error('Error updating', error)
-    }
-  }
+  //     if (updateResponse.data) {
+  //       const updatedUser = { ...user, asset_model: "modelx21", first_access: "No" };
+  //       renderUserData(updatedUser);
+  //       setLoading(false);
+  //       // Step 5: Redirect to home page
+  //       if(user.role === "Student"){
+  //         router.replace('studentHome');
+  //       }
+  //       else if(user.role === "Admin"){
+  //         router.replace('home');
+  //       }
+  //     } else {
+  //       setLoading(false);
+  //       console.log('Error: User was not updated');
+  //     }
+  //   }
+  //   catch(error){
+  //     console.error('Error updating', error)
+  //   }
+  // }
 
   return (
     <View className={`flex-1 bg-white items-center justify-center ${customStyle}`}>
@@ -86,7 +86,7 @@ const OnboardingItems = ({customStyle, title, image, customImageStyle, descripti
           title={'Get started'}
           customButtomStyle={'bg-pastel-green w-[50%]'}
           customTitleStyle={'text-pastel-black'}
-          onPress={toggleUpdate}
+          onPress={toggleConnect} // toggleUpdate ang ipalit kapag hindi na need yung change password
         />
       )}
 

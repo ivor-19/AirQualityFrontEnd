@@ -11,6 +11,7 @@ import { useAuth } from '../../context/AuthContext';
 import SessionsExpired from '../../components/SessionsExpired';
 import api from '../../utils/api';
 import { Text, TouchableOpacity, View } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 const TabLayout = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -43,26 +44,41 @@ const TabLayout = () => {
   }, [navigation, modalVisible]);
 
   useEffect(() => {
-    const fetchUserStatus = async() => {
+    const fetchUserStatus = async () => {
       try {
         const response = await api.get(`/users/${user?._id}`);
         console.log("STATUS", response.data.user.status);
-        if(response.data.user.status === "Block"){
+        if (response.data.user.status === "Blocked") {
           setShowBlock(true);
         }
- 
       } catch (error) {
-        console.log("Account is deleted")
+        console.log("Account is deleted");
         setDeletedAccount(true);
       }
-    }
-    fetchUserStatus();
+    };
+
+    const checkNetworkAndFetch = async () => {
+      const state = await NetInfo.fetch();
+      
+      // Check if the device is connected via Wi-Fi or Cellular
+      if (state.isConnected && (state.type === 'wifi' || state.type === 'cellular')) {
+        await fetchUserStatus();
+      } else {
+        Alert.alert(
+          "No Internet Connection",
+          "Please connect to Wi-Fi or Cellular data to continue."
+        );
+      }
+    };
+
+    checkNetworkAndFetch();
+
     const interval = setInterval(() => {
-      fetchUserStatus();
+      checkNetworkAndFetch();
     }, 10000); // 10 seconds
 
     return () => clearInterval(interval);
-  },[])
+  }, []);
 
   const toggleLogout = () => {
     logout();

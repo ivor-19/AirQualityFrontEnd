@@ -5,6 +5,7 @@ import ConnectAsset from './ConnectAsset';
 import * as SecureStore from 'expo-secure-store'; // Import SecureStore
 import { router } from 'expo-router';
 import Modal from "react-native-modal";
+import ChangePassFirst from './ChangePassFirst';
 
 const Onboarding = () => {
     const [showConnect, setShowConnect] = useState(false);
@@ -42,11 +43,11 @@ const Onboarding = () => {
         pagingEnabled
       />
       {/* Uncomment this if you want to require a user to input the model name at the start */}
-      {/* {showConnect ? (
+      {showConnect ? (
         <Modal isVisible={showConnect} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
-          <ConnectAsset />
+          <ChangePassFirst />
         </Modal>
-      ) : null} */}
+      ) : null}
     </>
   )
 }

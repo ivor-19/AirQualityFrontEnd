@@ -16,7 +16,7 @@
         "foregroundImage": "./assets/app-icons/airguard-adaptive-icon.png",
         "monochromeImage": "./assets/app-icons/airguard-adaptive-icon.png",
         "backgroundImage": "./assets/app-icons/airguard-adaptive-icon.png",
-        "backgroundColor": "#323232"
+        "backgroundColor": "#ffffff"
       },
       "package": "com.rov19.client",
       "googleServicesFile": "./android/app/google-services.json",

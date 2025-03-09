@@ -87,7 +87,7 @@ const loginScreen = () => {
         //add a edit device_notif every login so it reflects the current device used
   
         setLoading(false);
-        if(user.status === "Block"){
+        if(user.status === "Blocked"){
           setShowBlock(true);
         }
         else{
