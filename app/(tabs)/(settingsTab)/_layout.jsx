@@ -8,6 +8,8 @@ const SettingsLayout = () => {
     <Stack>
       <Stack.Screen name='settings' options={{title: 'Settings',headerTitleAlign: 'center' , headerShown: false, headerTitleStyle: {fontFamily: 'PoppinsBold', color: '#1d1c1a'}}}/>
       <Stack.Screen name='(controlTab)' options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
+      <Stack.Screen name='about' options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
+      <Stack.Screen name='contactUs' options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
     </Stack>
   )
 }

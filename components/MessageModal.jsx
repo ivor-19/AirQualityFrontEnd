@@ -74,10 +74,12 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
            setToMessage(aqiAttention);
         
             // console.log(qualityMessage)
-            const response = await axios.get('https://air-quality-back-end-v2.vercel.app/students/getEmails');
+            const response = await axios.get('https://air-quality-back-end-v2.vercel.app/users/emails');
             const emails = response.data.emails;
+            const nonEmptyEmails = emails.filter(item => item.email && item.email.trim() !== '').map(item => item.email);
+            const emailString = nonEmptyEmails.join(',');
 
-            setToEmail(emails.map(item => item.email).join(','))
+            setToEmail(emailString)
         }
         fetch();
     }, [])
@@ -110,7 +112,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                     pm2_5: pm2_5,
                     co: co,
                     no2: no2,
-                    scanned_by: user._id,
+                    scanned_by: user.username,
                     scanned_using_model: user.asset_model, 
                     message: message,
                 };

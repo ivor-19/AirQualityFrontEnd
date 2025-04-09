@@ -176,7 +176,7 @@ const AdminChatPage = () => {
             })}
             </View>
         </ScrollView>
-        <View className='w-full h-20 p-4' style={{marginBottom: scale(42)}}>
+        <View className='w-full h-20 p-4' style={{marginBottom: scale(10)}}>
           <View className='flex flex-row items-center' style={{gap: 6}}>
             <View className='bg-white border-[1px] flex-1 px-2 rounded-[12px] border-gray-300 focus-border-2'>
               <TextInput 

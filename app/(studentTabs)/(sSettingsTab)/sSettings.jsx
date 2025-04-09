@@ -199,11 +199,11 @@ const StudentSettings = () => {
               ) : null}
         </View> */}
         <SettingsControl title={'User Guide and Tutorial'} icon={'ri-guide-line'}/>
-        <SettingsControl title={'About this app'} icon={'ri-question-line'}/>
+        <SettingsControl title={'About this app'} icon={'ri-question-line'} onPress={() => router.push("sAbout")}/>
         <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
-        <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'}/>
+        <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'} onPress={() => router.push("sContactUs")}/>
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
-        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.4.3</Text>
+        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.5.0</Text>
         {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
         {showLogout ? (

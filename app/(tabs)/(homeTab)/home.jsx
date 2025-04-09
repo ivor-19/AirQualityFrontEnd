@@ -44,7 +44,7 @@ const Home = () => {
             },
           }
         );
-        const data = response.data[0];
+        const data = response.data.aqReadings[0];
         console.log("API Response Data:", response.data);
         const currentDate = getCurrentDate();
         const currentTimestamp = getCurrentTime();

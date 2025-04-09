@@ -62,7 +62,7 @@ const history = () => {
   
         // Filter based on user
         const filteredDataBasedOnUser = allHistory.filter(item => item.scanned_by === user._id);
-        setDataHistory(filteredDataBasedOnUser.reverse());
+        setDataHistory(allHistory.reverse());
   
         // Extract unique dates for filtering
         const allDates = allHistory.map(item => item.date);
@@ -109,7 +109,7 @@ const history = () => {
   
   return (
     <SafeAreaView className='flex-1 bg-white'>
-      <CustomHeader title={'Inbox'}/>
+      <CustomHeader title={'Announcement History'}/>
       {loading ? (
         <View className='h-full items-center my-20'>
           <Image source={require('../../../assets/animated/loading.gif')} className='h-[30%] w-[30%]'/>
@@ -227,12 +227,13 @@ const history = () => {
                             </View>
                         </View> 
                         <View className='h-full py-2'>
-                          <Text className='font-pRegular text-[8px]'>{data.scanned_using_model}</Text>
+                          <Text className='font-pRegular text-[8px] hidden'>{data.scanned_using_model}</Text>
                         </View>
                       </View>
                       {pressed === data._id ? (
                         <View className='bg-white rounded-custom p-4 w-full flex-col'>
                            <View>
+                            <Text className='font-pRegular text-gray-400 text-[10px]'>Announced by: {data.scanned_by}</Text>
                             <Text className='font-pRegular text-[10px]'>{data.message}</Text>
                           </View>
                           <View className=' flex-row hidden'>

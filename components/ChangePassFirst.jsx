@@ -106,6 +106,7 @@ const ChangePassFirst = () => {
             <View className='bg-gray-100 w-[100%] rounded-[10px] flex-row items-center'>
               <TextInput 
                 ref={textInputRef}
+                secureTextEntry
                 className='bg-gray-100 flex-1 rounded-[10px] py-3 px-4 font-pRegular text-[12px]' 
                 placeholder='New password'
                 onChangeText={(text) => handlePassword(text.trim())}

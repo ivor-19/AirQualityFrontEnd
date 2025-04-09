@@ -45,8 +45,8 @@ const StudentHome = () => {
             },
           }
         );
-        const data = response.data[0];
-        // console.log("API Response Data:", response.data); // para makita yung response sa terminal log
+        const data = response.data.aqReadings[0];
+        console.log("API Response Data:", response.data); // para makita yung response sa terminal log
         const currentDate = getCurrentDate();
         const currentTimestamp = getCurrentTime();
 

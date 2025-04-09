@@ -162,7 +162,7 @@ const TabLayout = () => {
             tabBarStyle: { display: route.name === 'scanning' ? 'none' : 'flex' },
             tabBarButton: (props) => (
              
-                <View className={`h-20 w-20 bg-pastel-black items-center justify-center rounded-full absolute top-[-50] border-4 border-white`}>
+                <View className={`h-20 w-20 bg-pastel-black items-center justify-center rounded-full absolute top-[-10] border-4 border-gray-100`}>
                   <TouchableOpacity
                     onPress={openModal}
                     className='h-full w-full items-center justify-center rounded-full'
