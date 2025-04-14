@@ -204,22 +204,22 @@ const history = () => {
                               <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator:</Text>
                               <View className={`h-[6px] w-[6px] rounded-full
                                 ${
-                                  data.aqi <= 50 ? 'bg-[#DAF7A6]' : 
-                                  data.aqi <= 100 ? 'bg-[#008000]' : 
-                                  data.aqi <= 150 ? 'bg-[#FFC300]' :
+                                  data.aqi <= 10 ? 'bg-[#DAF7A6]' : 
+                                  data.aqi <= 40 ? 'bg-[#008000]' : 
+                                  data.aqi <= 90 ? 'bg-[#FFC300]' :
                                   data.aqi <= 200 ? 'bg-[#C70039]' :
-                                  data.aqi <= 300 ? 'bg-[#900C3F]' :
+                                  data.aqi <= 280 ? 'bg-[#900C3F]' :
                                   'bg-[#581845]' 
                                 
                                 }`}>
                               </View> 
                               <Text className='font-pRegular text-pastel-black text-[10px]'>
                                 {
-                                  data.aqi <= 50 ? 'Very Low' :
-                                  data.aqi <= 100 ? 'Low' : 
-                                  data.aqi <= 150 ? 'Moderate' :
+                                  data.aqi <= 10 ? 'Very Low' :
+                                  data.aqi <= 40 ? 'Low' : 
+                                  data.aqi <= 90 ? 'Moderate' :
                                   data.aqi <= 200 ? 'High' :
-                                  data.aqi <= 300 ? 'Very High' :
+                                  data.aqi <= 280 ? 'Very High' :
                                   'Extremely High' 
 
                                 }
@@ -236,14 +236,14 @@ const history = () => {
                             <Text className='font-pRegular text-gray-400 text-[10px]'>Announced by: {data.scanned_by}</Text>
                             <Text className='font-pRegular text-[10px]'>{data.message}</Text>
                           </View>
-                          <View className=' flex-row hidden'>
+                          <View className=' flex-row'>
                             <View className='w-[50%]'>
                               <Text className='font-pRegular'>PM2.5: <Text className='font-pBold'>{data.pm2_5}</Text></Text>
-                              <Text className='font-pRegular'>CO: <Text className='font-pBold'>{data.co}</Text></Text>
+                              <Text className='font-pRegular'>PM10: <Text className='font-pBold'>{data.pm10}</Text></Text>
                             </View>
                             <View className='w-[50%]'>
+                              <Text className='font-pRegular'>CO: <Text className='font-pBold'>{data.co}</Text></Text>
                               <Text className='font-pRegular'>NO2: <Text className='font-pBold'>{data.no2}</Text></Text>
-                              <Text className='font-pRegular'>???: <Text className='font-pBold'>???</Text></Text>
                             </View>
                           </View>
                         </View>

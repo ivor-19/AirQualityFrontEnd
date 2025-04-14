@@ -11,6 +11,7 @@ import { Image } from 'expo-image';
 import Modal from "react-native-modal";
 import api from '../../../utils/api';
 import { useNotificationContext } from '../../../context/NotificationContext';
+import RemixIcon from 'react-native-remix-icon';
 
 const settings = () => {
   const { user, logout, renderUserData } = useAuth();
@@ -137,7 +138,8 @@ const settings = () => {
         <CustomHeader title={'Settings'}/>
         <View>
           <View className='px-4 w-full bg-white border-b-[1px] border-gray-100 flex-row items-center justify-between' style={{gap: scale(24), height: scale(120)}}>
-            <Image source={require('../../../assets/images/sukuna.jpg')} contentFit='contain' className='rounded-full' style={{height: scale(100), width: scale(100)}}></Image>
+            <Image source={require('../../../assets/images/defaultProf.png')} contentFit='contain' className='rounded-full' style={{height: scale(100), width: scale(100)}}></Image>
+            {/* <RemixIcon name='ri-account-circle-fill' size={scale(100)}/> */}
               <View className='h-full w-full py-4'>
                 <View className='flex-1 justify-center'>
                   <Text className='font-pSemiBold text-pastel-black'>{user.username}</Text>
@@ -199,10 +201,11 @@ const settings = () => {
               </View>
               ) : null}
         </View> */}
-        <SettingsControl title={'User Guide and Tutorial'} icon={'ri-guide-line'}/>
+        <SettingsControl title={'User Guide and Tutorial'} icon={'ri-guide-line'} onPress={() => router.push('usersManual')}/>
         <SettingsControl title={'About this app'} icon={'ri-question-line'} onPress={() => router.push('about')}/>
-        <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/>
-        <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'} onPress={() => router.push('contactUs')}/>
+        <SettingsControl title={'AQI Threshold Guide'} icon={'ri-shield-check-line'} onPress={() => router.push('safetyThreshold')}/>
+        {/* <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/> */}
+        {/* <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'} onPress={() => router.push('contactUs')}/> */}
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
         <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.5.0</Text>
 

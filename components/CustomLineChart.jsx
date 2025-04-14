@@ -3,34 +3,34 @@ import { Dimensions, ScrollView, Text, View } from 'react-native';
 import { PieChart } from 'react-native-chart-kit';  
 import { useAQI } from '../context/AQIContext';
 const CustomPieChart = () => {
-  const { pm2_5, co, no2 } = useAQI();
+  const { pm2_5, pm10, co, no2 } = useAQI();
 
   const data = [
     {
       name: 'PM 2.5',
       population: pm2_5,
-      color: '#e8a09a', // Red color
+      color: '#ef4444', // Red color
+      legendFontColor: '#1d1c1a',
+      legendFontSize: 12,
+    },
+    {
+      name: 'PM 10',
+      population: pm10,
+      color: '#f59e0b', // Amber color
       legendFontColor: '#1d1c1a',
       legendFontSize: 12,
     },
     {
       name: 'CO',
       population: co,
-      color: '#9bbfe0', // Blue color
+      color: '#84cc16', // Green color
       legendFontColor: '#1d1c1a',
       legendFontSize: 12,
     },
     {
       name: 'NO2',
       population: no2,
-      color: '#c6d68f', // Green color
-      legendFontColor: '#1d1c1a',
-      legendFontSize: 12,
-    },
-    {
-      name: '???',
-      population: 0,
-      color: '#fbe29f', // Yellow color
+      color: '#14b8a6', // Blue color
       legendFontColor: '#1d1c1a',
       legendFontSize: 12,
     },

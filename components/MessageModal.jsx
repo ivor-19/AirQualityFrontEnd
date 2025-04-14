@@ -15,7 +15,7 @@ import { useNotificationContext } from '../context/NotificationContext'
 const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
     const { user, renderUserData } = useAuth();
     const { notifTokens, userNotifToken } = useNotificationContext();
-    const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, aqiAttention, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
+    const { aqi, pm2_5, pm10, co, no2, aqiIL, aqiCon, aqiAttention, timestamp, date,} = useAQI(); 
     const emails = [
         {id: 1, email: "ivorcruz19@gmail.com"},
         {id: 2, email: "zpt.pogi@gmail.com"},
@@ -68,7 +68,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
     useEffect(() => {
         const fetch = async () => {
             setQualityMessage(
-            `AQI: ${aqi}\nPM 2.5: ${pm2_5}\nCO: ${co}\nNO2: ${no2}\nTimestamp: ${currentTimestamp}\nDate: ${currentDate}\nRisk Percentage: ${aqiIL}\nCondition: ${aqiCon}`
+            `AQI: ${aqi}\nPM 2.5: ${pm2_5}\nPM 10: ${pm10}\nCO: ${co}\nNO2: ${no2}\nTimestamp: ${currentTimestamp}\nDate: ${currentDate}\nRisk Percentage: ${aqiIL}\nCondition: ${aqiCon}`
             )
 
            setToMessage(aqiAttention);
@@ -110,11 +110,12 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                     timestamp: timestamp,
                     aqi: aqi,
                     pm2_5: pm2_5,
+                    pm10: pm10,
                     co: co,
                     no2: no2,
                     scanned_by: user.username,
                     scanned_using_model: user.asset_model, 
-                    message: message,
+                    message: toMessage,
                 };
                 console.log('Saving data with model:', user.asset_model); // Debug log to confirm model
     

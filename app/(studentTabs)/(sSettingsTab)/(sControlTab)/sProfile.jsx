@@ -78,7 +78,7 @@ const StudentProfile = () => {
           <View className='flex-1 p-4 items-center'>
             <View className='items-center justify-center w-full' style={{height: scale('120')}}>
               <Image 
-                source={require('../../../../assets/images/sukuna.jpg')} 
+                source={require('../../../../assets/images/defaultProf.png')} 
                 contentFit='contain' 
                 className='rounded-full'
                 style={{height: scale(120), width: scale(120)}}

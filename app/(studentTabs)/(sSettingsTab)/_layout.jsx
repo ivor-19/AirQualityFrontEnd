@@ -10,6 +10,8 @@ const StudentSettingsLayout = () => {
       <Stack.Screen name='(sControlTab)' options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
       <Stack.Screen name="sAbout" options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
       <Stack.Screen name="sContactUs" options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
+      <Stack.Screen name="sUsersManual" options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
+      <Stack.Screen name="sSafetyThreshold" options={{headerShown: false, tabBarStyle: { display: 'none' },}}/>
     </Stack>
   )
 }

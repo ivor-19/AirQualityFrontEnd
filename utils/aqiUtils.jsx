@@ -1,5 +1,5 @@
 export const getAqiIndicator = (aqi) => {
-  if(aqi <= 50){
+  if(aqi <= 10){
     return { 
       color: '#DAF7A6', 
       label: 'Very Low', 
@@ -12,10 +12,10 @@ export const getAqiIndicator = (aqi) => {
       color: '#008000', 
       label: 'Low', 
       condition: 'Mild', 
-      details: 'Conditions are mostly safe with minimal risk; basic precautions are enough.', 
+      details: 'Conditions are mostly safe with mild risk; basic precautions are enough.', 
       attention: 'Advisory: Air quality is acceptable. Minor precautions may be needed for sensitive individuals.'
     };
-  } else if(aqi <= 60) {
+  } else if(aqi <= 90) {
     return { 
       color: '#FFC300', 
       label: 'Moderate', 
@@ -23,15 +23,15 @@ export const getAqiIndicator = (aqi) => {
       details: 'Conditions could lead to mild health effects under certain circumstances.', 
       attention: 'Warning: Air quality is moderate. Sensitive individuals may experience mild symptoms; consider limiting strenuous outdoor activities.'
     };
-  } else if(aqi <= 150) {
+  } else if(aqi <= 200) {
     return { 
       color: '#C70039', 
       label: 'High', 
       condition: 'Serious', 
       details: 'Conditions may cause health issues if ignored; increased vigilance and precautions are necessary.', 
-      attention: 'Warning: Air quality is poor. People with respiratory or heart conditions should reduce outdoor exposure.'
+      attention: 'Warning: Air quality is high. People with respiratory or heart conditions should go far from areas with poor air quality to reduce exposure.'
     };
-  } else if(aqi <= 200) {
+  } else if(aqi <= 280) {
     return { 
       color: '#900C3F', 
       label: 'Very High', 
@@ -47,6 +47,38 @@ export const getAqiIndicator = (aqi) => {
       details: 'Conditions are extremely dangerous and can lead to serious health issues for everyone', 
       attention: 'Emergency: Air quality is critically hazardous. It is strongly advised that everyone stay indoors and take necessary precautions.'
     };
+  }
+};
+
+export const getPm2_5Indicator = (pm2_5) => {
+  if(pm2_5 <= 9){
+    return { color: '#DAF7A6', label: 'Very Low' };
+  } else if(pm2_5 <= 50) {
+    return { color: '#008000', label: 'Low' };
+  } else if(pm2_5 <= 90) {
+    return { color: '#FFC300', label: 'Moderate' };
+  } else if(pm2_5 <= 170) {
+    return { color: '#C70039', label: 'High' };
+  } else if(pm2_5 <= 300) {
+    return { color: '#900C3F', label: 'Very High' };
+  } else {
+    return { color: '#581845', label: 'Extremely High' };
+  }
+};
+
+export const getPm10Indicator = (pm10) => {
+  if(pm10 <= 9){
+    return { color: '#DAF7A6', label: 'Very Low' };
+  } else if(pm10 <= 50) {
+    return { color: '#008000', label: 'Low' };
+  } else if(pm10 <= 90) {
+    return { color: '#FFC300', label: 'Moderate' };
+  } else if(pm10 <= 170) {
+    return { color: '#C70039', label: 'High' };
+  } else if(pm10 <= 300) {
+    return { color: '#900C3F', label: 'Very High' };
+  } else {
+    return { color: '#581845', label: 'Extremely High' };
   }
 };
 

@@ -61,6 +61,7 @@ const AuthLayout = () => {
         <Stack>
             <Stack.Screen name='loginScreen' options={{headerShown: false,}}/>
             <Stack.Screen name='signUpScreen' options={{headerShown: false,}}/>
+            <Stack.Screen name='forgotPasswordScreen' options={{headerShown: false,}}/>
         </Stack>
       </AlertNotificationRoot>
     </>

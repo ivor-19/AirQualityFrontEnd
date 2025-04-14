@@ -165,8 +165,11 @@ const TabLayout = () => {
         <Modal isVisible={deletedAccount} animationIn="fadeIn" animationOut="fadeOut" useNativeDriver={true} deviceHeight={1} deviceWidth={1}>
           <View className='absolute h-full w-full items-center justify-center z-50' style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
             <View className='w-[80%] bg-white rounded-[10px] p-4' style={{gap: 10}}>
-              <Text className='font-pSemiBold text-[16px]'>Account Access Issue!</Text>
-              <Text className='font-pRegular text-[12px]'>We couldn't locate your account in our system. It may have been deleted or is not currently available. Please contact support for further assistance.</Text>
+            <Text className='font-pSemiBold text-[16px]'>Oops! Something Went Wrong</Text>
+              <Text className='font-pRegular text-[12px]'>
+                The app encountered an unexpected issue. We recommend exiting and restarting the app. 
+                If the issue persists, please contact our support team for help.
+              </Text>
               <View className='flex-row justify-end mt-4'>
                 <TouchableOpacity onPress={toggleLogout} className='bg-pastel-black w-[45%] h-10 rounded-[10px] justify-center' activeOpacity={0.6}>
                   <Text className='text-center font-pRegular text-white text-[12px]'>Exit</Text>

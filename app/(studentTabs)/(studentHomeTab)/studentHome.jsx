@@ -13,7 +13,7 @@ import { useFocusEffect } from '@react-navigation/native'
 
 const StudentHome = () => {
   const { user, renderUserData, token } = useAuth();
-  const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
+  const { aqi, pm2_5, pm10, co, no2, aqiIC, aqiIL, aqiCon, timestamp, date, scanned_by, setAqi, setPm2_5, setPm10, setC0, setN02, setTimestamp, setDate, setScannedBy, setScannedUsingModel } = useAQI(); 
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -54,6 +54,7 @@ const StudentHome = () => {
         setTimestamp(currentTimestamp);
         setAqi(data.aqi);
         setPm2_5(data.pm2_5);
+        setPm10(data.pm10);
         setC0(data.co);
         setN02(data.no2);
 
@@ -93,10 +94,21 @@ const StudentHome = () => {
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>PM 2.5</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
-                  <Image source={require('../../../assets/icons/pm2.5.png')} className='h-10 w-10'/>
+                  <Image source={require('../../../assets/icons/pm25.png')} className='h-10 w-10'/>
                 </View>
               </View>
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{pm2_5}</Text>
+            </View>
+          </View>
+          <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
+            <View className='flex-1 p-2' style={{gap: 20}}>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>PM 10</Text>
+              <View className='flex-1 items-center justify-center'>
+                <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
+                  <Image source={require('../../../assets/icons/pm10.png')} className='h-10 w-10'/>
+                </View>
+              </View>
+              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{pm10}</Text>
             </View>
           </View>
           <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
@@ -115,28 +127,17 @@ const StudentHome = () => {
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>NO2</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
-                  <Image source={require('../../../assets/icons/nitrogen.png')} className='h-10 w-10'/>
+                  <Image source={require('../../../assets/icons/no2.png')} className='h-10 w-10'/>
                 </View>
               </View>
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{no2}</Text>
-            </View>
-          </View>
-          <View className='bg-pastel-green h-full flex-1 rounded-custom' style={{shadowColor: 'gray', elevation: 4}}>
-            <View className='flex-1 p-2' style={{gap: 20}}>
-              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>???</Text>
-              <View className='flex-1 items-center justify-center'>
-                <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
-                  <RemixIcon name='ri-bubble-chart-fill' color='white'/>
-                </View>
-              </View>
-              <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>???</Text>
             </View>
           </View>
         </View>
         {/* Graph */}
         <View className='flex-[0.9] bg-white rounded-custom py-4 px-8 border-2 border-gray-100' style={{shadowColor: 'gray', elevation: 4}}>
           <View className='h-[10%] justify-center'>
-            <Text className='text-center font-pRegular' style={{fontSize: scale(14)}}>Statistics</Text>
+            {/* <Text className='text-center font-pRegular' style={{fontSize: scale(14)}}>Statistics</Text> */}
           </View>
           <View className='flex-1 items-center justify-center'>
             <Svg height="300" width="300">

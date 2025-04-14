@@ -9,7 +9,7 @@ import CustomHeader from '../../../components/CustomHeader'
 import { scale } from 'react-native-size-matters'
 
 const studentStatistics = () => {
-    const { aqi, pm2_5, co, no2, aqiIC, aqiIL, aqiCon, aqiDet, coIC, coIL, no2IC, no2IL, timestamp } = useAQI();
+    const { aqi, pm2_5, pm10, co, no2, aqiIC, aqiIL, aqiCon, aqiDet, coIL, no2IL, pm2_5IL, pm10IL, timestamp } = useAQI();
 
     return (
         <SafeAreaView className='flex-1 bg-white'>
@@ -50,7 +50,22 @@ const studentStatistics = () => {
                             </View>
                             <View className='flex-1 h-full px-2'>
                                 <Text className='font-pBold text-pastel-black text-[16px]'>Particulate Matter 2.5</Text>
-                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {aqiIL}</Text>
+                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {pm2_5IL}</Text>
+                            </View> 
+                            <View className='w-[20%] h-full items-center justify-center'>
+                                <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
+                                    <Image source={require('../../../assets/icons/pm2.5.png')} className='h-10 w-10'/>
+                                </View>
+                            </View>
+                        </View>
+                        <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
+                            <View className='w-[20%] h-10 items-center justify-center'>
+                                <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{pm10}</Text>
+                                <Text className='text-pastel-black font-pRegular text-[10px]'>µg/m³</Text>
+                            </View>
+                            <View className='flex-1 h-full px-2'>
+                                <Text className='font-pBold text-pastel-black text-[16px]'>Particulate Matter 2.5</Text>
+                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {pm10IL}</Text>
                             </View> 
                             <View className='w-[20%] h-full items-center justify-center'>
                                 <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
@@ -88,21 +103,7 @@ const studentStatistics = () => {
                                 </View>
                             </View>
                         </View>
-                        <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
-                            <View className='w-[20%] h-10 items-center justify-center'>
-                                <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>?</Text>
-                                <Text className='text-pastel-black font-pRegular text-[10px]'>???</Text>
-                            </View>
-                            <View className='flex-1 h-full px-2'>
-                                <Text className='font-pBold text-pastel-black text-[16px]'>???</Text>
-                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: --</Text>
-                            </View> 
-                            <View className='w-[20%] h-full items-center justify-center'>
-                                <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
-                                    <Image source={require('../../../assets/icons/pm2.5.png')} className='h-10 w-10'/>
-                                </View>
-                            </View>
-                        </View>
+                      
                     </View>
                 </View>
             </ScrollView>

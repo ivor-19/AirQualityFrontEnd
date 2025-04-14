@@ -46,6 +46,7 @@ const loginScreen = () => {
   const [accountValidation, setAccountValidation] = useState('');
   const [passwordValidation, setPasswordValidaion] = useState('');
   const [showBlock, setShowBlock] = useState(false);
+  const [enableButton, setEnableButton] = useState(false);
   
   const { user, login, logout } = useAuth();
   const { resetAQI } = useAQI();
@@ -112,14 +113,25 @@ const loginScreen = () => {
         if (errorMessage === 'Student does not exists') {
           setAccountInvalid(true);
           setAccountValidation(errorMessage);
+          Toast.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            textBody: errorMessage,
+          });
         } 
         else if(errorMessage === 'Invalid id or password'){
           setPasswordInvalid(true);
           setPasswordValidaion(errorMessage);
+          Toast.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Error',
+            textBody: errorMessage,
+          });
         }
       } else {
         console.error('Error logging account', error);
       }
+     
     }
 };
   const toggleLogout = () => {
@@ -127,6 +139,13 @@ const loginScreen = () => {
     resetAQI();
     setShowBlock(false);
   }
+  useEffect(() => {
+    if (account_id.trim() !== '' && password.trim() !== '') {
+      setEnableButton(true);
+    } else {
+      setEnableButton(false);
+    }
+  }, [account_id, password]);
 
  
   return (
@@ -150,7 +169,7 @@ const loginScreen = () => {
                 </Text>
             </View>
             <CustomFormField
-              title={'Student ID'}
+              title={'ID'}
               value={account_id}
               onChangeText={(text) => {setAccountId(text.trim()); setAccountInvalid(false)}}
               containerStyle={accountInvalid === true ? 'border-2 border-red-300' : 'border-gray-300 focus:border-pastel-green-v2'}
@@ -165,12 +184,21 @@ const loginScreen = () => {
               validationMessage={passwordValidation}
               isInvalid={passwordInvalid}
             />
+            <View className='w-full flex flex-row justify-end'>
+              <TouchableOpacity activeOpacity={0.6} onPress={() => router.push('forgotPasswordScreen')}>
+                <Text className='font-pRegular' style={{fontSize: scale(10)}}>Forgot password?</Text>
+              </TouchableOpacity>
+            </View>
             <View className='w-full my-4' style={{gap: scale(20)}}>
-                <CustomButton
-                    title={'Log In'}
-                    customButtomStyle={'w-full'}
-                    onPress={handleLogin}
-                />
+                <TouchableOpacity
+                  className={`bg-pastel-green-v2 h-14 w-[100%] rounded-[10px] justify-center ${enableButton ? 'opacity-100' : 'opacity-40'}`}
+                  activeOpacity={0.8}
+                  disabled={!enableButton}
+                  onPress={handleLogin}
+                  style={{height: scale(48), shadowColor: 'gray', elevation: 4}}
+                >
+                  <Text className='text-center font-pSemiBold text-pastel-black'>Login</Text>
+                </TouchableOpacity>
                 {/* <TouchableOpacity onPress={() => router.push('signUpScreen')} className='w-full flex-row justify-center items-center' style={{gap: 4}} activeOpacity={0.7}>
                     <Text className='font-pRegular text-gray-500' style={{fontSize: scale(10)}}>
                         Don't have an account?
