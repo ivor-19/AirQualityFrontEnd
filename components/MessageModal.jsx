@@ -11,6 +11,7 @@ import axios from 'axios'
 import RemixIcon from 'react-native-remix-icon';
 import { router } from 'expo-router'
 import { useNotificationContext } from '../context/NotificationContext'
+import api from '../utils/api'
 
 const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
     const { user, renderUserData } = useAuth();
@@ -127,6 +128,7 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                     sender: user.username,
                     role: user.role,
                     timestamp: chatTime,
+                    avatarPath: user.avatarPath, 
                     date: chatDate,
                 }
 
@@ -134,22 +136,40 @@ const MessageModal = ({onPressCancelSend, onPressConfirmSend}) => {
                 console.log('Chat is send');
                 
 
-                //For Notifications
-                const uniqueTokens = [...new Set(notifTokens)]; // filter the tokens if duplicate is found
-                const tokensToSend = uniqueTokens.filter(token => token !== userNotifToken); // filter the token to not send a notification to themselves
+                // //For Notifications
+                // const uniqueTokens = [...new Set(notifTokens)]; // filter the tokens if duplicate is found
+                // const tokensToSend = uniqueTokens.filter(token => token !== userNotifToken); // filter the token to not send a notification to themselves
 
-                const notificationPromises = tokensToSend.map(token => 
-                    axios.post("https://exp.host/--/api/v2/push/send", {
-                    to: token,
-                    title: "Air Guard Chat",
-                    body: `Admin: ${message}`,
-                    sound: "default"
-                    })
-                );
-
-                // Wait for all notifications to be sent
-                const responses = await Promise.all(notificationPromises);
-                console.log("Notifications sent successfully", responses);
+                const notifsResponse = await api.get('https://air-quality-back-end-v2.vercel.app/users/notifications/getNotifs');
+                const { allDeviceNotifs } = notifsResponse.data;
+            
+                if (allDeviceNotifs && allDeviceNotifs.length > 0) {
+                  // Filter out the current user's device token
+                  const tokensToNotify = allDeviceNotifs.filter(token => 
+                    token !== user.device_notif?.trim()
+                  );
+            
+                  if (tokensToNotify.length > 0) {
+                    // Create an array of notification promises
+                    const notificationPromises = tokensToNotify.map(token => 
+                      axios.post("https://exp.host/--/api/v2/push/send", {
+                        to: token,
+                        title: "Air Guard Chat",
+                        body: `${user.username}: ${message}`,
+                        sound: "default"
+                      })
+                    );
+            
+                    // Wait for all notifications to be sent
+                    const responses = await Promise.all(notificationPromises);
+                    console.log("Notifications sent successfully", responses);
+                  } else {
+                    console.log("No other devices to notify (only current user's device found)");
+                  }
+                } else {
+                  console.log("No device tokens found to send notifications");
+                }
+               
 
             } catch (error) {
                 console.error('Error sending email', error);
