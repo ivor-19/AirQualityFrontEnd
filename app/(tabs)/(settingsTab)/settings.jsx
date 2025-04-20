@@ -18,25 +18,23 @@ const settings = () => {
   const { notifTokens } = useNotificationContext();
   const { resetAQI } = useAQI();
 
-  const [loading, setLoading] = useState(false);
-  const [showModelAsset, setShowModelAsset] = useState(false);
-  const [assetName, setAssetName] = useState(user.asset_model);
-  const [enableButton, setEnableButton] = useState(false);
-  const [connected, isConnected] = useState(true);
-  const [assetNotFound, isAssetNotFound] = useState(false);
-  const [validationMessage, setValidationMessage] = useState('');
   const textInputRef = useRef(null);
   const [showLogout, setShowLogout] = useState(false);
 
+  const avatarMap = {
+    koala: require('../../../assets/user-avatars/koala.png'),
+    beaver: require('../../../assets/user-avatars/beaver.png'),
+    dog: require('../../../assets/user-avatars/dog.png'),
+    kangaroo: require('../../../assets/user-avatars/kangaroo.png'),
+    platypus: require('../../../assets/user-avatars/platypus.png'),
+    lemur: require('../../../assets/user-avatars/lemur.png')
+  }
+
+  const avatar = avatarMap[user?.avatarPath || 'lemur'] || avatarMap.lemur;
+
   useFocusEffect(
     React.useCallback(() => {
-      setLoading(false);
-      setShowModelAsset(false);
-      setAssetName(user.asset_model);
-      setEnableButton(false);
-      isConnected(true);
-      isAssetNotFound(false);
-      setValidationMessage('');
+
       textInputRef.current?.blur();
     }, [user.asset_model])
   );
@@ -138,7 +136,7 @@ const settings = () => {
         <CustomHeader title={'Settings'}/>
         <View>
           <View className='px-4 w-full bg-white border-b-[1px] border-gray-100 flex-row items-center justify-between' style={{gap: scale(24), height: scale(120)}}>
-            <Image source={require('../../../assets/images/defaultProf.png')} contentFit='contain' className='rounded-full' style={{height: scale(100), width: scale(100)}}></Image>
+            <Image source={avatar} contentFit='contain' className='rounded-full' style={{height: scale(100), width: scale(100)}}></Image>
             {/* <RemixIcon name='ri-account-circle-fill' size={scale(100)}/> */}
               <View className='h-full w-full py-4'>
                 <View className='flex-1 justify-center'>

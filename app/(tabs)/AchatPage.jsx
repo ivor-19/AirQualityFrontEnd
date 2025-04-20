@@ -21,7 +21,17 @@ const AdminChatPage = () => {
   const prevChatLengthRef = useRef(chat.length);
   const [loading, setLoading] = useState(true);
   const [disableButton, setDisableButton] = useState(false);
-  
+
+  const avatars = {
+    koala: require('../../assets/user-avatars/koala.png'),
+    beaver: require('../../assets/user-avatars/beaver.png'),
+    dog: require('../../assets/user-avatars/dog.png'),
+    kangaroo: require('../../assets/user-avatars/kangaroo.png'),
+    platypus: require('../../assets/user-avatars/platypus.png'),
+    lemur: require('../../assets/user-avatars/lemur.png'),
+    default: require('../../assets/user-avatars/lemur.png'), // fallback avatar
+  };
+
   const getCurrentTime = () => {
     const options = {
       hour: '2-digit',
@@ -63,51 +73,76 @@ const AdminChatPage = () => {
     fetchChats();
   },[chat])
 
-
   const handleSend = async () => {
     if (!message.trim()) {
       console.log('Message is empty, nothing to send');
       return; 
     }
     
-    const newChat = { message, sender: user.username, role: user.role, timestamp: currentTime, date: currentDate};
+    const newChat = { 
+      message, 
+      sender: user.username, 
+      role: user.role, 
+      timestamp: currentTime, 
+      avatarPath: user.avatarPath, 
+      date: currentDate
+    };
+  
     try {
       setDisableButton(true);
+      
+      // First, send the chat message
       const response = await api.post('/chat', newChat);
       console.log('Send success', response.data);
   
-      const uniqueTokens = [...new Set(notifTokens)]; // filter the tokens if duplicate is found
-      const tokensToSend = uniqueTokens.filter(token => token !== userNotifToken); // filter the token to not send a notification to themselves
+      // Then fetch all device tokens
+      const notifsResponse = await api.get('https://air-quality-back-end-v2.vercel.app/users/notifications/getNotifs');
+      const { allDeviceNotifs } = notifsResponse.data;
   
-      const notificationPromises = tokensToSend.map(token => 
-        axios.post("https://exp.host/--/api/v2/push/send", {
-          to: token,
-          title: "Air Guard Chat",
-          body: `${user.username}: ${message}`,
-          sound: "default"
-        })
-      );
+      if (allDeviceNotifs && allDeviceNotifs.length > 0) {
+        // Filter out the current user's device token
+        const tokensToNotify = allDeviceNotifs.filter(token => 
+          token !== user.device_notif?.trim()
+        );
   
-      // Wait for all notifications to be sent
-      const responses = await Promise.all(notificationPromises);
-      console.log("Notifications sent successfully", responses);
+        if (tokensToNotify.length > 0) {
+          // Create an array of notification promises
+          const notificationPromises = tokensToNotify.map(token => 
+            axios.post("https://exp.host/--/api/v2/push/send", {
+              to: token,
+              title: "Air Guard Chat",
+              body: `${user.username}: ${message}`,
+              sound: "default"
+            })
+          );
+  
+          // Wait for all notifications to be sent
+          const responses = await Promise.all(notificationPromises);
+          console.log("Notifications sent successfully", responses);
+        } else {
+          console.log("No other devices to notify (only current user's device found)");
+        }
+      } else {
+        console.log("No device tokens found to send notifications");
+      }
+  
       setMessage('');
       setDisableButton(false);
-      
       Keyboard.dismiss();
       scrollViewRef.current?.scrollToEnd({ animated: true });
     } catch (error) {
-      console.error('Error sending chat', error);
+      console.error('Error sending chat or notifications', error);
+      setDisableButton(false);
     }
   };
-
+  
   const handleInputFocus = () => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
   return (
     <SafeAreaView className='h-full w-full bg-white'>
-      <CustomHeader title={'Chat'}/>
+      <CustomHeader title={'Forum'}/>
       {loading ? (
          <View className='h-full items-center my-20'>
             <Image source={require('../../assets/animated/loading.gif')} className='h-[30%] w-[30%]'/>
@@ -119,7 +154,7 @@ const AdminChatPage = () => {
               <Image source={require('../../assets/images/oops_empty.png')} style={{height: scale(240), width: scale(240)}}/>
               <Text className='font-pRegular text-gray-500 text-[12px]'>Oops, chat is empty.</Text>
             </View>
-            <View className='w-full h-20 p-4' style={{marginBottom: scale(42)}}>
+            <View className='w-full h-20 p-4'>
               <View className='flex flex-row items-center' style={{gap: 6}}>
                 <View className='bg-white border-[1px] flex-1 px-2 rounded-[12px] border-gray-300 focus-border-2'>
                   <TextInput 
@@ -147,10 +182,23 @@ const AdminChatPage = () => {
           <View className='p-4 h-full w-full' style={{gap: 18}}>
             {/* content start */}
             {chat.map((data, index) => {
+              const avatarPath = data.avatarPath || 'default';
+              const avatarSource = avatars[avatarPath] || avatars.default;
+
               return(
                 <View className={`w-full flex flex-row ${data.sender === user.username ? 'flex-row-reverse justify-start' : ''}`} key={index}>
                   <View className={`w-[10%] justify-end pb-2`}>
-                    <RemixIcon name='ri-account-circle-fill' size={scale(26)} color={data.role === 'Admin' ? 'green' : 'gray'}/>
+                    {/* {data.role === 'Admin' ? (
+                      <View className='bg-green-900 justify-center items-center rounded-full' style={{height: scale(26), width: scale(26)}}>
+                        <RemixIcon name="ri-user-fill" size={scale(12)} color='white'/>
+                      </View>
+                    ):( */}
+                      <Image 
+                        source={avatarSource}
+                        style={{height: scale(26), width: scale(26)}}
+                        contentFit='contain'
+                      />
+                    {/* )} */}
                   </View>
                   <View className='max-w-[80%] flex-col' style={{gap: scale(4)}}>
                     <Text className={`font-pRegular text-gray-600 px-2 ${data.sender === user.username ? 'text-right' : 'text-left'}`} style={{fontSize: scale(7)}}>
@@ -176,16 +224,17 @@ const AdminChatPage = () => {
             })}
             </View>
         </ScrollView>
-        <View className='w-full h-20 p-4' style={{marginBottom: scale(10)}}>
+        <View className='w-full h-20 p-4'>
           <View className='flex flex-row items-center' style={{gap: 6}}>
             <View className='bg-white border-[1px] flex-1 px-2 rounded-[12px] border-gray-300 focus-border-2'>
               <TextInput 
                 className={` h-full flex-row font-pRegular w-full`}
+                placeholder='Type your message here...'
                 placeholderTextColor={'gray'}
                 onChangeText={(text) => setMessage(text)}
                 value={message}
-                autoCapitalize='none'
-                onFocus={handleInputFocus} 
+                autoCapitalize='none'   
+                onFocus={handleInputFocus}  
               >
               </TextInput>
             </View>

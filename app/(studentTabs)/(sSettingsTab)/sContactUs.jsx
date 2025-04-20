@@ -6,6 +6,7 @@ import { scale } from 'react-native-size-matters'
 import { MaterialIcons, FontAwesome, Feather, Ionicons } from '@expo/vector-icons'
 import api from '../../../utils/api'
 import { useAuth } from '../../../context/AuthContext'
+import CustomButton from '../../../components/CustomButton'
 
 const ContactUs = () => {
   const [issue, setIssue] = useState('')
@@ -13,16 +14,19 @@ const ContactUs = () => {
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showIssueList, setShowIssueList] = useState(false)
+  const [showError, setShowError] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const [issueList, setIssueList] = useState([])
   const { user } = useAuth();
 
   const handleSubmit = async () => {
-    if (!issue.trim()) {
-      Alert.alert("Error", "Please describe your issue")
+    if (!issue.trim() || !title.trim() || !email.trim()) {
+      setShowError(true);
       return
     }
 
     try {
+      setIsSubmitting(true)
       const newIssue = {
         sender_id: user._id, 
         sender_accountId: user.account_id, 
@@ -33,22 +37,11 @@ const ContactUs = () => {
       }
       await api.post('/issue', newIssue);
 
-      setIsSubmitting(true)
-      setTimeout(() => {
-        setIsSubmitting(false)
-        Alert.alert(
-          "Thank You", 
-          "Your issue has been submitted. We'll get back to you soon.",
-          [{ text: "OK", onPress: () => {
-            setIssue('')
-            setEmail('')
-            setTitle('')
-          }}]
-        )
-      }, 1500)
-      
+      setIsSubmitting(false)
+      setShowModal(true)
+      setShowError(false);
     } catch (error) {
-      
+      console.error("Error sending issue", error)
     }
     
   }
@@ -90,7 +83,8 @@ const ContactUs = () => {
   ]
 
   return (
-    <View className='bg-white h-full w-full'>
+    <>
+     <View className='bg-white h-full w-full'>
       <CustomHeader 
         title={'Report an Issue'} 
         showBack={true} 
@@ -179,6 +173,9 @@ const ContactUs = () => {
             keyboardType="email-address"
             autoCapitalize="none"
           />
+          {showError && 
+            <Text className='font-pRegular text-right text-red-500 mb-2' style={{fontSize: scale(8)}}>Please fill up the fields.</Text>
+          }
           
           <TouchableOpacity 
             className={`rounded-lg p-4 items-center ${isSubmitting ? "bg-indigo-300" : "bg-green-600"}`}
@@ -252,7 +249,6 @@ const ContactUs = () => {
                         </Text>
                       </View>
                     </View>
-
                     <View className="flex-row">
                       <Text className="font-pMedium mr-2" style={{ fontSize: scale(10), width: scale(50) }}>
                         Date:
@@ -261,18 +257,34 @@ const ContactUs = () => {
                         {issue.created_at}
                       </Text>
                     </View>
-                    <View className="flex-row">
-                      <Text className="font-pMedium mr-2" style={{ fontSize: scale(10), width: scale(50) }}>
-                        Resolved at:
-                      </Text>
-                      <Text className="font-pRegular flex-1" style={{ fontSize: scale(10) }}>
-                        {issue.updated_at === '' ? (
-                          <Text>---</Text>
-                        ):(
-                          <Text>{issue.updated_at}</Text>
-                        )}
-                      </Text>
-                    </View>
+                    {issue.updated_at !== '' &&
+                      <View className="flex-row">
+                        <Text className="font-pMedium mr-2" style={{ fontSize: scale(10), width: scale(50) }}>
+                          Updated at:
+                        </Text>
+                        <Text className="font-pRegular flex-1" style={{ fontSize: scale(10) }}>
+                          {issue.updated_at === '' ? (
+                            <Text>---</Text>
+                          ):(
+                            <Text>{issue.updated_at}</Text>
+                          )}
+                        </Text>
+                      </View>
+                    }
+                    {issue.comment !== '' &&
+                      <View className="flex-row">
+                        <Text className="font-pMedium mr-2" style={{ fontSize: scale(10), width: scale(50) }}>
+                          Comment:
+                        </Text>
+                        <Text className="font-pRegular flex-1" style={{ fontSize: scale(10) }}>
+                          {issue.comment === '' ? (
+                            <Text>---</Text>
+                          ):(
+                            <Text>{issue.comment}</Text>
+                          )}
+                        </Text>
+                      </View>
+                    }
                   </View>
                 ))
               )}
@@ -280,11 +292,22 @@ const ContactUs = () => {
           </View>
         )}
         {/* Footer Note */}
-        <Text className="text-gray-400 font-pRegular text-center mt-6" style={{fontSize: scale(10)}}>
+        <Text className="text-gray-400 font-pRegular text-center mt-6" style={{fontSize: scale(8)}}>
           We typically respond to inquiries within 24 hours
         </Text>
       </ScrollView>
     </View>
+    {showModal && (
+       
+      <View className='absolute h-full w-full items-center justify-center z-10' style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}>
+        <View className='w-[80%] bg-white rounded-[10px] p-4 items-center' style={{gap: scale(12)}}>
+          <Text className='font-pRegular text-[12px]'>Your concern has been sent successfully!</Text>
+          <CustomButton title={'Ok'} onPress={() => setShowModal(false)}/>
+        </View>
+      </View>
+
+    )}
+    </>
   )
 }
 

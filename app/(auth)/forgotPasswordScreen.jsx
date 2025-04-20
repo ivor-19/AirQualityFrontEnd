@@ -1,18 +1,17 @@
 import { View, Text, SafeAreaView, TouchableOpacity, ScrollView, ActivityIndicator, Modal } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import CustomButton from '../../components/CustomButton'
 import CustomFormField from '../../components/CustomFormField';
 import { scale } from 'react-native-size-matters';
-import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import { ALERT_TYPE, Dialog, AlertNotificationRoot, Toast } from 'react-native-alert-notification';
-import * as SecureStore from 'expo-secure-store'; // Import SecureStore
-import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 
 import { usePushNotifications } from "../../usePushNotifications";
 import * as Notifications from "expo-notifications";
 import { useAQI } from '../../context/AQIContext';
+import ChangePassForgot from '../../components/ChangePassForgot';
+import RemixIcon from 'react-native-remix-icon';
+import { router } from 'expo-router';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -24,7 +23,7 @@ Notifications.setNotificationHandler({
 
 const ForgotPasswordScreen = () => {
   const { expoPushToken, notification, registerForPushNotifications } = usePushNotifications();
-  
+
   useEffect(() => {
     registerForPushNotifications();
   }, []);
@@ -41,6 +40,8 @@ const ForgotPasswordScreen = () => {
   const [emailInvalid, setEmailInvalid] = useState(false);
   const [emailValidation, setEmailValidation] = useState('');
   const [enableButton, setEnableButton] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [userId, setUserId] = useState('')
   
   useEffect(() => {
     registerForPushNotifications();
@@ -57,12 +58,13 @@ const ForgotPasswordScreen = () => {
       setEmailValidation('');
       
       const response = await api.get(`/users/email/${email}`);
-      
+      setUserId(response.data.user._id)
       Toast.show({
         type: ALERT_TYPE.SUCCESS,
         title: 'Success',
         textBody: 'Email found! Redirecting...',
       });
+       setShowModal(true);
       
       // router.push({ 
       //   pathname: 'resetPasswordScreen', 
@@ -103,6 +105,12 @@ const ForgotPasswordScreen = () => {
             <ActivityIndicator size="large" color="#4caf50" />
           </View>
         )}
+        <TouchableOpacity 
+          onPress={() => router.back()}
+          className='w-full flex-row justify-start'
+        >
+          <RemixIcon name='ri-arrow-drop-left-line' size={scale(36)}/>
+        </TouchableOpacity>
         
         <ScrollView>
           <Image 
@@ -143,7 +151,7 @@ const ForgotPasswordScreen = () => {
             
             <View className='w-full my-4' style={{gap: scale(20)}}>
               <TouchableOpacity
-                className={`bg-pastel-green-v2 h-14 w-[100%] rounded-[10px] justify-center ${enableButton ? 'opacity-100' : 'opacity-40'}`}
+                className={`bg-pastel-green-v2 h-14 w-[100%] rounded-[10px] justify-center ${enableButton ? 'opacity-100' : 'opacity-70'}`}
                 activeOpacity={0.8}
                 disabled={!enableButton || loading}
                 onPress={handleSend}
@@ -153,15 +161,7 @@ const ForgotPasswordScreen = () => {
                   {loading ? 'Sending...' : 'Send'}
                 </Text>
               </TouchableOpacity>
-              
-              <TouchableOpacity 
-                onPress={() => router.back()}
-                className='w-full flex-row justify-center'
-              >
-                <Text className='font-pRegular text-pastel-green-v2'>
-                  Back to Login
-                </Text>
-              </TouchableOpacity>
+            
               
               <Text className='font-pRegular text-gray-400 text-[10px] text-center'>
                 Version 7.5.0
@@ -169,7 +169,16 @@ const ForgotPasswordScreen = () => {
             </View>
           </View>
         </ScrollView>
+        <TouchableOpacity className='absolute bottom-0 left-0 right-0 mb-4' activeOpacity={0.7} onPress={() => router.push('issueScreen')}>
+          <Text className='font-pRegular text-gray-500 text-center' style={{fontSize: scale(8)}}>Having an issue?</Text>
+        </TouchableOpacity>
       </SafeAreaView>
+      {showModal &&
+        <ChangePassForgot 
+          id={userId}
+
+        />
+      }
     </AlertNotificationRoot>
   );
 };

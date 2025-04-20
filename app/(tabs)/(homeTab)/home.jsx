@@ -9,6 +9,7 @@ import Weather from '../../../components/Weather'
 import { useAuth } from '../../../context/AuthContext'
 import { scale } from 'react-native-size-matters'
 import api from '../../../utils/api';
+import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 
 const Home = () => {
   const { user, renderUserData, token } = useAuth();
@@ -94,7 +95,7 @@ const Home = () => {
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>PM 2.5</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
-                  <Image source={require('../../../assets/icons/pm25.png')} className='h-10 w-10'/>
+                  <MaterialIcons name="blur-on" size={scale(28)} color="#fff" />
                 </View>
               </View>
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{pm2_5}</Text>
@@ -105,7 +106,7 @@ const Home = () => {
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>PM 10</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
-                  <Image source={require('../../../assets/icons/pm10.png')} className='h-10 w-10'/>
+                  <MaterialCommunityIcons name="dots-hexagon" size={scale(28)} color="#fff" />
                 </View>
               </View>
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{pm10}</Text>
@@ -127,7 +128,7 @@ const Home = () => {
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>NO2</Text>
               <View className='flex-1 items-center justify-center'>
                 <View className='bg-pastel-black h-14 w-14 rounded-full items-center justify-center'>
-                  <Image source={require('../../../assets/icons/no2.png')} className='h-10 w-10'/>
+                  <FontAwesome5 name="wind" size={scale(28)} color="#fff" />
                 </View>
               </View>
               <Text className='font-pSemiBold text-center text-pastel-black' style={{fontSize: scale(8)}}>{no2}</Text>

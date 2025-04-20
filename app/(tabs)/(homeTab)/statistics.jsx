@@ -7,6 +7,7 @@ import CustomLineChart from '../../../components/CustomLineChart'
 import { useAQI } from '../../../context/AQIContext'
 import CustomHeader from '../../../components/CustomHeader'
 import { scale } from 'react-native-size-matters'
+import { FontAwesome5, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons'
 
 const statistics = () => {
     const { aqi, pm2_5, pm10, co, no2, aqiIC, aqiIL, aqiCon, aqiDet, coIC, coIL, n2oIC, no2IL, pm2_5IL, pm10IL, timestamp } = useAQI();
@@ -43,44 +44,44 @@ const statistics = () => {
                         <CustomLineChart/>
                     </View>
                     <View className='w-full flex-1 flex flex-col space-y-2'>
-                        <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
+                        <View className='bg-pastel-green h-28 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
                                 <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{pm2_5}</Text>
-                                <Text className='text-pastel-black font-pRegular text-[10px]'>µg/m³</Text>
+                     
                             </View>
                             <View className='flex-1 h-full px-2'>
                                 <Text className='font-pBold text-pastel-black text-[16px]'>Particulate Matter 2.5</Text>
-                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {pm2_5IL}</Text>
+                                <Text className='font-pRegular text-pastel-black text-[10px]'>Fine particulate matter with diameter less than 2.5 micrometers. Can penetrate deep into lungs and bloodstream.</Text>
                             </View> 
                             <View className='w-[20%] h-full items-center justify-center'>
                                 <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
-                                    <Image source={require('../../../assets/icons/pm2.5.png')} className='h-10 w-10'/>
+                                    <MaterialIcons name="blur-on" size={scale(28)} color="#fff" />
                                 </View>
                             </View>
                         </View>
-                        <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
+                        <View className='bg-pastel-green h-28 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
                                 <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{pm10}</Text>
-                                <Text className='text-pastel-black font-pRegular text-[10px]'>µg/m³</Text>
+                         
                             </View>
                             <View className='flex-1 h-full px-2'>
                                 <Text className='font-pBold text-pastel-black text-[16px]'>Particulate Matter 10</Text>
-                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {pm10IL}</Text>
+                                <Text className='font-pRegular text-pastel-black text-[10px]'>Particulate matter with diameter less than 10 micrometers. Can cause respiratory issues.</Text>
                             </View> 
                             <View className='w-[20%] h-full items-center justify-center'>
                                 <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
-                                    <Image source={require('../../../assets/icons/pm2.5.png')} className='h-10 w-10'/>
+                                    <MaterialCommunityIcons name="dots-hexagon" size={scale(28)} color="#fff" />
                                 </View>
                             </View>
                         </View>
-                        <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
+                        <View className='bg-pastel-green h-28 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
                                 <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{co}</Text>
-                                <Text className='text-pastel-black font-pRegular text-[10px]'>PPM</Text>
+                    
                             </View>
                             <View className='flex-1 h-full px-2'>
                                 <Text className='font-pBold text-pastel-black text-[16px]'>Carbon Monoxide</Text>
-                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {coIL}</Text>
+                                <Text className='font-pRegular text-pastel-black text-[10px]'>Carbon Monoxide (CO) is a colorless, odorless gas that can be harmful when inhaled in large amounts.</Text>
                             </View> 
                             <View className='w-[20%] h-full items-center justify-center'>
                                 <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
@@ -88,18 +89,18 @@ const statistics = () => {
                                 </View>
                             </View>
                         </View>
-                        <View className='bg-pastel-green h-24 rounded-custom p-4 flex-row items-center'>
+                        <View className='bg-pastel-green h-28 rounded-custom p-4 flex-row items-center'>
                             <View className='w-[20%] h-10 items-center justify-center'>
                                 <Text className='text-pastel-black font-pBold' style={{fontSize: scale(20)}}>{no2}</Text>
-                                <Text className='text-pastel-black font-pRegular text-[10px]'>PPB</Text>
+                   
                             </View>
                             <View className='flex-1 h-full px-2'>
                                 <Text className='font-pBold text-pastel-black text-[16px]'>Nitrogen Dioxide</Text>                           
-                                <Text className='font-pRegular text-pastel-black text-[10px]'>Risk Indicator: {no2IL}</Text>
+                                <Text className='font-pRegular text-pastel-black text-[10px]'>Nitrogen Dioxide (NO₂) is a gaseous air pollutant produced by combustion processes. Can cause respiratory issues.</Text>
                             </View> 
                             <View className='w-[20%] h-full items-center justify-center'>
                                 <View className='h-16 w-16 rounded-full bg-pastel-black items-center justify-center'>
-                                    <Image source={require('../../../assets/icons/nitrogen.png')} className='h-10 w-10'/>
+                                    <FontAwesome5 name="wind" size={scale(28)} color="#fff" />
                                 </View>
                             </View>
                         </View>
