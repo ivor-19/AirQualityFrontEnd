@@ -20,7 +20,7 @@ Notifications.setNotificationHandler({
 
 const ChangePassFirst = () => {
     const { expoPushToken, notification, registerForPushNotifications } = usePushNotifications();
-    
+
     useEffect(() => {
       registerForPushNotifications();
     }, []);
@@ -75,7 +75,7 @@ const ChangePassFirst = () => {
         renderUserData(updatedUser);
         setLoading(false);
         // Step 5: Redirect to home page
-        if(user.role === "Student"){
+        if(user.role === "Student" || user.role === "Staff"){
           router.replace('studentHome');
         }
         else if(user.role === "Admin"){
@@ -130,7 +130,7 @@ const ChangePassFirst = () => {
               </TouchableOpacity>
             )
             }
-            <TouchableOpacity activeOpacity={0.6} onPress={() => {setPassword("@Student"), toggleUpdate()}}>
+            <TouchableOpacity activeOpacity={0.6} onPress={() => {setPassword(user.password), toggleUpdate()}}>
               <Text className='font-pRegular text-gray-400' style={{fontSize: scale(8)}}>skip for now</Text>
             </TouchableOpacity>
         </View>

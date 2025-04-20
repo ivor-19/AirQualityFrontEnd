@@ -150,7 +150,7 @@ const Profile = () => {
                   Username: {user?.username}
                 </Text>
                 <Text className='font-pRegular text-gray-600 mb-1'>
-                  Student ID: {user?.account_id}
+                  Account ID: {user?.account_id}
                 </Text>
                 <Text className='font-pRegular text-gray-600'>
                   Email: {user?.email}

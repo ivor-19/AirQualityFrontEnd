@@ -126,7 +126,7 @@ const loginScreen = () => {
       if (error.response && error.response.data) {
         const errorMessage = error.response.data.message || error.response.data.error;
         console.log(errorMessage);
-        if (errorMessage === 'Student does not exists') {
+        if (errorMessage === 'Account does not exists') {
           setAccountInvalid(true);
           setAccountValidation(errorMessage);
           Toast.show({

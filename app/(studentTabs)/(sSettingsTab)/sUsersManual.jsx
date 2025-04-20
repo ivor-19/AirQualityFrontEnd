@@ -16,7 +16,7 @@ const sUsersManual = () => {
     {
       title: "Login Page",
       image: require('../../../assets/users-manual/main-login-student.jpg'),
-      description: "Enter your Student ID and the default password (@Student01). Remember to change your password after your first login for security purposes."
+      description: "Enter your Account ID and the default password. Remember to change your password after your first login for security purposes."
     },
     {
       title: "Dashboard",

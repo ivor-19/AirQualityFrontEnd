@@ -151,7 +151,7 @@ const StudentProfile = () => {
                   Name: {user?.username}
                 </Text>
                 <Text className='font-pRegular text-gray-600 mb-1' style={{fontSize: scale(10)}}>
-                  Student ID: {user?.account_id}
+                  Account ID: {user?.account_id}
                 </Text>
                 <Text className='font-pRegular text-gray-600' style={{fontSize: scale(10)}}>
                   Email: {user?.email}

@@ -83,7 +83,7 @@ const ConnectAsset = () => {
           textInputRef.current.blur();
   
           // Step 5: Redirect to home page
-          if(user.role === "Student"){
+          if(user.role === "Student" || user.role === "Staff"){
             router.replace('studentHome');
           }
           else if(user.role === "Admin"){
