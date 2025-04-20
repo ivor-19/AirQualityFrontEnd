@@ -164,7 +164,7 @@ const ForgotPasswordScreen = () => {
             
               
               <Text className='font-pRegular text-gray-400 text-[10px] text-center'>
-                Version 7.5.0
+                Version 2.1.1
               </Text>
             </View>
           </View>

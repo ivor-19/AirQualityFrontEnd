@@ -96,7 +96,7 @@ const safetyThreshold = () => {
       <CustomHeader 
         title={'AQI Threshold Guide'} 
         showBack={true} 
-        onPressBack={() => router.push('sSettings')}
+        onPressBack={() => router.push('settings')}
       />    
       
       <ScrollView 

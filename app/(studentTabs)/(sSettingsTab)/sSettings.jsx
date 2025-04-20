@@ -83,7 +83,7 @@ const StudentSettings = () => {
         onPress={() => setShowLogout(true)}
       />
       
-      <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.5.0</Text>
+      <Text className='font-pRegular text-gray-400 text-[10px] text-center'>Version 2.1.1</Text>
 
       <Modal isVisible={showLogout} animationIn="fadeIn" animationOut="fadeOut">
         <View className='absolute h-full w-full items-center justify-center z-50' 

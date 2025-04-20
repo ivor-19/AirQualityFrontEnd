@@ -242,7 +242,7 @@ const loginScreen = () => {
                 >
                   <Text className="text-center font-pSemiBold text-pastel-black">Login</Text>
                 </TouchableOpacity>
-                <Text className="font-pRegular text-gray-400 text-[10px] text-center">Version 7.5.0</Text>
+                <Text className="font-pRegular text-gray-400 text-[10px] text-center">Version 2.1.1</Text>
               </View>
             </View>
           </ScrollView>

@@ -205,7 +205,7 @@ const settings = () => {
         {/* <SettingsControl title={'Legal & Policy'} icon={'ri-shake-hands-line'}/> */}
         {/* <SettingsControl title={'Contact Us'} icon={'ri-phone-fill'} onPress={() => router.push('contactUs')}/> */}
         <SettingsControl title={'Log Out'} icon={'ri-logout-circle-line'} onPress={() => setShowLogout(true)}/>
-        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>v7.5.0</Text>
+        <Text className='font-pRegular text-gray-400 text-[10px] text-center'>Version 2.1.1</Text>
 
         {/* <SettingsControl title={'Delete User'} onPress={toggleDeleteUser}/> */}
         
